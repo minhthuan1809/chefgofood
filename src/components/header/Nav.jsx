@@ -58,25 +58,37 @@ export default function Nav() {
           <div className="mt-4 flex space-x-2">
             {isAuthenticated ? (
               <div className="relative">
-                <div
-                  className="flex items-center gap-4 cursor-pointer"
-                  onClick={toggleDropdown}
-                >
-                  <div className="w-[2rem] h-[2rem] overflow-hidden rounded-full">
-                    <img
-                      src={user.picture}
-                      alt={user.nickname}
-                      className="w-full h-full object-cover"
-                    />
+                <div onClick={toggleDropdown}>
+                  <div>
+                    <div className="flex items-center gap-4 cursor-pointer border px-5 py-2">
+                      <div className="w-[2rem] h-[2rem] overflow-hidden rounded-full">
+                        <img
+                          src={user.picture}
+                          alt={user.nickname}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <span>
+                        {user.nickname.charAt(0).toUpperCase() +
+                          user.nickname.slice(1)}
+                      </span>
+                    </div>
+                    <span className="bg-red-600 text-white px-[9px] py-[1px]  text-[1rem] rounded-full absolute right-[-1rem] top-[-0.7rem]">
+                      2
+                    </span>
                   </div>
-                  <span>{user.nickname}</span>
                 </div>
                 {dropdownOpen && (
                   <div className="absolute right-[-2rem] mt-2 w-[15rem] bg-white border border-gray-300 rounded-lg shadow-lg">
                     <ul className="py-1">
-                      <li className="flex items-center gap-3 px-4 py-2 hover:bg-blue-100 cursor-pointer transition duration-200 ease-in-out">
-                        <FaCartShopping />
-                        <span> Giỏ hàng</span>
+                      <li className="flex justify-between px-4 py-2 hover:bg-blue-100 cursor-pointer transition duration-200 ease-in-out">
+                        <div className="flex items-center gap-3">
+                          <FaCartShopping />
+                          <span> Giỏ hàng</span>
+                        </div>
+                        <span className="px-[9px] py-[1px]  text-[0.8rem] text-red-600 border border-solid border-red-600 rounded-full">
+                          8
+                        </span>
                       </li>
                       <li className="flex items-center gap-3 px-4 py-2 hover:bg-blue-100 cursor-pointer transition duration-200 ease-in-out">
                         <FaHistory />
@@ -91,7 +103,7 @@ export default function Nav() {
                         onClick={logout}
                       >
                         <IoMdLogOut />
-                        <span> Đăng xuất</span>
+                        <span>Đăng xuất</span>
                       </li>
                     </ul>
                   </div>
