@@ -90,8 +90,8 @@ export default function Nav() {
                       />
                     </div>
                     <span className="font-medium text-gray-700">
-                      {user.nickname.charAt(0).toLocaleUpperCase() +
-                        user.nickname.slice(1)}
+                      {user.name.charAt(0).toLocaleUpperCase() +
+                        user.name.slice(1)}
                     </span>
                   </div>
                   {dropdownOpen && (
