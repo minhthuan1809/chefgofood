@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FaCartShopping } from "react-icons/fa6";
 import { FaHistory } from "react-icons/fa";
 import { IoIosSettings, IoMdLogOut } from "react-icons/io";
@@ -8,14 +8,13 @@ import { MdMenu, MdOutlineCancel } from "react-icons/md";
 
 export default function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const data_url = useParams();
-  console.log(data_url);
+  const location = useLocation();
 
   const dataNav = [
     { title: "Trang Chủ", path: "/" },
-    { title: "Đồ ăn", path: "" },
-    { title: "Contact", path: "" },
-    { title: "Giới thiệu", path: "" },
+    { title: "Đồ ăn", path: "/food" },
+    { title: "Contact", path: "/contact" },
+    { title: "Giới thiệu", path: "/about" },
   ];
 
   const { logout, isAuthenticated, loginWithPopup, isLoading, user } =
@@ -64,7 +63,11 @@ export default function Nav() {
                 <Link
                   key={index}
                   to={path}
-                  className="text-gray-600 hover:text-blue-500 transition duration-300"
+                  className={`transition duration-300 ${
+                    location.pathname === path
+                      ? "text-blue-500 font-semibold"
+                      : "text-gray-600 hover:text-blue-500"
+                  }`}
                 >
                   {title}
                 </Link>
@@ -154,7 +157,11 @@ export default function Nav() {
                   <li key={index}>
                     <Link
                       to={path}
-                      className="block py-2 text-gray-600 hover:text-blue-500 transition duration-300"
+                      className={`block py-2 transition duration-300 ${
+                        location.pathname === path
+                          ? "text-blue-500 font-semibold"
+                          : "text-gray-600 hover:text-blue-500"
+                      }`}
                     >
                       {title}
                     </Link>
@@ -231,8 +238,6 @@ export default function Nav() {
           )}
         </nav>
       </div>
-      <div className="h-20"></div>{" "}
-      {/* Spacer to prevent content from hiding behind the fixed navbar */}
     </>
   );
 }
