@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { FaCartShopping } from "react-icons/fa6";
 import { FaHistory } from "react-icons/fa";
 import { IoIosSettings, IoMdLogOut } from "react-icons/io";
@@ -8,7 +8,11 @@ import { MdMenu, MdOutlineCancel } from "react-icons/md";
 
 export default function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const data_url = useParams();
+  console.log(data_url);
+
   const dataNav = [
+    { title: "Trang Chủ", path: "/" },
     { title: "Đồ ăn", path: "" },
     { title: "Contact", path: "" },
     { title: "Giới thiệu", path: "" },
@@ -33,7 +37,7 @@ export default function Nav() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center h-screen">
         <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-600"></div>
       </div>
     );

@@ -2,8 +2,17 @@ import React from "react";
 import Nav from "../header/Nav";
 import { FaSearch } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Home() {
+  const { isLoading } = useAuth0();
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-gray-100">
       <header>
