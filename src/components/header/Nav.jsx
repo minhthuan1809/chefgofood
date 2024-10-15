@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
 import { FaCartShopping } from "react-icons/fa6";
@@ -8,7 +8,6 @@ import { MdMenu, MdOutlineCancel } from "react-icons/md";
 
 export default function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const dataNav = [
     { title: "Đồ ăn", path: "" },
     { title: "Contact", path: "" },
@@ -18,15 +17,6 @@ export default function Nav() {
   const { logout, isAuthenticated, loginWithPopup, isLoading, user } =
     useAuth0();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const handleLogin = async () => {
     try {
@@ -51,11 +41,7 @@ export default function Nav() {
 
   return (
     <>
-      <div
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? "bg-white shadow-md" : "bg-transparent"
-        }`}
-      >
+      <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
         <nav className="container mx-auto px-4 py-4">
           <div className="flex w-4/5 m-auto items-center justify-between">
             <Link to="/" className="flex items-center space-x-2">
@@ -66,9 +52,7 @@ export default function Nav() {
                   alt="logo"
                 />
               </div>
-              <span className={`text-2xl font-bold text-gray-800`}>
-                FastFood
-              </span>
+              <span className="text-2xl font-bold text-gray-800">FastFood</span>
             </Link>
 
             <div className="hidden md:flex space-x-6">
@@ -76,7 +60,7 @@ export default function Nav() {
                 <Link
                   key={index}
                   to={path}
-                  className={`hover:text-blue-500 transition duration-300 text-gray-600`}
+                  className="text-gray-600 hover:text-blue-500 transition duration-300"
                 >
                   {title}
                 </Link>
@@ -97,7 +81,7 @@ export default function Nav() {
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <span className={`font-medium text-gray-700`}>
+                    <span className="font-medium text-gray-700">
                       {user.nickname.charAt(0).toLocaleUpperCase() +
                         user.nickname.slice(1)}
                     </span>
@@ -153,12 +137,7 @@ export default function Nav() {
             </div>
 
             <div className="md:hidden">
-              <button
-                onClick={toggleMenu}
-                className={`text-3xl ${
-                  isScrolled ? "text-gray-600" : "text-white"
-                }`}
-              >
+              <button onClick={toggleMenu} className="text-3xl text-gray-600">
                 {isMenuOpen ? <MdOutlineCancel /> : <MdMenu />}
               </button>
             </div>
@@ -171,9 +150,7 @@ export default function Nav() {
                   <li key={index}>
                     <Link
                       to={path}
-                      className={`block py-2 hover:text-blue-500 transition duration-300 ${
-                        isScrolled ? "text-gray-600" : "text-white"
-                      }`}
+                      className="block py-2 text-gray-600 hover:text-blue-500 transition duration-300"
                     >
                       {title}
                     </Link>
@@ -192,11 +169,7 @@ export default function Nav() {
                           className="w-full h-full object-cover"
                         />
                       </div>
-                      <span
-                        className={`font-medium ${
-                          isScrolled ? "text-gray-700" : "text-white"
-                        }`}
-                      >
+                      <span className="font-medium text-gray-700">
                         {user.nickname.charAt(0).toLocaleUpperCase() +
                           user.nickname.slice(1)}
                       </span>
