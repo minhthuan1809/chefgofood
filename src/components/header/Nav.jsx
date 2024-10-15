@@ -20,6 +20,7 @@ export default function Nav() {
   const { logout, isAuthenticated, loginWithPopup, isLoading, user } =
     useAuth0();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  console.log(user);
 
   const handleLogin = async () => {
     try {
