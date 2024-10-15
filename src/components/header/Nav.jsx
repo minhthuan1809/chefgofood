@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
-
+import { FaCartShopping } from "react-icons/fa6";
+import { FaHistory } from "react-icons/fa";
+import { IoIosSettings, IoMdLogOut } from "react-icons/io";
 export default function Nav() {
   const { logout, isAuthenticated, loginWithPopup, isLoading, user } =
     useAuth0();
@@ -70,22 +72,26 @@ export default function Nav() {
                   <span>{user.nickname}</span>
                 </div>
                 {dropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg">
+                  <div className="absolute right-[-2rem] mt-2 w-[15rem] bg-white border border-gray-300 rounded-lg shadow-lg">
                     <ul className="py-1">
-                      <li className="px-4 py-2 hover:bg-blue-100 cursor-pointer transition duration-200 ease-in-out">
-                        Profile
+                      <li className="flex items-center gap-3 px-4 py-2 hover:bg-blue-100 cursor-pointer transition duration-200 ease-in-out">
+                        <FaCartShopping />
+                        <span> Giỏ hàng</span>
                       </li>
-                      <li className="px-4 py-2 hover:bg-blue-100 cursor-pointer transition duration-200 ease-in-out">
-                        Tùy chọn 2
+                      <li className="flex items-center gap-3 px-4 py-2 hover:bg-blue-100 cursor-pointer transition duration-200 ease-in-out">
+                        <FaHistory />
+                        <span> Lịch sử đơn hàng</span>
                       </li>
-                      <li className="px-4 py-2 hover:bg-blue-100 cursor-pointer transition duration-200 ease-in-out">
-                        Tùy chọn 3
+                      <li className="flex items-center gap-3 px-4 py-2 hover:bg-blue-100 cursor-pointer transition duration-200 ease-in-out">
+                        <IoIosSettings />
+                        <span> Cập nhật tài khoản</span>
                       </li>
                       <li
-                        className="px-4 py-2 hover:bg-blue-100 cursor-pointer transition duration-200 ease-in-out"
+                        className="flex items-center gap-5 px-4 py-2 hover:bg-blue-100 cursor-pointer transition duration-200 ease-in-out"
                         onClick={logout}
                       >
-                        Đăng xuất
+                        <IoMdLogOut />
+                        <span> Đăng xuất</span>
                       </li>
                     </ul>
                   </div>
