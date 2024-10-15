@@ -63,11 +63,11 @@ export default function Nav() {
                   <div className="w-[2rem] h-[2rem] overflow-hidden rounded-full">
                     <img
                       src={user.picture}
-                      alt={user.name}
+                      alt={user.nickname}
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <span>{user.name}</span>
+                  <span>{user.nickname}</span>
                 </div>
                 {dropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg">
