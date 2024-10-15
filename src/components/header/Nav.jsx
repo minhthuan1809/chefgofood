@@ -4,7 +4,16 @@ import { Link } from "react-router-dom";
 import { FaCartShopping } from "react-icons/fa6";
 import { FaHistory } from "react-icons/fa";
 import { IoIosSettings, IoMdLogOut } from "react-icons/io";
+import { MdMenu, MdOutlineCancel } from "react-icons/md";
+
 export default function Nav() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const dataNav = [
+    { title: "Đồ ăn", path: "" },
+    { title: "Contact", path: "" },
+    { title: "Giới thiệu", path: "" },
+  ];
+
   const { logout, isAuthenticated, loginWithPopup, isLoading, user } =
     useAuth0();
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -12,99 +21,103 @@ export default function Nav() {
   const handleLogin = async () => {
     try {
       await loginWithPopup({
-        authorizationParams: {
-          prompt: "login",
-        },
+        authorizationParams: { prompt: "login" },
       });
     } catch (error) {
       console.error("Login failed:", error.message, error);
     }
   };
 
-  const toggleDropdown = () => {
-    setDropdownOpen((prev) => !prev);
-  };
-  console.log(user);
+  const toggleDropdown = () => setDropdownOpen((prev) => !prev);
+  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
 
   return (
-    <div>
-      {isLoading ? (
-        <div className="flex justify-center items-center h-screen">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-600"></div>
-        </div>
-      ) : (
-        <nav className="flex items-center justify-between w-[80%] m-auto mt-[1rem]">
-          <Link to="/">
-            <div className="flex items-center gap-2">
-              <div className="rounded-full overflow-hidden w-[3rem] h-[3rem]">
-                <img
-                  className="h-full w-full object-cover"
-                  src="https://cms.imgworlds.com/assets/473cfc50-242c-46f8-80be-68b867e28919.jpg?key=home-gallery"
-                  alt="logo"
-                />
-              </div>
-              <span className="text-2xl font-bold text-gray-800">FastFood</span>
+    <div className="bg-white shadow-md">
+      <nav className="container mx-auto px-4 py-4">
+        <div className="flex w-4/5 m-auto items-center justify-between">
+          <Link to="/" className="flex items-center space-x-2">
+            <div className="w-12 h-12 rounded-full overflow-hidden">
+              <img
+                className="h-full w-full object-cover"
+                src="https://cms.imgworlds.com/assets/473cfc50-242c-46f8-80be-68b867e28919.jpg?key=home-gallery"
+                alt="logo"
+              />
             </div>
+            <span className="text-2xl font-bold text-gray-800">FastFood</span>
           </Link>
 
-          <div className="mt-4">
-            <ul className="flex space-x-4 text-gray-600">
-              <li className="hover:text-blue-500 cursor-pointer">Đồ ăn</li>
-              <li className="hover:text-blue-500 cursor-pointer">Contact</li>
-              <li className="hover:text-blue-500 cursor-pointer">Giới thiệu</li>
-            </ul>
+          <div className="hidden md:flex space-x-6">
+            {dataNav.map(({ title, path }, index) => (
+              <Link
+                key={index}
+                to={path}
+                className="text-gray-600 hover:text-blue-500 transition duration-300"
+              >
+                {title}
+              </Link>
+            ))}
           </div>
 
-          <div className="mt-4 flex space-x-2">
+          <div className="hidden md:block">
             {isAuthenticated ? (
               <div className="relative">
-                <div onClick={toggleDropdown}>
-                  <div>
-                    <div className="flex items-center gap-4 cursor-pointer border px-5 py-2">
-                      <div className="w-[2rem] h-[2rem] overflow-hidden rounded-full">
-                        <img
-                          src={user.picture}
-                          alt={user.nickname}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <span>
-                        {user.nickname.charAt(0).toUpperCase() +
-                          user.nickname.slice(1)}
-                      </span>
-                    </div>
-                    <span className="bg-red-600 text-white px-[9px] py-[1px]  text-[1rem] rounded-full absolute right-[-1rem] top-[-0.7rem]">
-                      2
-                    </span>
+                <div
+                  onClick={toggleDropdown}
+                  className="flex items-center space-x-3 cursor-pointer"
+                >
+                  <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-blue-500">
+                    <img
+                      src={user.picture}
+                      alt={user.nickname}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
+                  <span className="font-medium text-gray-700">
+                    {user.nickname.charAt(0).toLocaleUpperCase() +
+                      user.nickname.slice(1)}
+                  </span>
                 </div>
                 {dropdownOpen && (
-                  <div className="absolute right-[-2rem] mt-2 w-[15rem] bg-white border border-gray-300 rounded-lg shadow-lg">
+                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-100">
                     <ul className="py-1">
-                      <li className="flex justify-between px-4 py-2 hover:bg-blue-100 cursor-pointer transition duration-200 ease-in-out">
-                        <div className="flex items-center gap-3">
-                          <FaCartShopping />
-                          <span> Giỏ hàng</span>
-                        </div>
-                        <span className="px-[9px] py-[1px]  text-[0.8rem] text-red-600 border border-solid border-red-600 rounded-full">
-                          8
-                        </span>
-                      </li>
-                      <li className="flex items-center gap-3 px-4 py-2 hover:bg-blue-100 cursor-pointer transition duration-200 ease-in-out">
-                        <FaHistory />
-                        <span> Lịch sử đơn hàng</span>
-                      </li>
-                      <li className="flex items-center gap-3 px-4 py-2 hover:bg-blue-100 cursor-pointer transition duration-200 ease-in-out">
-                        <IoIosSettings />
-                        <span> Cập nhật tài khoản</span>
-                      </li>
-                      <li
-                        className="flex items-center gap-5 px-4 py-2 hover:bg-blue-100 cursor-pointer transition duration-200 ease-in-out"
-                        onClick={logout}
-                      >
-                        <IoMdLogOut />
-                        <span>Đăng xuất</span>
-                      </li>
+                      {[
+                        {
+                          icon: <FaCartShopping />,
+                          text: "Giỏ hàng",
+                          badge: "8",
+                        },
+                        { icon: <FaHistory />, text: "Lịch sử đơn hàng" },
+                        { icon: <IoIosSettings />, text: "Cập nhật tài khoản" },
+                        {
+                          icon: <IoMdLogOut />,
+                          text: "Đăng xuất",
+                          onClick: logout,
+                        },
+                      ].map((item, index) => (
+                        <li
+                          key={index}
+                          onClick={item.onClick}
+                          className="px-4 py-2 hover:bg-blue-50 cursor-pointer transition duration-300 flex items-center justify-between"
+                        >
+                          <div className="flex items-center space-x-3">
+                            {item.icon}
+                            <span>{item.text}</span>
+                          </div>
+                          {item.badge && (
+                            <span className="px-2 py-1 text-xs text-red-600 bg-red-100 rounded-full">
+                              {item.badge}
+                            </span>
+                          )}
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 )}
@@ -112,14 +125,100 @@ export default function Nav() {
             ) : (
               <button
                 onClick={handleLogin}
-                className="border-blue-500 text-blue-500 border py-2 px-4 rounded hover:bg-blue-500 hover:text-white transition duration-200 ease-in-out"
+                className="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition duration-300"
               >
                 Đăng nhập
               </button>
             )}
           </div>
-        </nav>
-      )}
+
+          <div className="md:hidden">
+            <button onClick={toggleMenu} className="text-3xl text-gray-600">
+              {isMenuOpen ? <MdOutlineCancel /> : <MdMenu />}
+            </button>
+          </div>
+        </div>
+        {/* menu mobile */}
+        {isMenuOpen && (
+          <div className="mt-4 md:hidden">
+            <ul className="space-y-2">
+              {dataNav.map(({ title, path }, index) => (
+                <li key={index}>
+                  <Link
+                    to={path}
+                    className="block py-2 text-gray-600 hover:text-blue-500 transition duration-300"
+                  >
+                    {title}
+                  </Link>
+                </li>
+              ))}
+              {isAuthenticated ? (
+                <li>
+                  <div
+                    onClick={toggleDropdown}
+                    className="flex items-center space-x-3 py-2 cursor-pointer"
+                  >
+                    <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-blue-500">
+                      <img
+                        src={user.picture}
+                        alt={user.nickname}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <span className="font-medium text-gray-700">
+                      {user.nickname.charAt(0).toLocaleUpperCase() +
+                        user.nickname.slice(1)}
+                    </span>
+                  </div>
+                  {dropdownOpen && (
+                    <ul className="mt-2 bg-gray-50 rounded-lg">
+                      {[
+                        {
+                          icon: <FaCartShopping />,
+                          text: "Giỏ hàng",
+                          badge: "8",
+                        },
+                        { icon: <FaHistory />, text: "Lịch sử đơn hàng" },
+                        { icon: <IoIosSettings />, text: "Cập nhật tài khoản" },
+                        {
+                          icon: <IoMdLogOut />,
+                          text: "Đăng xuất",
+                          onClick: logout,
+                        },
+                      ].map((item, index) => (
+                        <li
+                          key={index}
+                          onClick={item.onClick}
+                          className="px-4 py-2 hover:bg-gray-100 cursor-pointer transition duration-300 flex items-center justify-between"
+                        >
+                          <div className="flex items-center space-x-3">
+                            {item.icon}
+                            <span>{item.text}</span>
+                          </div>
+                          {item.badge && (
+                            <span className="px-2 py-1 text-xs text-red-600 bg-red-100 rounded-full">
+                              {item.badge}
+                            </span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ) : (
+                <li>
+                  <button
+                    onClick={handleLogin}
+                    className="w-full bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition duration-300"
+                  >
+                    Đăng nhập
+                  </button>
+                </li>
+              )}
+            </ul>
+          </div>
+        )}
+      </nav>
     </div>
   );
 }
