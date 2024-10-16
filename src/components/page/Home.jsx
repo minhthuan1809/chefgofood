@@ -1,72 +1,10 @@
-import React, { useRef } from "react";
-import {
-  FaSearch,
-  FaCartPlus,
-  FaChevronLeft,
-  FaChevronRight,
-} from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import { motion } from "framer-motion";
 import PageFooter from "../footer/PageFooter";
 import Nav from "../header/Nav";
+import TopProducts from "./TopProducts";
 
 export default function Home() {
-  const products = [
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://i.ytimg.com/vi/c9GfHgMk1ac/maxresdefault.jpg",
-      discount: 0.2,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://i.ytimg.com/vi/c9GfHgMk1ac/maxresdefault.jpg",
-      discount: 0.2,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://i.ytimg.com/vi/c9GfHgMk1ac/maxresdefault.jpg",
-      discount: 0.2,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://i.ytimg.com/vi/c9GfHgMk1ac/maxresdefault.jpg",
-      discount: 0.2,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://i.ytimg.com/vi/c9GfHgMk1ac/maxresdefault.jpg",
-      discount: 0.2,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://i.ytimg.com/vi/c9GfHgMk1ac/maxresdefault.jpg",
-      discount: 0.2,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://i.ytimg.com/vi/c9GfHgMk1ac/maxresdefault.jpg",
-      discount: 0.2,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://i.ytimg.com/vi/c9GfHgMk1ac/maxresdefault.jpg",
-      discount: 0.2,
-    },
-  ];
-
-  const scrollRef = useRef(null);
-
-  const scroll = (scrollOffset) => {
-    scrollRef.current.scrollLeft += scrollOffset;
-  };
-
   return (
     <div className="min-h-screen bg-gray-100">
       <header>
@@ -134,77 +72,8 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-        <section className="py-16 bg-white">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center text-gray-800 mb-10">
-              Sản phẩm được đặt nhiều nhất
-            </h2>
-            <div className="relative">
-              <button
-                onClick={() => scroll(-300)}
-                className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md z-10 hover:bg-gray-100 transition duration-300"
-              >
-                <FaChevronLeft className="text-gray-600" />
-              </button>
-              <div
-                ref={scrollRef}
-                className="flex overflow-x-auto space-x-6 scrollbar-hide scroll-smooth pb-4"
-                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-              >
-                {products.map((product) => (
-                  <motion.div
-                    key={product.id}
-                    className="flex-shrink-0 w-72 bg-white shadow-lg rounded-lg overflow-hidden"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <div className="relative">
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-full h-48 object-cover"
-                      />
-                      <span className="absolute top-2 left-2 bg-red-600 text-white px-2 py-1 text-sm font-semibold rounded">
-                        {Math.round(product.discount * 100)}% OFF
-                      </span>
-                    </div>
-                    <div className="p-4">
-                      <h3 className="text-xl font-semibold mb-2">
-                        {product.name}
-                      </h3>
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <p className="text-gray-500 line-through">
-                            {product.price.toLocaleString("vi-VN")} đ
-                          </p>
-                          <p className="text-xl font-bold text-red-600">
-                            {(
-                              product.price *
-                              (1 - product.discount)
-                            ).toLocaleString("vi-VN")}{" "}
-                            đ
-                          </p>
-                        </div>
-                        <button className="p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300">
-                          <FaCartPlus className="text-xl" />
-                        </button>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-              <button
-                onClick={() => scroll(300)}
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md z-10 hover:bg-gray-100 transition duration-300"
-              >
-                <FaChevronRight className="text-gray-600" />
-              </button>
-            </div>
-          </div>
-        </section>
+        <TopProducts />
       </main>
-
       <footer>
         <PageFooter />
       </footer>
