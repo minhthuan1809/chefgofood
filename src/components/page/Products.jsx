@@ -96,7 +96,9 @@ export default function Products() {
                   />
                 </div>
                 <p className="font-semibold mt-2">{product.name}</p>
-                <p className="text-gray-600">{product.price}</p>
+                <p className="text-gray-600">giá cũ{product.price}</p>
+                <p className="text-gray-600">giá mới{product.price}</p>
+                <button>thêm vào giở hàng</button>
               </li>
             ))}
           </ul>
