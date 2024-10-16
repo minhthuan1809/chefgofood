@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import PageFooter from "../footer/PageFooter";
 import Nav from "../header/Nav";
 import TopProducts from "./TopProducts";
-
 export default function Home() {
   return (
     <div className="min-h-screen bg-gray-100">
@@ -74,6 +73,7 @@ export default function Home() {
         </section>
         <TopProducts />
       </main>
+
       <footer>
         <PageFooter />
       </footer>
