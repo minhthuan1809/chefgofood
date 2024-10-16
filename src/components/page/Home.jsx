@@ -2,6 +2,7 @@ import React from "react";
 import Nav from "../header/Nav";
 import { FaSearch } from "react-icons/fa";
 import { motion } from "framer-motion";
+import PageFooter from "../footer/PageFooter";
 
 export default function Home() {
   return (
@@ -70,6 +71,9 @@ export default function Home() {
           </div>
         </div>
       </main>
+      <footer>
+        <PageFooter />
+      </footer>
     </div>
   );
 }
