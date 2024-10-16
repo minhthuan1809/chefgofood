@@ -101,7 +101,7 @@ export default function Nav() {
             <div className="w-12 h-12 rounded-full overflow-hidden">
               <img
                 className="h-full w-full object-cover"
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyz25NiuDVqJXnmSDyzoUHFtZLhm6r1zUAxS7Ot4LpooSJx0L-Eb66mcCHjA9RNNTqUTg&usqp=CAU"
+                src="https://scontent.fhan17-1.fna.fbcdn.net/v/t1.15752-9/462261668_1232249157921421_6311346298250790419_n.jpg?stp=dst-jpg_tt7&_nc_cat=104&cb=99be929b-defccdb7&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeHpQUkmEcb0ntJzoDaeqPBKrppjbjalRY-ummNuNqVFjwH6RyNHpRejnl9OX3G4NY3idtfM0dEpbjMBxaJE7r47&_nc_ohc=DmTZ64JrZ3gQ7kNvgFZsEuK&_nc_zt=23&_nc_ht=scontent.fhan17-1.fna&_nc_gid=Ab65FSsoHbLyRpQRSqMsN3S&oh=03_Q7cD1QF-r8BL7k5X4Fo1vGzzsJlkwHgdOo0qK_PwswDzOvediA&oe=673772D5"
                 alt="logo"
               />
             </div>
