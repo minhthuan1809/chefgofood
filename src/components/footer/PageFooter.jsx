@@ -24,19 +24,19 @@ export default function PageFooter() {
             <div className="flex space-x-6">
               <a
                 href="#"
-                className="text-white hover:text-yellow-300 transition-colors duration-300"
+                className="text-white hover:text-blue-600 transition-colors duration-300"
               >
                 <FaFacebookF className="h-8 w-8" />
               </a>
               <a
                 href="#"
-                className="text-white hover:text-yellow-300 transition-colors duration-300"
+                className="text-white hover:text-blue-600 transition-colors duration-300"
               >
                 <FaInstagram className="h-8 w-8" />
               </a>
               <a
                 href="#"
-                className="text-white hover:text-yellow-300 transition-colors duration-300"
+                className="text-white hover:text-blue-600 transition-colors duration-300"
               >
                 <FaTwitter className="h-8 w-8" />
               </a>
@@ -47,15 +47,15 @@ export default function PageFooter() {
             <h3 className="text-2xl font-bold">Liên hệ với chúng tôi</h3>
             <ul className="space-y-4">
               <li className="flex items-center space-x-3">
-                <FaMapMarkerAlt className="h-6 w-6 text-yellow-300" />
+                <FaMapMarkerAlt className="h-6 w-6 " />
                 <span>123 Đường Ẩm Thực, Q.1, TP.HCM</span>
               </li>
               <li className="flex items-center space-x-3">
-                <FaPhone className="h-6 w-6 text-yellow-300" />
+                <FaPhone className="h-6 w-6 " />
                 <span>0123 456 789</span>
               </li>
               <li className="flex items-center space-x-3">
-                <FaEnvelope className="h-6 w-6 text-yellow-300" />
+                <FaEnvelope className="h-6 w-6 " />
                 <a href="mailto:info@fastfood.com" className="hover:underline">
                   info@fastfood.com
                 </a>
@@ -70,11 +70,11 @@ export default function PageFooter() {
               <input
                 type="email"
                 placeholder="Email của bạn"
-                className="px-4 py-3 bg-white bg-opacity-20 rounded-lg placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-yellow-300"
+                className="px-4 py-3 bg-white bg-opacity-20 rounded-lg placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-blue-600"
               />
               <button
                 type="submit"
-                className="px-6 py-3 bg-yellow-400 text-gray-900 rounded-lg font-semibold hover:bg-yellow-300 transition-colors duration-300"
+                className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-400 transition-colors duration-300"
               >
                 Đăng ký ngay
               </button>
