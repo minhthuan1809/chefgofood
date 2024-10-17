@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FiTag, FiClock, FiChevronRight } from "react-icons/fi";
 import Nav from "../header/Nav";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const DiscountCard = ({ title, discount, minOrder, validity, category }) => (
   <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -25,13 +26,7 @@ const DiscountCard = ({ title, discount, minOrder, validity, category }) => (
 );
 
 const Discount = () => {
-  const [discountCode, setDiscountCode] = useState("");
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Submitted discount code:", discountCode);
-    setDiscountCode("");
-  };
+  const { isAuthenticated } = useAuth0();
 
   const discounts = [
     {
@@ -130,30 +125,38 @@ const Discount = () => {
           <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
             Mã giảm giá của bạn
           </h1>
+          {isAuthenticated ? (
+            <div>
+              <form className="mb-8">
+                <div className="flex shadow-sm rounded-lg overflow-hidden">
+                  <input
+                    type="text"
+                    onChange={(e) => setDiscountCode(e.target.value)}
+                    placeholder="Nhập mã giảm giá"
+                    className="flex-grow px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 border-gray-300"
+                  />
+                  <button
+                    type="submit"
+                    className="bg-blue-600 text-white px-6 py-3 font-medium hover:bg-blue-700 transition duration-300"
+                  >
+                    Áp dụng
+                  </button>
+                </div>
+              </form>
 
-          <form onSubmit={handleSubmit} className="mb-8">
-            <div className="flex shadow-sm rounded-lg overflow-hidden">
-              <input
-                type="text"
-                value={discountCode}
-                onChange={(e) => setDiscountCode(e.target.value)}
-                placeholder="Nhập mã giảm giá"
-                className="flex-grow px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 border-gray-300"
-              />
-              <button
-                type="submit"
-                className="bg-blue-600 text-white px-6 py-3 font-medium hover:bg-blue-700 transition duration-300"
-              >
-                Áp dụng
-              </button>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                {discounts.map((discount, index) => (
+                  <DiscountCard key={index} {...discount} />
+                ))}
+              </div>
             </div>
-          </form>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            {discounts.map((discount, index) => (
-              <DiscountCard key={index} {...discount} />
-            ))}
-          </div>
+          ) : (
+            <div>
+              <p className="text-center text-blue-600 pb-5">
+                Bạn Chưa đăng nhập bạn cần đăng nhập
+              </p>
+            </div>
+          )}
 
           <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
             Ưu đãi hấp dẫn
