@@ -464,10 +464,11 @@ export default function Products() {
         </div>
       </main>
       <footer className="flex justify-center pb-6">
+        {/* chuyển trang */}
         <Stack spacing={2}>
           <Pagination
             count={11}
-            defaultPage={6}
+            defaultPage={1}
             siblingCount={0}
             boundaryCount={2}
             sx={{
