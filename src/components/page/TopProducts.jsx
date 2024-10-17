@@ -15,7 +15,15 @@ export default function TopProducts() {
       price: 20000,
       image:
         "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0,
+      discount: 0.02,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.1, // Thêm đánh giá
+    },
+    {
+      name: "Bánh tráng trộn",
+      price: 20000,
+      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
+      discount: 0.5,
       sold: 1000, // Thêm số lượng bán
       rating: 4.5, // Thêm đánh giá
     },
@@ -24,7 +32,15 @@ export default function TopProducts() {
       price: 20000,
       image:
         "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0,
+      discount: 0.02,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.1, // Thêm đánh giá
+    },
+    {
+      name: "Bánh tráng trộn",
+      price: 20000,
+      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
+      discount: 0.5,
       sold: 1000, // Thêm số lượng bán
       rating: 4.5, // Thêm đánh giá
     },
@@ -33,7 +49,15 @@ export default function TopProducts() {
       price: 20000,
       image:
         "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0,
+      discount: 0.02,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.1, // Thêm đánh giá
+    },
+    {
+      name: "Bánh tráng trộn",
+      price: 20000,
+      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
+      discount: 0.5,
       sold: 1000, // Thêm số lượng bán
       rating: 4.5, // Thêm đánh giá
     },
@@ -42,7 +66,15 @@ export default function TopProducts() {
       price: 20000,
       image:
         "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0,
+      discount: 0.02,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.1, // Thêm đánh giá
+    },
+    {
+      name: "Bánh tráng trộn",
+      price: 20000,
+      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
+      discount: 0.5,
       sold: 1000, // Thêm số lượng bán
       rating: 4.5, // Thêm đánh giá
     },
@@ -51,7 +83,15 @@ export default function TopProducts() {
       price: 20000,
       image:
         "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0,
+      discount: 0.02,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.1, // Thêm đánh giá
+    },
+    {
+      name: "Bánh tráng trộn",
+      price: 20000,
+      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
+      discount: 0.5,
       sold: 1000, // Thêm số lượng bán
       rating: 4.5, // Thêm đánh giá
     },
@@ -60,7 +100,15 @@ export default function TopProducts() {
       price: 20000,
       image:
         "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0,
+      discount: 0.02,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.1, // Thêm đánh giá
+    },
+    {
+      name: "Bánh tráng trộn",
+      price: 20000,
+      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
+      discount: 0.5,
       sold: 1000, // Thêm số lượng bán
       rating: 4.5, // Thêm đánh giá
     },
@@ -69,7 +117,15 @@ export default function TopProducts() {
       price: 20000,
       image:
         "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0,
+      discount: 0.02,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.1, // Thêm đánh giá
+    },
+    {
+      name: "Bánh tráng trộn",
+      price: 20000,
+      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
+      discount: 0.5,
       sold: 1000, // Thêm số lượng bán
       rating: 4.5, // Thêm đánh giá
     },
@@ -78,9 +134,102 @@ export default function TopProducts() {
       price: 20000,
       image:
         "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0,
-      sold: 1000,
-      rating: 4.5,
+      discount: 0.02,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.1, // Thêm đánh giá
+    },
+    {
+      name: "Bánh tráng trộn",
+      price: 20000,
+      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
+      discount: 0.5,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.5, // Thêm đánh giá
+    },
+    {
+      name: "Bánh tráng trộn",
+      price: 20000,
+      image:
+        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
+      discount: 0.02,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.1, // Thêm đánh giá
+    },
+    {
+      name: "Bánh tráng trộn",
+      price: 20000,
+      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
+      discount: 0.5,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.5, // Thêm đánh giá
+    },
+    {
+      name: "Bánh tráng trộn",
+      price: 20000,
+      image:
+        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
+      discount: 0.02,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.1, // Thêm đánh giá
+    },
+    {
+      name: "Bánh tráng trộn",
+      price: 20000,
+      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
+      discount: 0.5,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.5, // Thêm đánh giá
+    },
+    {
+      name: "Bánh tráng trộn",
+      price: 20000,
+      image:
+        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
+      discount: 0.02,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.1, // Thêm đánh giá
+    },
+    {
+      name: "Bánh tráng trộn",
+      price: 20000,
+      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
+      discount: 0.5,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.5, // Thêm đánh giá
+    },
+    {
+      name: "Bánh tráng trộn",
+      price: 20000,
+      image:
+        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
+      discount: 0.02,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.1, // Thêm đánh giá
+    },
+    {
+      name: "Bánh tráng trộn",
+      price: 20000,
+      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
+      discount: 0.5,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.5, // Thêm đánh giá
+    },
+    {
+      name: "Bánh tráng trộn",
+      price: 20000,
+      image:
+        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
+      discount: 0.02,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.1, // Thêm đánh giá
+    },
+    {
+      name: "Bánh tráng trộn",
+      price: 20000,
+      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
+      discount: 0.5,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.5, // Thêm đánh giá
     },
   ];
 
