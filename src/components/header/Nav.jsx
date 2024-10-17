@@ -9,8 +9,8 @@ import { MdMenu, MdOutlineCancel } from "react-icons/md";
 
 const NAV_ITEMS = [
   { title: "Trang Chủ", path: "/" },
-  { title: "Đồ ăn", path: "/food" },
-  { title: "Mã giảm giá", path: "/discount" },
+  { title: "Món ăn", path: "/food" },
+  { title: "Ưu đãi", path: "/discount" },
   { title: "Giới thiệu", path: "/about" },
 ];
 
@@ -94,7 +94,7 @@ export default function Nav() {
   console.log(user);
 
   return (
-    <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
+    <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-50 ">
       <nav className="container mx-auto px-4 py-4">
         <div className="flex w-11/12 m-auto items-center justify-between max-lg:w-full">
           <Link to="/" className="flex items-center space-x-2">
