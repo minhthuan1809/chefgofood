@@ -1,6 +1,12 @@
 import React, { useRef, useState, useEffect } from "react";
-import { FaCartPlus, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import {
+  FaCartPlus,
+  FaChevronLeft,
+  FaChevronRight,
+  FaStar,
+} from "react-icons/fa";
 import { motion } from "framer-motion";
+import { PiContactlessPaymentLight } from "react-icons/pi";
 
 export default function TopProducts() {
   const products = [
@@ -8,51 +14,73 @@ export default function TopProducts() {
       name: "Bánh tráng trộn",
       price: 20000,
       image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKl9oFDSKxEy5Z2_1EQMQuHk0l1dLxdPS6OA&s",
-      discount: 0.05,
+        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
+      discount: 0,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.5, // Thêm đánh giá
     },
     {
       name: "Bánh tráng trộn",
       price: 20000,
       image:
         "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0.2,
+      discount: 0,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.5, // Thêm đánh giá
     },
     {
       name: "Bánh tráng trộn",
       price: 20000,
-      image: "https://i.ytimg.com/vi/c9GfHgMk1ac/maxresdefault.jpg",
-      discount: 0.2,
+      image:
+        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
+      discount: 0,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.5, // Thêm đánh giá
     },
     {
       name: "Bánh tráng trộn",
       price: 20000,
-      image: "https://i.ytimg.com/vi/c9GfHgMk1ac/maxresdefault.jpg",
-      discount: 0.2,
+      image:
+        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
+      discount: 0,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.5, // Thêm đánh giá
     },
     {
       name: "Bánh tráng trộn",
       price: 20000,
-      image: "https://i.ytimg.com/vi/c9GfHgMk1ac/maxresdefault.jpg",
-      discount: 0.2,
+      image:
+        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
+      discount: 0,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.5, // Thêm đánh giá
     },
     {
       name: "Bánh tráng trộn",
       price: 20000,
-      image: "https://i.ytimg.com/vi/c9GfHgMk1ac/maxresdefault.jpg",
-      discount: 0.2,
+      image:
+        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
+      discount: 0,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.5, // Thêm đánh giá
     },
     {
       name: "Bánh tráng trộn",
       price: 20000,
-      image: "https://i.ytimg.com/vi/c9GfHgMk1ac/maxresdefault.jpg",
-      discount: 0.2,
+      image:
+        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
+      discount: 0,
+      sold: 1000, // Thêm số lượng bán
+      rating: 4.5, // Thêm đánh giá
     },
     {
       name: "Bánh tráng trộn",
       price: 20000,
-      image: "https://i.ytimg.com/vi/c9GfHgMk1ac/maxresdefault.jpg",
-      discount: 0.2,
+      image:
+        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
+      discount: 0,
+      sold: 1000,
+      rating: 4.5,
     },
   ];
 
@@ -80,16 +108,15 @@ export default function TopProducts() {
       ref.removeEventListener("scroll", checkScrollPosition);
     };
   }, []);
+
   return (
     <div>
-      {" "}
       <section className="py-16 bg-white">
         <div className="container w-full m-auto">
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-10">
             Sản phẩm được đặt nhiều nhất
           </h2>
           <div className="relative">
-            {/* Nút Left */}
             {!isAtStart && (
               <button
                 onClick={() => scroll(-500)}
@@ -98,7 +125,6 @@ export default function TopProducts() {
                 <FaChevronLeft className="text-gray-600" />
               </button>
             )}
-            {/* Danh sách sản phẩm */}
             <div
               ref={scrollRef}
               className="flex overflow-x-auto space-x-6 scrollbar-hide scroll-smooth pb-4"
@@ -107,7 +133,7 @@ export default function TopProducts() {
               {products.map((product, index) => (
                 <motion.div
                   key={index}
-                  className="flex-shrink-0 w-72 bg-white shadow-lg rounded-lg overflow-hidden"
+                  className="flex-shrink-0 w-80 bg-white shadow-lg rounded-lg overflow-hidden"
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.3 }}
                 >
@@ -138,8 +164,24 @@ export default function TopProducts() {
                           đ
                         </p>
                       </div>
-                      <button className="p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300">
-                        <FaCartPlus className="text-xl" />
+                      <button className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition-colors  duration-300 relative group">
+                        <span className="absolute right-[3rem] bottom-1 w-max opacity-0 group-hover:opacity-100 bg-blue-500 text-white text-xs p-2 rounded transition-opacity duration-300">
+                          Thêm vào giỏ hàng
+                        </span>
+                        <FaCartPlus size={20} />
+                      </button>
+                    </div>
+                    <div className="flex justify-between">
+                      <div className="flex items-center mt-3 text-gray-600">
+                        <FaStar className="text-yellow-500 mr-1" />
+                        <span>{product.rating}</span>
+                        <span className="ml-3">{product.sold} đã bán</span>
+                      </div>
+                      <button className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors duration-300 relative group">
+                        <span className="absolute right-[3rem] bottom-1 w-max opacity-0 group-hover:opacity-100 bg-red-500 text-white text-xs p-2 rounded transition-opacity duration-300">
+                          Mua Ngay
+                        </span>
+                        <PiContactlessPaymentLight size={20} />
                       </button>
                     </div>
                   </div>
