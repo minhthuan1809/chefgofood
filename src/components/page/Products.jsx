@@ -1,6 +1,6 @@
 import React from "react";
 import Nav from "../header/Nav";
-import { FaCartPlus, FaStar } from "react-icons/fa";
+import { FaCartPlus, FaStar, FaSearch } from "react-icons/fa";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { PiContactlessPaymentLight } from "react-icons/pi";
@@ -424,7 +424,7 @@ export default function Products() {
       </header>
       <main className="container mx-auto px-4 py-8">
         <h1 className="text-4xl text-center font-bold mb-8">Đồ Ăn</h1>
-        <div className="flex justify-center mb-8">
+        <div className="flex justify-between flex-wrap items-center mb-8 max-md:justify-center">
           <ul className="flex space-x-4">
             {["All", "Đồ Ăn", "Đồ Uống", "Bánh"].map((category, index) => (
               <li key={index}>
@@ -440,6 +440,22 @@ export default function Products() {
               </li>
             ))}
           </ul>
+          <div class="flex justify-center  items-center p-4">
+            <form class="flex items-center ">
+              <input
+                type="text"
+                id="searchInput"
+                placeholder="Nhập món ăn ..."
+                class="flex-grow m-0 p-2 border border-gray-300 rounded-l-lg outline-none"
+              />
+              <button
+                type="submit"
+                class="py-[13px] px-3 m-0 bg-blue-500 text-white rounded-r-lg hover:bg-blue-600 "
+              >
+                <FaSearch />
+              </button>
+            </form>
+          </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {products.map((product, index) => (
