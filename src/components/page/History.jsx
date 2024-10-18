@@ -193,9 +193,9 @@ export default function History() {
             <h2 className="text-2xl font-semibold mb-6 text-indigo-700 border-b-2 border-indigo-200 pb-2">
               Đơn Hàng Đã Đặt
             </h2>
-            {completedOrders.map((order) => (
-              <OrderCard key={order.id} order={order} />
-            ))}
+            {completedOrders.map((order) => {
+              return <OrderCard key={order.id} order={order} />;
+            })}
           </div>
         </div>
       </div>

@@ -6,7 +6,6 @@ import Nav from "../header/Nav";
 import Profile from "./profiles/Profiles";
 import Address from "./profiles/Address";
 import Vat from "./profiles/Vat";
-import PageFooter from "../footer/PageFooter";
 
 export default function Account() {
   const navigate = useNavigate();

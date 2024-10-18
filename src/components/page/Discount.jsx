@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { FiTag, FiClock, FiChevronRight } from "react-icons/fi";
 import Nav from "../header/Nav";
 import { useAuth0 } from "@auth0/auth0-react";

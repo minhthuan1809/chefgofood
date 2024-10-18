@@ -401,7 +401,7 @@ const ProductCard = ({ product }) => {
             <span>{product.sold} đã bán</span>
           </div>
           <div className="flex space-x-1 sm:space-x-2">
-            <button className="bg-blue-500 text-white p-1 sm:p-2 rounded-full hover:bg-blue-600 transition-colors duration-300">
+            <button className="bg-blue-500 text-white p-1 sm:p-2 rounded-full hover:bg-blue-600 transition-colors duration-300 group">
               <FaCartPlus size={16} />
             </button>
             <button className="bg-red-500 text-white p-1 sm:p-2 rounded-full hover:bg-red-600 transition-colors duration-300">
@@ -446,7 +446,7 @@ export default function Products() {
               />
               <button
                 type="submit"
-                className="py-2 px-3 m-0 bg-blue-500 text-white rounded-r-lg hover:bg-blue-600"
+                className="py-3 px-3 m-0 bg-blue-500 text-white rounded-r-lg hover:bg-blue-600"
               >
                 <FaSearch />
               </button>
