@@ -1,4 +1,5 @@
-import React from "react";
+/* eslint-disable no-constant-condition */
+/* eslint-disable react/prop-types */
 import {
   FaClock,
   FaDollarSign,

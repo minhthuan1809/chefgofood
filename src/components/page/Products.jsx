@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import Nav from "../header/Nav";
 import { FaCartPlus, FaStar, FaSearch } from "react-icons/fa";
@@ -422,7 +423,7 @@ export default function Products() {
       <header>
         <Nav />
       </header>
-      <main className="container mx-auto px-4 py-8">
+      <main className="container w-4/5 mx-auto px-4 py-8">
         <h1 className="text-4xl text-center font-bold mb-8">Đồ Ăn</h1>
         <div className="flex justify-between flex-wrap items-center mb-8 max-md:justify-center">
           <ul className="flex space-x-4">
@@ -440,17 +441,17 @@ export default function Products() {
               </li>
             ))}
           </ul>
-          <div class="flex justify-center  items-center p-4">
-            <form class="flex items-center ">
+          <div className="flex justify-center  items-center p-4">
+            <form className="flex items-center ">
               <input
                 type="text"
                 id="searchInput"
                 placeholder="Nhập món ăn ..."
-                class="flex-grow m-0 p-2 border border-gray-300 rounded-l-lg outline-none"
+                className="flex-grow m-0 p-2 border border-gray-300 rounded-l-lg outline-none"
               />
               <button
                 type="submit"
-                class="py-[13px] px-3 m-0 bg-blue-500 text-white rounded-r-lg hover:bg-blue-600 "
+                className="py-[13px] px-3 m-0 bg-blue-500 text-white rounded-r-lg hover:bg-blue-600 "
               >
                 <FaSearch />
               </button>
