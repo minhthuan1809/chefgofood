@@ -121,14 +121,14 @@ const Discount = () => {
         <Nav />
       </header>
       <div className="bg-gray-100 min-h-screen py-[7rem]">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
             Mã giảm giá của bạn
           </h1>
           {isAuthenticated ? (
             <div>
               <form className="mb-8">
-                <div className="flex shadow-sm rounded-lg overflow-hidden">
+                <div className="flex flex-col sm:flex-row shadow-sm rounded-lg overflow-hidden">
                   <input
                     type="text"
                     onChange={(e) => setDiscountCode(e.target.value)}
@@ -137,14 +137,14 @@ const Discount = () => {
                   />
                   <button
                     type="submit"
-                    className="bg-blue-600 text-white px-6 py-3 font-medium hover:bg-blue-700 transition duration-300"
+                    className="bg-blue-600 text-white px-6 py-3 font-medium hover:bg-blue-700 transition duration-300 mt-2 sm:mt-0"
                   >
                     Áp dụng
                   </button>
                 </div>
               </form>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
                 {discounts.map((discount, index) => (
                   <DiscountCard key={index} {...discount} />
                 ))}
@@ -161,7 +161,7 @@ const Discount = () => {
           <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
             Ưu đãi hấp dẫn
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {discounts.map((discount, index) => (
               <DiscountCard key={index} {...discount} />
             ))}

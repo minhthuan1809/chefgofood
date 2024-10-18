@@ -17,7 +17,11 @@ const NAV_ITEMS = [
 const USER_MENU_ITEMS = [
   { icon: <FaCartShopping />, text: "Giỏ hàng", badge: "8", path: "/carts" },
   { icon: <FaHistory />, text: "Lịch sử đơn hàng", path: "/history" },
-  { icon: <IoIosSettings />, text: "Cập nhật tài khoản", path: "/profile" },
+  {
+    icon: <IoIosSettings />,
+    text: "Cập nhật tài khoản",
+    path: "/account",
+  },
   { icon: <IoMdLogOut />, text: "Đăng xuất", action: "logout" },
 ];
 
