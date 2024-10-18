@@ -377,7 +377,7 @@ const ProductCard = ({ product }) => {
         )}
       </div>
       <div className="p-2 sm:p-4">
-        <h3 className="font-bold text-sm sm:text-lg mb-1 sm:mb-2 ">
+        <h3 className="font-bold text-sm sm:text-lg mb-1 sm:mb-2 truncate">
           {product.name}
         </h3>
         <div className="flex justify-between items-center mb-1 sm:mb-2">

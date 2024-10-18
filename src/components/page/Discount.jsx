@@ -131,7 +131,7 @@ const Discount = () => {
                 <div className="flex flex-col sm:flex-row shadow-sm rounded-lg overflow-hidden">
                   <input
                     type="text"
-                    onChange={(e) => setDiscountCode(e.target.value)}
+                    onChange={(e) => 5(e.target.value)}
                     placeholder="Nhập mã giảm giá"
                     className="flex-grow px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 border-gray-300"
                   />
