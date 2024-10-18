@@ -61,6 +61,7 @@ export default function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { logout, isAuthenticated, loginWithPopup, user } = useAuth0();
+  console.log(user);
 
   const navigate = useNavigate();
 
@@ -90,8 +91,6 @@ export default function Nav() {
     },
     [logout, navigate]
   );
-
-  console.log(user);
 
   return (
     <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-50 ">
