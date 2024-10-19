@@ -1,4 +1,3 @@
-import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 
 import Home from "../components/page/Home";
@@ -7,6 +6,8 @@ import Products from "../components/page/Products";
 import Discount from "../components/page/Discount";
 import History from "../components/page/History";
 import Account from "../components/page/Account";
+import About from "../components/page/About";
+import Cart from "../components/page/Cart";
 
 export default function RouterDom() {
   return (
@@ -19,6 +20,8 @@ export default function RouterDom() {
         </Route>
 
         <Route path="/history" element={<History />} />
+        <Route path="/abouts" element={<About />} />
+        <Route path="/carts" element={<Cart />} />
         <Route path="/discount" element={<Discount />} />
         <Route path="/food" element={<Products />} />
         <Route path="*" element={<Error />} />

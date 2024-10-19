@@ -81,7 +81,7 @@ const orders = [
 ];
 
 const OrderCard = ({ order }) => (
-  <div className="bg-white rounded-lg shadow-lg overflow-hidden my-8 ">
+  <div className="bg-white rounded-lg shadow-lg  overflow-hidden my-8 ">
     <div className="md:flex">
       <div className="md:w-1/3">
         <img
@@ -166,8 +166,8 @@ export default function History() {
       <header>
         <Nav />
       </header>
-      <div className="bg-gray-100 min-h-screen py-[6rem]">
-        <div className="container mx-auto px-4">
+      <div className="bg-gray-100 min-h-screen  py-[6rem]">
+        <div className="container mx-auto xl:w-[85%]  px-4">
           <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
             <div className="flex items-center justify-center mb-4">
               <FaHistory className=" text-4xl text-indigo-600 mr-4" />

@@ -11,7 +11,7 @@ const NAV_ITEMS = [
   { title: "Trang Chủ", path: "/" },
   { title: "Món ăn", path: "/food" },
   { title: "Ưu đãi", path: "/discount" },
-  { title: "Giới thiệu", path: "/about" },
+  { title: "Giới thiệu", path: "/abouts" },
 ];
 
 const USER_MENU_ITEMS = [
