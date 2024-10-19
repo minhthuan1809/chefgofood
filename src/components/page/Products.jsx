@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import Nav from "../header/Nav";
 import { FaCartPlus, FaStar, FaSearch } from "react-icons/fa";
@@ -363,7 +364,7 @@ const ProductCard = ({ product }) => {
       : `${product.discount * 100}%`;
 
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+    <div className="bg-white rounded-lg overflow-hidden shadow-md  hover:shadow-lg transition-shadow duration-300">
       <div className="relative">
         <img
           src={product.image}
@@ -419,7 +420,7 @@ export default function Products() {
       <header>
         <Nav />
       </header>
-      <main className="container m-auto px-2  sm:px-4  sm:py-8">
+      <main className="container m-auto px-2 sm:px-4 xl:w-[85%] sm:py-8">
         <div className="flex flex-col pt-[6rem] sm:flex-row justify-between items-center mb-4 sm:mb-8">
           <ul className="flex flex-wrap justify-center sm:justify-start space-x-2 mb-4 sm:mb-0">
             {["All", "Đồ Ăn", "Đồ Uống", "Bánh"].map((category, index) => (

@@ -1,4 +1,3 @@
-import React from "react";
 import { MdOutlineVerticalAlignTop } from "react-icons/md";
 
 const BackTop = () => {
