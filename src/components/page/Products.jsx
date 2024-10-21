@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from "react";
+
 import Nav from "../header/Nav";
 import { FaCartPlus, FaStar, FaSearch } from "react-icons/fa";
 import Pagination from "@mui/material/Pagination";
