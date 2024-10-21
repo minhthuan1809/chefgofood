@@ -116,12 +116,12 @@ export default function Cart() {
       alert("Mã giảm giá không hợp lệ");
     }
   };
-  <header>
-    <Nav />
-  </header>;
 
   return (
     <>
+      <header>
+        <Nav />
+      </header>
       <main className="px-4 sm:px-6 lg:px-8">
         <div className="mt-[6rem] w-full max-w-7xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
           <div className="px-4 sm:px-6 py-4 bg-gray-100">
