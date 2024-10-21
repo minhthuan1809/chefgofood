@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Nav from "../header/Nav";
+import PageFooter from "../footer/PageFooter";
 import {
   FaTrashAlt,
   FaShoppingCart,
@@ -118,178 +119,189 @@ export default function Cart() {
 
   return (
     <>
-      <Nav />
-      <div className="mt-[6rem] w-full max-w-7xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-        <div className="px-6 py-4 bg-gray-100">
-          <h2 className="text-2xl font-bold flex items-center text-gray-800">
-            <FaShoppingCart className="mr-2" /> Giỏ hàng của bạn
-          </h2>
-        </div>
-        <div className="flex">
-          {/* Left side - Product list */}
-          <div className="w-full md:w-2/3 p-6 overflow-y-auto max-h-[calc(100vh-12rem)]">
-            <ul className="divide-y divide-gray-200">
-              {cartItems.map((item) => (
-                <li key={item.id} className="py-4 flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={item.checked}
-                    onChange={() => toggleItemCheck(item.id)}
-                    className="mr-4"
-                  />
-                  <div className="w-[6rem] mr-5">
-                    <img src={item.image} alt={item.name} />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-800">
-                      {item.name}
-                    </h3>
-                    <p className="text-sm text-gray-600">
-                      {item.price.toLocaleString("vi-VN")} ₫
-                    </p>
-                  </div>
-                  <div className="flex items-center">
-                    <button
-                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                      className="text-gray-500 hover:text-gray-700"
-                    >
-                      <FaMinus className="h-4 w-4" />
-                    </button>
-                    <span className="mx-2 w-8 text-center">
-                      {item.quantity}
-                    </span>
-                    <button
-                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                      className="text-gray-500 hover:text-gray-700"
-                    >
-                      <FaPlus className="h-4 w-4" />
-                    </button>
-                    <button
-                      onClick={() => removeItem(item.id)}
-                      className="ml-4 text-red-500 hover:text-red-700"
-                    >
-                      <FaTrashAlt className="h-5 w-5" />
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
+      <header>
+        <Nav />
+      </header>
+      <main>
+        <div className="mt-[6rem] w-full max-w-7xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+          <div className="px-6 py-4 bg-gray-100">
+            <h2 className="text-2xl font-bold flex items-center text-gray-800">
+              <FaShoppingCart className="mr-2" /> Giỏ hàng của bạn
+            </h2>
           </div>
+          <div className="flex">
+            {/* Left side - Product list */}
+            <div className="w-full md:w-2/3 p-6 overflow-y-auto max-h-[calc(100vh-12rem)]">
+              <ul className="divide-y divide-gray-200">
+                {cartItems.map((item) => (
+                  <li key={item.id} className="py-4 flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={item.checked}
+                      onChange={() => toggleItemCheck(item.id)}
+                      className="mr-4"
+                    />
+                    <div className="w-[6rem] mr-5">
+                      <img src={item.image} alt={item.name} />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold text-gray-800">
+                        {item.name}
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        {item.price.toLocaleString("vi-VN")} ₫
+                      </p>
+                    </div>
+                    <div className="flex items-center">
+                      <button
+                        onClick={() =>
+                          updateQuantity(item.id, item.quantity - 1)
+                        }
+                        className="text-gray-500 hover:text-gray-700"
+                      >
+                        <FaMinus className="h-4 w-4" />
+                      </button>
+                      <span className="mx-2 w-8 text-center">
+                        {item.quantity}
+                      </span>
+                      <button
+                        onClick={() =>
+                          updateQuantity(item.id, item.quantity + 1)
+                        }
+                        className="text-gray-500 hover:text-gray-700"
+                      >
+                        <FaPlus className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => removeItem(item.id)}
+                        className="ml-4 text-red-500 hover:text-red-700"
+                      >
+                        <FaTrashAlt className="h-5 w-5" />
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* Right side - Payment summary */}
-          <div className="w-1/2 p-6 bg-gray-50">
-            <h3 className="text-xl font-semibold mb-4">Thanh toán</h3>
-            <div className="mb-4">
-              <div className="flex items-center gap-2 mb-2">
-                <input
-                  type="text"
-                  value={discountCode}
-                  onChange={(e) => setDiscountCode(e.target.value)}
-                  placeholder="Nhập mã giảm giá"
-                  className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+            {/* Right side - Payment summary */}
+            <div className="w-1/2 p-6 bg-gray-50">
+              <h3 className="text-xl font-semibold mb-4">Thanh toán</h3>
+              <div className="mb-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <input
+                    type="text"
+                    value={discountCode}
+                    onChange={(e) => setDiscountCode(e.target.value)}
+                    placeholder="Nhập mã giảm giá"
+                    className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <button
+                    onClick={() => applyDiscount(discountCode)}
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-200"
+                  >
+                    Áp dụng
+                  </button>
+                </div>
                 <button
-                  onClick={() => applyDiscount(discountCode)}
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-200"
+                  onClick={() => setIsModalOpen(true)}
+                  className="text-blue-600 hover:text-blue-700 font-semibold"
                 >
-                  Áp dụng
+                  Chọn mã giảm giá
                 </button>
               </div>
+              <div className="mb-4">
+                <h4 className="font-semibold mb-2">Phương thức thanh toán</h4>
+                <div className="flex flex-wrap gap-2">
+                  {paymentMethods.map((method) => (
+                    <button
+                      key={method.id}
+                      onClick={() => setSelectedPaymentMethod(method.id)}
+                      className={`flex items-center p-2 border rounded ${
+                        selectedPaymentMethod === method.id
+                          ? "bg-blue-100 border-blue-500"
+                          : "border-gray-300"
+                      }`}
+                    >
+                      <method.icon className="mr-2" />
+                      {method.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="mb-4">
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={requireVAT}
+                    onChange={(e) => setRequireVAT(e.target.checked)}
+                    className="mr-2"
+                  />
+                  Xuất hóa đơn VAT
+                </label>
+              </div>
+              <div className="space-y-2 mb-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600">Tạm tính:</span>
+                  <span className="font-semibold">
+                    {subtotal.toLocaleString("vi-VN")} ₫
+                  </span>
+                </div>
+                {appliedDiscount > 0 && (
+                  <div className="flex justify-between items-center text-green-600">
+                    <span>Giảm giá:</span>
+                    <span>-{discount.toLocaleString("vi-VN")} ₫</span>
+                  </div>
+                )}
+                {requireVAT && (
+                  <div className="flex justify-between items-center text-gray-600">
+                    <span>VAT (10%):</span>
+                    <span>{vat.toLocaleString("vi-VN")} ₫</span>
+                  </div>
+                )}
+                <div className="flex justify-between items-center text-xl font-bold">
+                  <span>Tổng cộng:</span>
+                  <span>{finalTotal.toLocaleString("vi-VN")} ₫</span>
+                </div>
+              </div>
               <button
-                onClick={() => setIsModalOpen(true)}
-                className="text-blue-600 hover:text-blue-700 font-semibold"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-md transition duration-200"
+                disabled={!selectedPaymentMethod || checkedItems.length === 0}
               >
-                Chọn mã giảm giá
+                Thanh toán
               </button>
             </div>
-            <div className="mb-4">
-              <h4 className="font-semibold mb-2">Phương thức thanh toán</h4>
-              <div className="flex flex-wrap gap-2">
-                {paymentMethods.map((method) => (
+          </div>
+        </div>
+        {isModalOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+            <div className="bg-white p-6 rounded-lg shadow-xl">
+              <h3 className="text-lg font-semibold mb-4">Chọn mã giảm giá</h3>
+              <div className="space-y-2">
+                {discountCodes.map((code) => (
                   <button
-                    key={method.id}
-                    onClick={() => setSelectedPaymentMethod(method.id)}
-                    className={`flex items-center p-2 border rounded ${
-                      selectedPaymentMethod === method.id
-                        ? "bg-blue-100 border-blue-500"
-                        : "border-gray-300"
-                    }`}
+                    key={code.code}
+                    onClick={() => applyDiscount(code.code)}
+                    className="w-full text-left p-2 hover:bg-blue-50 rounded"
                   >
-                    <method.icon className="mr-2" />
-                    {method.name}
+                    <span className="font-semibold">{code.code}</span>
+                    <span className="ml-4">Giảm {code.discount * 100}%</span>
                   </button>
                 ))}
               </div>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="mt-4 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded"
+              >
+                Đóng
+              </button>
             </div>
-            <div className="mb-4">
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  checked={requireVAT}
-                  onChange={(e) => setRequireVAT(e.target.checked)}
-                  className="mr-2"
-                />
-                Xuất hóa đơn VAT
-              </label>
-            </div>
-            <div className="space-y-2 mb-4">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">Tạm tính:</span>
-                <span className="font-semibold">
-                  {subtotal.toLocaleString("vi-VN")} ₫
-                </span>
-              </div>
-              {appliedDiscount > 0 && (
-                <div className="flex justify-between items-center text-green-600">
-                  <span>Giảm giá:</span>
-                  <span>-{discount.toLocaleString("vi-VN")} ₫</span>
-                </div>
-              )}
-              {requireVAT && (
-                <div className="flex justify-between items-center text-gray-600">
-                  <span>VAT (10%):</span>
-                  <span>{vat.toLocaleString("vi-VN")} ₫</span>
-                </div>
-              )}
-              <div className="flex justify-between items-center text-xl font-bold">
-                <span>Tổng cộng:</span>
-                <span>{finalTotal.toLocaleString("vi-VN")} ₫</span>
-              </div>
-            </div>
-            <button
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-md transition duration-200"
-              disabled={!selectedPaymentMethod || checkedItems.length === 0}
-            >
-              Thanh toán
-            </button>
           </div>
-        </div>
-      </div>
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg shadow-xl">
-            <h3 className="text-lg font-semibold mb-4">Chọn mã giảm giá</h3>
-            <div className="space-y-2">
-              {discountCodes.map((code) => (
-                <button
-                  key={code.code}
-                  onClick={() => applyDiscount(code.code)}
-                  className="w-full text-left p-2 hover:bg-blue-50 rounded"
-                >
-                  <span className="font-semibold">{code.code}</span>
-                  <span className="ml-4">Giảm {code.discount * 100}%</span>
-                </button>
-              ))}
-            </div>
-            <button
-              onClick={() => setIsModalOpen(false)}
-              className="mt-4 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded"
-            >
-              Đóng
-            </button>
-          </div>
-        </div>
-      )}
+        )}
+      </main>
+      <footer className="mt-[5rem]">
+        <PageFooter />
+      </footer>
     </>
   );
 }
