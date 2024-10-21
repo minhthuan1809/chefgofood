@@ -68,8 +68,6 @@ const paymentMethods = [
 ];
 
 export default function Cart() {
-  console.log(import.meta.env.FASTFOOD_AUTH0_CLIENID);
-
   const [cartItems, setCartItems] = useState(initialCartItems);
   const [discountCode, setDiscountCode] = useState("");
   const [appliedDiscount, setAppliedDiscount] = useState(0);
@@ -118,35 +116,44 @@ export default function Cart() {
       alert("Mã giảm giá không hợp lệ");
     }
   };
+  <header>
+    <Nav />
+  </header>;
 
   return (
     <>
-      <header>
-        <Nav />
-      </header>
-      <main>
+      <main className="px-4 sm:px-6 lg:px-8">
         <div className="mt-[6rem] w-full max-w-7xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-          <div className="px-6 py-4 bg-gray-100">
-            <h2 className="text-2xl font-bold flex items-center text-gray-800">
+          <div className="px-4 sm:px-6 py-4 bg-gray-100">
+            <h2 className="text-xl sm:text-2xl font-bold flex items-center text-gray-800">
               <FaShoppingCart className="mr-2" /> Giỏ hàng của bạn
             </h2>
           </div>
-          <div className="flex">
+          <div className="flex flex-col md:flex-row">
             {/* Left side - Product list */}
-            <div className="w-full md:w-2/3 p-6 overflow-y-auto max-h-[calc(100vh-12rem)]">
+            <div className="w-full md:w-2/3 p-4 sm:p-6 overflow-y-auto max-h-[calc(100vh-12rem)]">
               <ul className="divide-y divide-gray-200">
                 {cartItems.map((item) => (
-                  <li key={item.id} className="py-4 flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={item.checked}
-                      onChange={() => toggleItemCheck(item.id)}
-                      className="mr-4"
-                    />
-                    <div className="w-[6rem] mr-5">
-                      <img src={item.image} alt={item.name} />
+                  <li
+                    key={item.id}
+                    className="py-4 flex flex-col sm:flex-row sm:items-center"
+                  >
+                    <div className="flex items-center mb-2 sm:mb-0">
+                      <input
+                        type="checkbox"
+                        checked={item.checked}
+                        onChange={() => toggleItemCheck(item.id)}
+                        className="mr-4"
+                      />
+                      <div className="w-20 h-20 mr-4">
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
                     </div>
-                    <div className="flex-1">
+                    <div className="flex-1 mb-2 sm:mb-0">
                       <h3 className="text-lg font-semibold text-gray-800">
                         {item.name}
                       </h3>
@@ -154,26 +161,28 @@ export default function Cart() {
                         {item.price.toLocaleString("vi-VN")} ₫
                       </p>
                     </div>
-                    <div className="flex items-center">
-                      <button
-                        onClick={() =>
-                          updateQuantity(item.id, item.quantity - 1)
-                        }
-                        className="text-gray-500 hover:text-gray-700"
-                      >
-                        <FaMinus className="h-4 w-4" />
-                      </button>
-                      <span className="mx-2 w-8 text-center">
-                        {item.quantity}
-                      </span>
-                      <button
-                        onClick={() =>
-                          updateQuantity(item.id, item.quantity + 1)
-                        }
-                        className="text-gray-500 hover:text-gray-700"
-                      >
-                        <FaPlus className="h-4 w-4" />
-                      </button>
+                    <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto">
+                      <div className="flex items-center">
+                        <button
+                          onClick={() =>
+                            updateQuantity(item.id, item.quantity - 1)
+                          }
+                          className="text-gray-500 hover:text-gray-700"
+                        >
+                          <FaMinus className="h-4 w-4" />
+                        </button>
+                        <span className="mx-2 w-8 text-center">
+                          {item.quantity}
+                        </span>
+                        <button
+                          onClick={() =>
+                            updateQuantity(item.id, item.quantity + 1)
+                          }
+                          className="text-gray-500 hover:text-gray-700"
+                        >
+                          <FaPlus className="h-4 w-4" />
+                        </button>
+                      </div>
                       <button
                         onClick={() => removeItem(item.id)}
                         className="ml-4 text-red-500 hover:text-red-700"
@@ -187,7 +196,7 @@ export default function Cart() {
             </div>
 
             {/* Right side - Payment summary */}
-            <div className="w-1/2 p-6 bg-gray-50">
+            <div className="w-full md:w-1/2 p-4 sm:p-6 bg-gray-50">
               <h3 className="text-xl font-semibold mb-4">Thanh toán</h3>
               <div className="mb-4">
                 <div className="flex items-center gap-2 mb-2">
@@ -276,8 +285,8 @@ export default function Cart() {
           </div>
         </div>
         {isModalOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded-lg shadow-xl">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
+            <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
               <h3 className="text-lg font-semibold mb-4">Chọn mã giảm giá</h3>
               <div className="space-y-2">
                 {discountCodes.map((code) => (
