@@ -1,15 +1,7 @@
 import { useState } from "react";
 import Nav from "../header/Nav";
 import PageFooter from "../footer/PageFooter";
-import {
-  FaTrashAlt,
-  FaShoppingCart,
-  FaMinus,
-  FaPlus,
-  FaCreditCard,
-  FaMoneyBillWave,
-  FaPaypal,
-} from "react-icons/fa";
+import { FaTrashAlt, FaShoppingCart, FaMinus, FaPlus } from "react-icons/fa";
 import PayCart from "./cart/PayCart";
 
 const initialCartItems = [
@@ -36,7 +28,7 @@ const initialCartItems = [
   },
   {
     id: 4,
-    name: "Áo thun",
+    name: "Áo thunÁo thunÁo thun",
     image: "https://tuyetthitbo.com/uploads/source/7.jpg",
     price: 250000,
     quantity: 2,
@@ -74,21 +66,17 @@ export default function Cart() {
             </h2>
           </div>
 
-          <div className="flex flex-col lg:flex-row">
+          <div className="flex flex-col lg:flex-row lg:gap-8">
             <div className="w-full lg:w-2/3 p-4">
               <div className="max-h-[60vh] overflow-y-auto">
                 <ul className="divide-y divide-gray-200">
                   {cartItems.map((item) => (
                     <li
                       key={item.id}
-                      className="py-4 flex flex-col sm:flex-row sm:items-center gap-4"
+                      className="py-4 flex flex-row sm:items-center gap-4"
                     >
                       <div className="flex items-center gap-4">
-                        <input
-                          type="checkbox"
-                          checked={item.checked}
-                          className="w-4 h-4"
-                        />
+                        <input type="checkbox" className="w-4 h-4" />
                         <img
                           src={item.image}
                           alt={item.name}
@@ -105,11 +93,11 @@ export default function Cart() {
 
                       <div className="flex items-center gap-4">
                         <div className="flex items-center border rounded-md">
-                          <button className="p-2 hover:bg-gray-100">
+                          <button className="p-1 sm:p-2 hover:bg-gray-100">
                             <FaMinus className="w-4 h-4" />
                           </button>
-                          <span className="px-4">{item.quantity}</span>
-                          <button className="p-2 hover:bg-gray-100">
+                          <span className="px-2 sm:px-4">{item.quantity}</span>
+                          <button className="p-1 sm:p-2 hover:bg-gray-100">
                             <FaPlus className="w-4 h-4" />
                           </button>
                         </div>
@@ -123,7 +111,9 @@ export default function Cart() {
               </div>
             </div>
 
-            <PayCart />
+            <div className="w-full lg:w-1/3 p-4 bg-gray-50">
+              <PayCart />
+            </div>
           </div>
         </div>
       </main>
