@@ -9,8 +9,8 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <Auth0Provider
-        domain="dev-et6poks3ew30s3st.us.auth0.com"
-        clientId="AwTqpZ9ia30UGASSOgoDf7SOuhqnDtUn"
+        domain={import.meta.env.VITE_FASTFOOD_AUTH_DOMAIN}
+        clientId={import.meta.env.VITE_FASTFOOD_AUTH_CLIENTID}
         authorizationParams={{
           redirect_uri: window.location.origin,
         }}

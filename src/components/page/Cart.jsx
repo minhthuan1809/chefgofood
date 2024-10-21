@@ -68,6 +68,8 @@ const paymentMethods = [
 ];
 
 export default function Cart() {
+  console.log(import.meta.env.FASTFOOD_AUTH0_CLIENID);
+
   const [cartItems, setCartItems] = useState(initialCartItems);
   const [discountCode, setDiscountCode] = useState("");
   const [appliedDiscount, setAppliedDiscount] = useState(0);
