@@ -49,21 +49,19 @@ const OrderingSteps = () => {
           Các bước đặt món tại FASTFOOT
         </h2>
 
-        <div className="relative grid grid-cols-2 gap-8">
+        <div className="relative grid grid-cols-2 gap-8 gap-x-10">
           {steps.map((step, index) => (
-            <div key={index} className="relative group">
-              {/* Horizontal line to next item (for items not at the end of row) */}
+            <div key={index} className=" relative group">
               {index % 2 === 0 && index !== steps.length - 1 && (
-                <div className="absolute top-1/2 -right-8 w-8 h-0.5 bg-blue-200" />
+                <div className="absolute top-1/2 -right-10 w-10 h-0.5 bg-blue-200" />
               )}
 
-              {/* Vertical line to items below (for all items except last row) */}
               {index < steps.length - 2 && (
                 <div className="absolute left-1/2 top-full w-0.5 h-8 bg-blue-200" />
               )}
 
               <div className="bg-white p-6 rounded-lg border-2 border-blue-200 hover:border-blue-400 transition-all duration-300 h-full">
-                <div className="flex items-start space-x-4">
+                <div className="flex items-start space-x-4 gap-3">
                   {/* Icon container */}
                   <div className="relative flex-shrink-0">
                     <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white">
