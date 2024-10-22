@@ -8,52 +8,59 @@ const initialCartItems = [
   {
     id: 1,
     name: "Áo thun",
-    image: "https://tuyetthitbo.com/uploads/source/7.jpg",
+    image: "/api/placeholder/80/80",
     price: 250000,
     quantity: 2,
+    checked: false,
   },
   {
     id: 2,
     name: "Quần jeans",
-    image: "https://tuyetthitbo.com/uploads/source/7.jpg",
+    image: "/api/placeholder/80/80",
     price: 550000,
     quantity: 1,
+    checked: false,
   },
   {
     id: 3,
     name: "Giày sneaker",
-    image: "https://tuyetthitbo.com/uploads/source/7.jpg",
+    image: "/api/placeholder/80/80",
     price: 800000,
     quantity: 1,
-  },
-  {
-    id: 4,
-    name: "Áo thunÁo thunÁo thun",
-    image: "https://tuyetthitbo.com/uploads/source/7.jpg",
-    price: 250000,
-    quantity: 2,
-  },
-  {
-    id: 5,
-    name: "Quần jeans",
-    image: "https://tuyetthitbo.com/uploads/source/7.jpg",
-    price: 550000,
-    quantity: 1,
-  },
-  {
-    id: 6,
-    name: "Giày sneaker",
-    image: "https://tuyetthitbo.com/uploads/source/7.jpg",
-    price: 800000,
-    quantity: 1,
+    checked: false,
   },
 ];
 
 export default function Cart() {
   const [cartItems, setCartItems] = useState(initialCartItems);
 
+  // Handle checkbox toggle
+  const toggleItemCheck = (id) => {
+    setCartItems(
+      cartItems.map((item) =>
+        item.id === id ? { ...item, checked: !item.checked } : item
+      )
+    );
+  };
+
+  // Handle quantity changes
+  const updateQuantity = (id, change) => {
+    setCartItems(
+      cartItems.map((item) =>
+        item.id === id
+          ? { ...item, quantity: Math.max(1, item.quantity + change) }
+          : item
+      )
+    );
+  };
+
+  // Handle item removal
+  const removeItem = (id) => {
+    setCartItems(cartItems.filter((item) => item.id !== id));
+  };
+
   return (
-    <div className="min-h-screen flex flex-col mt-[1rem]">
+    <div className="min-h-screen flex flex-col">
       <header className="fixed top-0 w-full z-50 bg-white">
         <Nav />
       </header>
@@ -65,25 +72,6 @@ export default function Cart() {
               <FaShoppingCart className="mr-2" /> Giỏ hàng của bạn
             </h2>
           </div>
-<<<<<<< HEAD
-          <div className="flex flex-col md:flex-row">
-            {/* Left side - Product list */}
-            <div className="w-full md:w-2/3 p-4 sm:p-6 overflow-y-auto max-h-[calc(100vh-12rem)]">
-              <ul className="divide-y divide-gray-200">
-                {cartItems.map((item) => (
-                  <li
-                    key={item.id}
-                    className="py-4 flex flex-row sm:items-center"
-                  >
-                    <div className="flex items-center mb-2 sm:mb-0">
-                      <input
-                        type="checkbox"
-                        checked={item.checked}
-                        onChange={() => toggleItemCheck(item.id)}
-                        className="mr-4"
-                      />
-                      <div className="w-20 h-20 mr-4">
-=======
 
           <div className="flex flex-col lg:flex-row lg:gap-8">
             <div className="w-full lg:w-2/3 p-4">
@@ -95,8 +83,12 @@ export default function Cart() {
                       className="py-4 flex flex-row sm:items-center gap-4"
                     >
                       <div className="flex items-center gap-4">
-                        <input type="checkbox" className="w-4 h-4" />
->>>>>>> c355b36ec85e2a368126c6b0565c385f8c952e34
+                        <input
+                          type="checkbox"
+                          className="w-4 h-4"
+                          checked={item.checked}
+                          onChange={() => toggleItemCheck(item.id)}
+                        />
                         <img
                           src={item.image}
                           alt={item.name}
@@ -113,15 +105,24 @@ export default function Cart() {
 
                       <div className="flex items-center gap-4">
                         <div className="flex items-center border rounded-md">
-                          <button className="p-1 sm:p-2 hover:bg-gray-100">
+                          <button
+                            className="p-1 sm:p-2 hover:bg-gray-100"
+                            onClick={() => updateQuantity(item.id, -1)}
+                          >
                             <FaMinus className="w-4 h-4" />
                           </button>
                           <span className="px-2 sm:px-4">{item.quantity}</span>
-                          <button className="p-1 sm:p-2 hover:bg-gray-100">
+                          <button
+                            className="p-1 sm:p-2 hover:bg-gray-100"
+                            onClick={() => updateQuantity(item.id, 1)}
+                          >
                             <FaPlus className="w-4 h-4" />
                           </button>
                         </div>
-                        <button className="text-red-500 hover:text-red-700 p-2">
+                        <button
+                          className="text-red-500 hover:text-red-700 p-2"
+                          onClick={() => removeItem(item.id)}
+                        >
                           <FaTrashAlt className="w-5 h-5" />
                         </button>
                       </div>
@@ -132,7 +133,7 @@ export default function Cart() {
             </div>
 
             <div className="w-full lg:w-1/3 p-4 bg-gray-50">
-              <PayCart />
+              <PayCart items={cartItems.filter((item) => item.checked)} />
             </div>
           </div>
         </div>
