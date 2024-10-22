@@ -2,13 +2,9 @@ import { FaSearch } from "react-icons/fa";
 import { motion } from "framer-motion";
 import PageFooter from "../footer/PageFooter";
 import Nav from "../header/Nav";
-<<<<<<< HEAD:src/components/page/HomePage.jsx
 import TopProducts from "./home/TopProducts";
 import OrderingSteps from "./home/OrderingSteps ";
-=======
-import TopProducts from "./TopProducts";
 
->>>>>>> c355b36ec85e2a368126c6b0565c385f8c952e34:src/components/page/Home.jsx
 export default function Home() {
   return (
     <div className="min-h-screen bg-gray-100">
