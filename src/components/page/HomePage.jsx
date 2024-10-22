@@ -4,6 +4,7 @@ import PageFooter from "../footer/PageFooter";
 import Nav from "../header/Nav";
 import TopProducts from "./home/TopProducts";
 import OrderingSteps from "./home/OrderingSteps ";
+import Sale from "./home/Sale";
 
 export default function Home() {
   return (
@@ -76,6 +77,9 @@ export default function Home() {
         <section>
           <TopProducts />
         </section>
+        {/* <section>
+          <Sale />
+        </section> */}
         <section>
           <OrderingSteps />
         </section>
