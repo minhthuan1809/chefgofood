@@ -44,20 +44,20 @@ const OrderingSteps = () => {
 
   return (
     <section className="py-12 bg-gray-50">
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="max-w-[95rem] w-[95%] mx-auto px-4">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
           Các bước đặt món tại FASTFOOT
         </h2>
 
-        <div className="relative grid grid-cols-2 gap-8 gap-x-10">
+        <div className="relative grid grid-cols-2 gap-y-12 gap-x-20">
           {steps.map((step, index) => (
             <div key={index} className=" relative group">
               {index % 2 === 0 && index !== steps.length - 1 && (
-                <div className="absolute top-1/2 -right-10 w-10 h-0.5 bg-blue-200" />
+                <div className="absolute top-1/2 -right-20 w-20 h-0.5 bg-blue-200" />
               )}
 
               {index < steps.length - 2 && (
-                <div className="absolute left-1/2 top-full w-0.5 h-8 bg-blue-200" />
+                <div className="absolute left-1/2 top-full w-0.5 h-12 bg-blue-200" />
               )}
 
               <div className="bg-white p-6 rounded-lg border-2 border-blue-200 hover:border-blue-400 transition-all duration-300 h-full">
