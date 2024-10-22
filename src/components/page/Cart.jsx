@@ -136,7 +136,7 @@ export default function Cart() {
                 {cartItems.map((item) => (
                   <li
                     key={item.id}
-                    className="py-4 flex flex-col sm:flex-row sm:items-center"
+                    className="py-4 flex flex-row sm:items-center"
                   >
                     <div className="flex items-center mb-2 sm:mb-0">
                       <input

@@ -2,7 +2,8 @@ import { FaSearch } from "react-icons/fa";
 import { motion } from "framer-motion";
 import PageFooter from "../footer/PageFooter";
 import Nav from "../header/Nav";
-import TopProducts from "./TopProducts";
+import TopProducts from "./home/TopProducts";
+import OrderingSteps from "./home/OrderingSteps ";
 export default function Home() {
   return (
     <div className="min-h-screen bg-gray-100">
@@ -71,7 +72,12 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <TopProducts />
+        <section>
+          <TopProducts />
+        </section>
+        <section>
+          <OrderingSteps />
+        </section>
       </main>
 
       <footer>

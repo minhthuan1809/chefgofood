@@ -12,6 +12,7 @@ export default function Account() {
   const { url } = useParams();
   const [activeTab, setActiveTab] = useState("profile");
   const [loading, setLoading] = useState(false);
+  console.log(url);
 
   const profileLinks = [
     {
@@ -83,15 +84,39 @@ export default function Account() {
                 <div
                   onClick={() => handleNavigation(link.path)}
                   key={index}
-                  className={`flex items-center justify-between p-4 hover:bg-gray-100 cursor-pointer rounded-lg transition-colors duration-200 shadow-sm mb-3 bg-white ${
-                    activeTab === link.path ? "bg-gray-100" : ""
+                  className={`flex items-center justify-between p-4 cursor-pointer rounded-lg transition-colors duration-200 shadow-sm mb-3 ${
+                    activeTab === link.path
+                      ? "bg-blue-100 text-blue-600"
+                      : "bg-white text-gray-700 hover:bg-gray-100"
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="text-lg">{link.icon}</div>
-                    <p className="text-gray-700 font-medium">{link.text}</p>
+                    <div
+                      className={`text-lg ${
+                        activeTab === link.path
+                          ? "text-blue-600"
+                          : "text-gray-700"
+                      }`}
+                    >
+                      {link.icon}
+                    </div>
+                    <p
+                      className={`font-medium ${
+                        activeTab === link.path
+                          ? "text-blue-600"
+                          : "text-gray-700"
+                      }`}
+                    >
+                      {link.text}
+                    </p>
                   </div>
-                  <MdKeyboardArrowRight className="text-gray-400" />
+                  <MdKeyboardArrowRight
+                    className={`text-lg ${
+                      activeTab === link.path
+                        ? "text-blue-600"
+                        : "text-gray-400"
+                    }`}
+                  />
                 </div>
               ))}
             </div>

@@ -1,6 +1,5 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 
-import Home from "../components/page/Home";
 import Error from "./Error";
 import Products from "../components/page/Products";
 import Discount from "../components/page/Discount";
@@ -8,12 +7,13 @@ import History from "../components/page/History";
 import Account from "../components/page/Account";
 import About from "../components/page/About";
 import Cart from "../components/page/Cart";
+import HomePage from "../components/page/HomePage";
 
 export default function RouterDom() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/account">
           <Route index element={<Navigate to="/account/profile" replace />} />
           <Route path=":url" element={<Account />} />
