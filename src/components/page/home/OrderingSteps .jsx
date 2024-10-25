@@ -40,6 +40,11 @@ const OrderingSteps = () => {
       title: "Chuẩn bị tận hưởng",
       description: "Đơn hàng đang được chuẩn bị",
     },
+    {
+      icon: <FiSmile size={24} />,
+      title: "Chuẩn bị tận hưởng",
+      description: "Đơn hàng đang được chuẩn bị",
+    },
   ];
 
   return (
