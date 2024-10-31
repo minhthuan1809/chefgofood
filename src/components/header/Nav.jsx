@@ -1,29 +1,14 @@
 /* eslint-disable react/prop-types */
-import { useState, useCallback } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaCartShopping } from "react-icons/fa6";
-import { FaHistory } from "react-icons/fa";
 import { IoIosSettings, IoMdLogOut } from "react-icons/io";
 import { MdMenu, MdOutlineCancel } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import Modal_login from "./Modal_login";
+import { getProfile } from "../../redux/middlewares/addProfile";
 
-const NAV_ITEMS = [
-  { title: "Trang Chủ", path: "/" },
-  { title: "Món ăn", path: "/food" },
-  { title: "Ưu đãi", path: "/discount" },
-  { title: "Giới thiệu", path: "/abouts" },
-];
-
-const USER_MENU_ITEMS = [
-  { icon: <FaCartShopping />, text: "Giỏ hàng", badge: "8", path: "/carts" },
-  { icon: <FaHistory />, text: "Lịch sử đơn hàng", path: "/history" },
-  {
-    icon: <IoIosSettings />,
-    text: "Cập nhật tài khoản",
-    path: "/account",
-  },
-  { icon: <IoMdLogOut />, text: "Đăng xuất", action: "logout" },
-];
+let dataLoca = localStorage.getItem("apikey");
 
 const NavLink = ({ to, children, onClick }) => {
   const location = useLocation();
@@ -44,72 +29,168 @@ const NavLink = ({ to, children, onClick }) => {
   );
 };
 
-const UserMenuItem = ({ icon, text, badge, onClick }) => (
-  <li
-    onClick={onClick}
-    className="px-4 py-2 hover:bg-gray-100 cursor-pointer transition duration-300 flex items-center justify-between"
-  >
-    <div className="flex items-center space-x-3">
-      {icon}
-      <span>{text}</span>
-    </div>
-    {badge && (
-      <span className="px-2 py-1 text-xs text-red-600 bg-red-100 rounded-full">
-        {badge}
-      </span>
-    )}
-  </li>
-);
-
-export default function Nav() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const { logout, isAuthenticated, loginWithPopup, user } = useAuth0();
-  console.log(user);
-
+const UserMenuItem = ({ icon, text, badge, onClick, path }) => {
   const navigate = useNavigate();
 
-  const handleLogin = useCallback(async () => {
-    try {
-      await loginWithPopup({ authorizationParams: { prompt: "login" } });
-    } catch (error) {
-      console.error("Login failed:", error.message, error);
+  const handleClick = useCallback(() => {
+    if (onClick) {
+      onClick();
+    } else if (path) {
+      navigate(path);
     }
-  }, [loginWithPopup]);
+  }, [onClick, path, navigate]);
 
-  const toggleDropdown = useCallback(
-    () => setDropdownOpen((prev) => !prev),
+  return (
+    <li
+      onClick={handleClick}
+      className="px-4 py-2 hover:bg-gray-100 cursor-pointer transition duration-300 flex items-center justify-between"
+    >
+      <div className="flex items-center space-x-3">
+        {icon}
+        <span>{text}</span>
+      </div>
+      {badge && (
+        <span className="px-2 py-1 text-xs text-red-600 bg-red-100 rounded-full">
+          {badge}
+        </span>
+      )}
+    </li>
+  );
+};
+
+const UserDropdown = ({ isOpen, onItemClick }) => {
+  if (!isOpen) return null;
+
+  const USER_MENU_ITEMS = [
+    { icon: <FaCartShopping />, text: "Giỏ hàng", badge: "8", path: "/carts" },
+    { icon: <FaCartShopping />, text: "Lịch sử đơn hàng", path: "/history" },
+    { icon: <IoIosSettings />, text: "Cập nhật tài khoản", path: "/account" },
+    { icon: <IoMdLogOut />, text: "Đăng xuất", action: "logout" },
+  ];
+
+  return (
+    <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-100">
+      <ul className="py-1">
+        {USER_MENU_ITEMS.map((item, index) => (
+          <UserMenuItem
+            key={index}
+            {...item}
+            onClick={() => onItemClick(item.path, item.action)}
+          />
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+const UserProfile = ({ user, dropdownOpen, toggleDropdown, onItemClick }) => (
+  <div className="relative">
+    <div
+      onClick={toggleDropdown}
+      className="flex items-center space-x-3 cursor-pointer"
+    >
+      <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-blue-500">
+        <img
+          src={user?.picture || "/default-avatar.png"}
+          alt={user?.username || "User avatar"}
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <span className="font-medium text-gray-700">{user?.name || "User"}</span>
+    </div>
+    <UserDropdown isOpen={dropdownOpen} onItemClick={onItemClick} />
+  </div>
+);
+
+const Nav = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const status = useSelector((state) => state.login.status);
+  const apiKey = useSelector((state) => state.login.apikey);
+  const dataProfile = useSelector((state) => state.profile.profile);
+
+  const NAV_ITEMS = useMemo(
+    () => [
+      { title: "Trang Chủ", path: "/" },
+      { title: "Món ăn", path: "/food" },
+      { title: "Ưu đãi", path: "/discount" },
+      { title: "Giới thiệu", path: "/abouts" },
+    ],
     []
   );
-  const toggleMenu = useCallback(() => setIsMenuOpen((prev) => !prev), []);
+
+  useEffect(() => {
+    if (dataLoca) {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (status === true) {
+      setIsLoginModalOpen(false);
+      setIsAuthenticated(true);
+      setIsMenuOpen(false);
+      dispatch(getProfile(apiKey));
+    }
+  }, [status]);
+
+  const toggleDropdown = useCallback(() => {
+    setDropdownOpen((prev) => !prev);
+  }, []);
+
+  const toggleMenu = useCallback(() => {
+    setIsMenuOpen((prev) => !prev);
+  }, []);
 
   const handleItemClick = useCallback(
     (path, action) => {
       if (action === "logout") {
-        logout();
+        setIsAuthenticated(false);
+        setUser(null);
+        localStorage.removeItem("apikey");
+        setDropdownOpen(false);
       } else if (path) {
         navigate(path);
+        setDropdownOpen(false);
       }
-      setDropdownOpen(false);
-      setIsMenuOpen(false);
     },
-    [logout, navigate]
+    [navigate]
+  );
+
+  const handleLoginClick = useCallback(() => {
+    setIsLoginModalOpen(true);
+  }, []);
+
+  const handleCloseLoginModal = useCallback(() => {
+    setIsLoginModalOpen(false);
+  }, []);
+
+  const Logo = useMemo(
+    () => (
+      <Link to="/" className="flex items-center space-x-2">
+        <div className="w-12 h-12 rounded-full overflow-hidden">
+          <img
+            className="h-full w-full object-cover"
+            src="/path/to/your/logo.jpg"
+            alt="FastFood Logo"
+          />
+        </div>
+        <span className="text-2xl font-bold text-gray-800">FastFood</span>
+      </Link>
+    ),
+    []
   );
 
   return (
-    <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-50 ">
+    <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
       <nav className="container mx-auto px-4 py-4">
         <div className="flex w-11/12 m-auto items-center justify-between max-lg:w-full">
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="w-12 h-12 rounded-full overflow-hidden">
-              <img
-                className="h-full w-full object-cover"
-                src="https://scontent.fhan17-1.fna.fbcdn.net/v/t1.15752-9/462261668_1232249157921421_6311346298250790419_n.jpg?stp=dst-jpg_tt7&_nc_cat=104&cb=99be929b-defccdb7&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeHpQUkmEcb0ntJzoDaeqPBKrppjbjalRY-ummNuNqVFjwH6RyNHpRejnl9OX3G4NY3idtfM0dEpbjMBxaJE7r47&_nc_ohc=DmTZ64JrZ3gQ7kNvgFZsEuK&_nc_zt=23&_nc_ht=scontent.fhan17-1.fna&_nc_gid=Ab65FSsoHbLyRpQRSqMsN3S&oh=03_Q7cD1QF-r8BL7k5X4Fo1vGzzsJlkwHgdOo0qK_PwswDzOvediA&oe=673772D5"
-                alt="logo"
-              />
-            </div>
-            <span className="text-2xl font-bold text-gray-800">FastFood</span>
-          </Link>
+          {Logo}
 
           <div className="hidden md:flex space-x-6">
             {NAV_ITEMS.map(({ title, path }) => (
@@ -121,41 +202,15 @@ export default function Nav() {
 
           <div className="hidden md:block">
             {isAuthenticated ? (
-              <div className="relative">
-                <div
-                  onClick={toggleDropdown}
-                  className="flex items-center space-x-3 cursor-pointer"
-                >
-                  <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-blue-500">
-                    <img
-                      src={user.picture}
-                      alt={user.nickname}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <span className="font-medium text-gray-700">
-                    {user.name.charAt(0).toUpperCase() + user.name.slice(1)}
-                  </span>
-                </div>
-                {dropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-100">
-                    <ul className="py-1">
-                      {USER_MENU_ITEMS.map((item, index) => (
-                        <UserMenuItem
-                          key={index}
-                          {...item}
-                          onClick={() =>
-                            handleItemClick(item.path, item.action)
-                          }
-                        />
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
+              <UserProfile
+                user={user}
+                dropdownOpen={dropdownOpen}
+                toggleDropdown={toggleDropdown}
+                onItemClick={handleItemClick}
+              />
             ) : (
               <button
-                onClick={handleLogin}
+                onClick={handleLoginClick}
                 className="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition duration-300"
               >
                 Đăng nhập
@@ -163,11 +218,13 @@ export default function Nav() {
             )}
           </div>
 
-          <div className="md:hidden">
-            <button onClick={toggleMenu} className="text-3xl text-gray-600">
-              {isMenuOpen ? <MdOutlineCancel /> : <MdMenu />}
-            </button>
-          </div>
+          <button
+            onClick={toggleMenu}
+            className="md:hidden text-3xl text-gray-600"
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          >
+            {isMenuOpen ? <MdOutlineCancel /> : <MdMenu />}
+          </button>
         </div>
 
         {isMenuOpen && (
@@ -182,40 +239,17 @@ export default function Nav() {
               ))}
               {isAuthenticated ? (
                 <li>
-                  <div
-                    onClick={toggleDropdown}
-                    className="flex items-center space-x-3 py-2 cursor-pointer"
-                  >
-                    <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-blue-500">
-                      <img
-                        src={user.picture}
-                        alt={user.nickname}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <span className="font-medium text-gray-700">
-                      {user.nickname.charAt(0).toUpperCase() +
-                        user.nickname.slice(1)}
-                    </span>
-                  </div>
-                  {dropdownOpen && (
-                    <ul className="mt-2 bg-gray-50 rounded-lg">
-                      {USER_MENU_ITEMS.map((item, index) => (
-                        <UserMenuItem
-                          key={index}
-                          {...item}
-                          onClick={() =>
-                            handleItemClick(item.path, item.action)
-                          }
-                        />
-                      ))}
-                    </ul>
-                  )}
+                  <UserProfile
+                    user={dataProfile}
+                    dropdownOpen={dropdownOpen}
+                    toggleDropdown={toggleDropdown}
+                    onItemClick={handleItemClick}
+                  />
                 </li>
               ) : (
                 <li>
                   <button
-                    onClick={handleLogin}
+                    onClick={handleLoginClick}
                     className="w-full bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition duration-300"
                   >
                     Đăng nhập
@@ -226,6 +260,9 @@ export default function Nav() {
           </div>
         )}
       </nav>
+      {isLoginModalOpen && <Modal_login onClick={handleCloseLoginModal} />}
     </div>
   );
-}
+};
+
+export default Nav;
