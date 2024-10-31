@@ -1,5 +1,6 @@
 export const getRegister = async (data) => {
   try {
+    //thuan
     const response = await fetch("http://10.8.0.3/WebDoAn/main.php/register", {
       method: "POST",
       headers: {
