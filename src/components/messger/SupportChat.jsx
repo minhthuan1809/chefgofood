@@ -1,16 +1,19 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import React, { useState } from "react";
 import { BsChatDots, BsX, BsSend } from "react-icons/bs";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 export default function SupportChat() {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
-  const { isAuthenticated } = useAuth0();
+  const statusLogin = useSelector((state) => state.login.status);
+
   const toggleChatWindow = () => {
+    console.log("mess", statusLogin);
+
     toast.dismiss();
-    isAuthenticated
-      ? setIsOpen(!isOpen)
+    statusLogin
+      ? setIsOpen(statusLogin)
       : toast.info("Bạn cần đăng nhập để được hỗ trợ");
   };
 
@@ -25,7 +28,7 @@ export default function SupportChat() {
             </div>
             <button
               className="p-1 hover:bg-blue-700 rounded-full transition-colors"
-              onClick={toggleChatWindow}
+              onClick={() => setIsOpen((prev) => !prev)}
             >
               <BsX size={20} />
             </button>

@@ -1,19 +1,19 @@
 const initialState = {
-  profile: [],
+  profile: null, // Change from [] to null
 };
 
 export const ProfileReducer = (state = initialState, action) => {
-  switch (action.types) {
+  switch (action.type) {
     case "add/profile": {
       return {
         ...state,
-        products: action.payload,
+        profile: action.payload,
       };
     }
     case "update/profile": {
       return {
         ...state,
-        products: action.payload,
+        profile: action.payload,
       };
     }
 

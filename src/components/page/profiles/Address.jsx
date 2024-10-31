@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 // Modal Component
 function EditModal({ isOpen, onClose, onSave, editInfo, handleChange }) {
   if (!isOpen) return null;
-
+  const profile = useSelector((state) => state.profile.profile);
   return (
     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center p-4">
       <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md w-full max-w-md">

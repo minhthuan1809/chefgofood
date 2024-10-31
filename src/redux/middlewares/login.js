@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 /* eslint-disable no-unused-vars */
 export const getLogin = (data) => {
   return async (dispatch) => {
@@ -14,16 +16,16 @@ export const getLogin = (data) => {
       );
 
       const result = await response.json();
-
-      if (!response.ok) {
+      if (!result.ok) {
         throw new Error("Lỗi API");
       }
-      console.log(result.api_key);
 
       dispatch({
-        type: "login/apikey", // Corrected from 'types' to 'type'
+        type: "login/apikey",
         payload: result.api_key,
+        status: true,
       });
+      toast.success("Xin Chào bạn đến với fastfood");
     } catch (error) {
       console.log(error);
     }

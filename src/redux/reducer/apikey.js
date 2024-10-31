@@ -11,7 +11,7 @@ export const getApiKey = (state = initialState, action) => {
       return {
         ...state,
         apikey: action.payload,
-        status: true,
+        status: action.status,
       };
     }
     default:

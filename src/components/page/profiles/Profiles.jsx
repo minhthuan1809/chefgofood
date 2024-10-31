@@ -1,8 +1,10 @@
 import React from "react";
 import { IoMdTrash } from "react-icons/io";
 import { FaCamera } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 export default function Profile() {
+  const profile = useSelector((state) => state.profile.profile);
   return (
     <div className="w-full max-w-4xl mx-auto px-4 py-8">
       {/* Thông tin người dùng */}
@@ -19,7 +21,7 @@ export default function Profile() {
 
         <div className="flex flex-col items-center mb-6">
           <img
-            src="https://images.unsplash.com/photo-1729158200180-dbd36cf43639?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDV8NnNNVmpUTFNrZVF8fGVufDB8fHx8fA%3D%3D"
+            src={profile.avata}
             alt="Profile"
             className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover mb-4 border-4 border-gray-200"
           />
@@ -48,7 +50,7 @@ export default function Profile() {
         <p className="text-gray-600 mb-4">
           Email:{" "}
           <span className="font-medium text-gray-800 break-all">
-            thuan18092003@gmail.com
+            {profile.email}
           </span>
         </p>
         <button className="w-full px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200 shadow-sm">

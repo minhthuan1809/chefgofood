@@ -1,8 +1,7 @@
 export const getProfile = (apikey) => {
   return async (dispatch) => {
     try {
-      console.log("API Key:", apikey);
-      const url = `http://192.168.1.93/WebDoAn/main.php/profile`;
+      const url = `${import.meta.env.VITE_FASTFOOD_SERVER_API}/profile`;
 
       const response = await fetch(url, {
         method: "GET",
@@ -10,26 +9,26 @@ export const getProfile = (apikey) => {
           "X-Api-Key": apikey,
           "Content-Type": "application/json",
         },
-        // Add CORS mode
         mode: "cors",
         credentials: "same-origin",
       });
+
+      const data = await response.json();
+      console.log(data);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json();
-      console.log(data.user);
+      if (!data.success) {
+        throw new Error("API error: " + (data.message || "API error"));
+      }
 
+      console.log("Dispatching profile data:", data.user); // Added log
       dispatch({
         type: "add/profile",
         payload: data.user,
       });
-
-      if (!data.success) {
-        throw new Error("API error: " + (data.message || "API error"));
-      }
 
       return data;
     } catch (error) {

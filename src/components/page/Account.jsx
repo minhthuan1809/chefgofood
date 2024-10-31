@@ -6,6 +6,7 @@ import Nav from "../header/Nav";
 import Profile from "./profiles/Profiles";
 import Address from "./profiles/Address";
 import Vat from "./profiles/Vat";
+import { useSelector } from "react-redux";
 
 export default function Account() {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ export default function Account() {
   const [activeTab, setActiveTab] = useState("profile");
   const [loading, setLoading] = useState(false);
   console.log(url);
-
+  const profile = useSelector((state) => state.profile.profile);
   const profileLinks = [
     {
       icon: <FaUser className="text-blue-500" />,
@@ -72,12 +73,12 @@ export default function Account() {
             <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
               <div className="flex flex-col items-center mb-6">
                 <img
-                  src="https://images.unsplash.com/photo-1729158200180-dbd36cf43639?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDV8NnNNVmpUTFNrZVF8fGVufDB8fHx8fA%3D%3D"
+                  src={profile.avata}
                   alt="Profile"
                   className="w-24 h-24 rounded-full object-cover mb-4 border-4 border-gray-200"
                 />
                 <h2 className="text-2xl font-semibold text-gray-800">
-                  Nguyễn Minh Thuận
+                  {profile.username}
                 </h2>
               </div>
               {profileLinks.map((link, index) => (

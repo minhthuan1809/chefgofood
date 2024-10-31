@@ -91,7 +91,7 @@ const UserProfile = ({ user, dropdownOpen, toggleDropdown, onItemClick }) => (
     >
       <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-blue-500">
         <img
-          src={user?.picture || "/default-avatar.png"}
+          src={user?.avata || "/default-avatar.png"}
           alt={user?.username || "User avatar"}
           className="w-full h-full object-cover"
         />
@@ -107,12 +107,11 @@ const Nav = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const status = useSelector((state) => state.login.status);
   const apiKey = useSelector((state) => state.login.apikey);
-  const dataProfile = useSelector((state) => state.profile.profile);
+  const profile = useSelector((state) => state.profile.profile);
 
   const NAV_ITEMS = useMemo(
     () => [
@@ -131,13 +130,24 @@ const Nav = () => {
   }, []);
 
   useEffect(() => {
-    if (status === true) {
-      setIsLoginModalOpen(false);
-      setIsAuthenticated(true);
-      setIsMenuOpen(false);
-      dispatch(getProfile(apiKey));
-    }
-  }, [status]);
+    const fetchProfile = async () => {
+      if (status === true) {
+        try {
+          setIsLoginModalOpen(false);
+          setIsAuthenticated(true);
+          setIsMenuOpen(false);
+
+          await dispatch(getProfile(apiKey));
+          console.log("Fetched Profile:", profile);
+        } catch (error) {
+          console.error("Failed to fetch profile:", error);
+          setIsAuthenticated(false);
+        }
+      }
+    };
+
+    fetchProfile();
+  }, [status, dispatch, apiKey, profile]);
 
   const toggleDropdown = useCallback(() => {
     setDropdownOpen((prev) => !prev);
@@ -150,10 +160,21 @@ const Nav = () => {
   const handleItemClick = useCallback(
     (path, action) => {
       if (action === "logout") {
-        setIsAuthenticated(false);
-        setUser(null);
-        localStorage.removeItem("apikey");
-        setDropdownOpen(false);
+        if (confirm("Bạn muốn đăng xuất ?")) {
+          setIsAuthenticated(false);
+
+          setDropdownOpen(false);
+          dispatch({
+            type: "add/profile",
+            payload: null,
+          });
+          dispatch({
+            type: "login/apikey",
+            payload: null,
+            status: false,
+          });
+          localStorage.removeItem("apikey");
+        }
       } else if (path) {
         navigate(path);
         setDropdownOpen(false);
@@ -203,7 +224,7 @@ const Nav = () => {
           <div className="hidden md:block">
             {isAuthenticated ? (
               <UserProfile
-                user={user}
+                user={profile}
                 dropdownOpen={dropdownOpen}
                 toggleDropdown={toggleDropdown}
                 onItemClick={handleItemClick}
