@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { MdOutlineCancel } from "react-icons/md";
-import { useDispatch } from "react-redux";
-import { getRegister } from "../../redux/middlewares/register";
 
 export default function Modal_Register({ onClick, LoginOrRegister }) {
-  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -25,17 +22,21 @@ export default function Modal_Register({ onClick, LoginOrRegister }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Kiểm tra mật khẩu xác nhận
     if (formData.password !== formData.confirm) {
       setError("Mật khẩu và mật khẩu xác nhận không khớp.");
       return;
     }
 
+    // Gửi yêu cầu đăng ký
     try {
       const response = await fetch(
-        "http://10.8.0.3/WebDoAn/main.php/register",
+        "http://localhost/WebDoAn/main.php/register",
         {
           method: "POST",
-
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify({
             username: formData.username,
             email: formData.email,
@@ -49,12 +50,13 @@ export default function Modal_Register({ onClick, LoginOrRegister }) {
       }
 
       const data = await response.json();
-      console.log("Registration successful:", data);
-      setError("");
-      setSuccess("Đăng ký thành công!"); // Optional success message
-      dispatch(getRegister());
+      console.log("Đăng ký thành công:", data);
+      setSuccess("Đăng ký thành công!");
+      setError(""); // Reset lỗi
+      setFormData({ username: "", email: "", password: "", confirm: "" }); // Reset form
     } catch (error) {
       setError(error.message);
+      setSuccess(""); // Reset thông báo thành công
     }
   };
 
