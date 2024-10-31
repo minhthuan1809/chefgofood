@@ -9,8 +9,10 @@ export default function Modal_Register({ onClick, LoginOrRegister }) {
     username: "",
     email: "",
     password: "",
+    confirm: "",
   });
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,18 +29,33 @@ export default function Modal_Register({ onClick, LoginOrRegister }) {
       setError("Mật khẩu và mật khẩu xác nhận không khớp.");
       return;
     }
-    dispatch(getRegister());
-    setError("");
-    console.log("Form Data:", formData);
 
-    // try {
-    //   const data = await getRegister(formData);
-    //   console.log(data);
-    //   // handle successful registration
-    // } catch (error) {
-    //   console.error("Registration error:", error);
-    //   // handle registration error
-    // }
+    try {
+      const response = await fetch(
+        "http://10.8.0.3/WebDoAn/main.php/register",
+        {
+          method: "POST",
+
+          body: JSON.stringify({
+            username: formData.username,
+            email: formData.email,
+            password: formData.password,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Đăng ký thất bại. Vui lòng thử lại.");
+      }
+
+      const data = await response.json();
+      console.log("Registration successful:", data);
+      setError("");
+      setSuccess("Đăng ký thành công!"); // Optional success message
+      dispatch(getRegister());
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   return (
@@ -127,6 +144,7 @@ export default function Modal_Register({ onClick, LoginOrRegister }) {
             />
           </div>
           {error && <p className="text-red-500 text-sm">{error}</p>}
+          {success && <p className="text-green-500 text-sm">{success}</p>}
 
           <button
             type="submit"
