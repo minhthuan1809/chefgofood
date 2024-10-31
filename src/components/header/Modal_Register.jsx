@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { MdOutlineCancel } from "react-icons/md";
+import { getRegister } from "../../service/register";
+import { toast } from "react-toastify";
 
 export default function Modal_Register({ onClick, LoginOrRegister }) {
   const [formData, setFormData] = useState({
@@ -30,33 +32,18 @@ export default function Modal_Register({ onClick, LoginOrRegister }) {
 
     // Gửi yêu cầu đăng ký
     try {
-      const response = await fetch(
-        "http://localhost/WebDoAn/main.php/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: formData.username,
-            email: formData.email,
-            password: formData.password,
-          }),
-        }
-      );
+      const data = await getRegister(formData);
+      console.log(data);
 
-      if (!response.ok) {
-        throw new Error("Đăng ký thất bại. Vui lòng thử lại.");
+      if (data.ok) {
+        setError("");
+        setFormData({ username: "", email: "", password: "", confirm: "" });
+        toast.success("Tạo Tài Khoản Thành Công !");
+        LoginOrRegister(true);
       }
-
-      const data = await response.json();
-      console.log("Đăng ký thành công:", data);
-      setSuccess("Đăng ký thành công!");
-      setError(""); // Reset lỗi
-      setFormData({ username: "", email: "", password: "", confirm: "" }); // Reset form
     } catch (error) {
       setError(error.message);
-      setSuccess(""); // Reset thông báo thành công
+      setSuccess("");
     }
   };
 

@@ -1,6 +1,4 @@
 export const getRegister = async (data) => {
-  console.log(data);
-
   try {
     const response = await fetch("http://10.8.0.3/WebDoAn/main.php/register", {
       method: "POST",
@@ -19,8 +17,7 @@ export const getRegister = async (data) => {
     }
 
     const result = await response.json();
-    console.log("Registration successful:", result);
-    return { success: true, data: result };
+    return result;
   } catch (error) {
     console.error("Registration error:", error);
     return { success: false, error: error.message };
