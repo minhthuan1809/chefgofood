@@ -7,6 +7,7 @@ import { MdMenu, MdOutlineCancel } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import Modal_login from "./Modal_login";
 import { getProfile } from "../../redux/middlewares/addProfile";
+import Modal_Register from "./Modal_Register";
 
 let dataLoca = localStorage.getItem("apikey");
 
@@ -107,6 +108,7 @@ const Nav = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoginOrRegister, setisLoginOrRegister] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const status = useSelector((state) => state.login.status);
@@ -189,6 +191,7 @@ const Nav = () => {
 
   const handleCloseLoginModal = useCallback(() => {
     setIsLoginModalOpen(false);
+    setisLoginOrRegister(true);
   }, []);
 
   const Logo = useMemo(
@@ -281,7 +284,18 @@ const Nav = () => {
           </div>
         )}
       </nav>
-      {isLoginModalOpen && <Modal_login onClick={handleCloseLoginModal} />}
+      {isLoginModalOpen &&
+        (isLoginOrRegister ? (
+          <Modal_login
+            onClick={handleCloseLoginModal}
+            LoginOrRegister={setisLoginOrRegister}
+          />
+        ) : (
+          <Modal_Register
+            onClick={handleCloseLoginModal}
+            LoginOrRegister={setisLoginOrRegister}
+          />
+        ))}
     </div>
   );
 };

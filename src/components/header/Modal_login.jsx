@@ -3,7 +3,7 @@ import { MdOutlineCancel } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { getLogin } from "../../redux/middlewares/login";
 
-export default function Modal_login({ onClick }) {
+export default function Modal_login({ onClick, LoginOrRegister }) {
   const dispatch = useDispatch();
   const apiKey = useSelector((state) => state.login.apikey);
 
@@ -84,9 +84,12 @@ export default function Modal_login({ onClick }) {
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-600">
             Chưa có tài khoản?
-            <a href="#" className="text-blue-500 hover:text-blue-600">
+            <button
+              className="text-blue-500 hover:text-blue-600"
+              onClick={() => LoginOrRegister(false)}
+            >
               Đăng ký ngay
-            </a>
+            </button>
           </p>
         </div>
       </div>
