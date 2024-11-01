@@ -16,16 +16,15 @@ export const getLogin = (data) => {
       );
 
       const result = await response.json();
-      if (!result.ok) {
-        throw new Error("Lỗi API");
-      }
 
-      dispatch({
-        type: "login/apikey",
-        payload: result.api_key,
-        status: true,
-      });
-      toast.success("Xin Chào bạn đến với fastfood");
+      if (result.ok) {
+        dispatch({
+          type: "login/apikey",
+          payload: result.api_key,
+          status: true,
+        });
+      }
+      return result;
     } catch (error) {
       console.log(error);
     }

@@ -2,17 +2,38 @@
 import { MdOutlineCancel } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { getLogin } from "../../redux/middlewares/login";
+import { toast } from "react-toastify";
+import { useState } from "react";
 
 export default function Modal_login({ onClick, LoginOrRegister }) {
   const dispatch = useDispatch();
   const apiKey = useSelector((state) => state.login.apikey);
+  const [statusLogin, setStatusLogin] = useState("");
 
-  const handleSubmit = (e) => {
-    console.log(apiKey);
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
-    dispatch(getLogin(data));
+    const email = data.email;
+
+    // Simple email format check
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error("Email không hợp lệ. Vui lòng kiểm tra lại.");
+      return;
+    }
+
+    const response = await dispatch(getLogin(data));
+    console.log(response);
+    toast.dismiss();
+    if (response.message === "Invalid username or password.") {
+      setStatusLogin("Email hoặc mật khẩu không chính xác.");
+      toast.error("Email hoặc mật khẩu không chính xác.");
+    } else if (response.ok) {
+      toast.success("Thành Công !");
+    } else {
+      toast.error("Đã có lỗi xảy ra, vui lòng thử lại sau.");
+    }
   };
 
   return (
@@ -27,6 +48,9 @@ export default function Modal_login({ onClick, LoginOrRegister }) {
             <MdOutlineCancel size={24} />
           </button>
         </div>
+        {statusLogin && (
+          <p className="text-red-500 text-sm text-center mb-4">{statusLogin}</p>
+        )}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label
@@ -36,6 +60,7 @@ export default function Modal_login({ onClick, LoginOrRegister }) {
               Email
             </label>
             <input
+              maxLength={30}
               type="email"
               id="email"
               name="email"
@@ -52,6 +77,8 @@ export default function Modal_login({ onClick, LoginOrRegister }) {
               Mật khẩu
             </label>
             <input
+              maxLength={20}
+              // minLength={6}
               type="password"
               id="password"
               name="password"

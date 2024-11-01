@@ -24,10 +24,9 @@ export const getProfile = (apikey) => {
         throw new Error("API error: " + (data.message || "API error"));
       }
 
-      console.log("Dispatching profile data:", data.user); // Added log
       dispatch({
         type: "add/profile",
-        payload: data.user,
+        payload: data.data,
       });
 
       return data;

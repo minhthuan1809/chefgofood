@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState, useCallback, useMemo, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { FaCartShopping } from "react-icons/fa6";
 import { IoIosSettings, IoMdLogOut } from "react-icons/io";
 import { MdMenu, MdOutlineCancel } from "react-icons/md";
@@ -97,7 +97,9 @@ const UserProfile = ({ user, dropdownOpen, toggleDropdown, onItemClick }) => (
           className="w-full h-full object-cover"
         />
       </div>
-      <span className="font-medium text-gray-700">{user?.name || "User"}</span>
+      <span className="font-medium text-gray-700">
+        {user?.username || "User"}
+      </span>
     </div>
     <UserDropdown isOpen={dropdownOpen} onItemClick={onItemClick} />
   </div>
@@ -176,6 +178,8 @@ const Nav = () => {
             status: false,
           });
           localStorage.removeItem("apikey");
+
+          navigate("/");
         }
       } else if (path) {
         navigate(path);

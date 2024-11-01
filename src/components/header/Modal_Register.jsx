@@ -10,8 +10,7 @@ export default function Modal_Register({ onClick, LoginOrRegister }) {
     password: "",
     confirm: "",
   });
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,31 +18,54 @@ export default function Modal_Register({ onClick, LoginOrRegister }) {
       ...prev,
       [name]: value,
     }));
+    setErrors((prev) => ({ ...prev, [name]: "" })); // Clear error for field on change
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let newErrors = {};
 
-    // Kiểm tra mật khẩu xác nhận
-    if (formData.password !== formData.confirm) {
-      setError("Mật khẩu và mật khẩu xác nhận không khớp.");
+    // Validations
+    if (!formData.username) {
+      newErrors.username = "Tên người dùng không được để trống.";
+    } else if (formData.username.length <= 5) {
+      newErrors.username = "Tên người dùng phải lớn hơn 5 ký tự.";
+    }
+
+    if (!formData.email) {
+      newErrors.email = "Email không được để trống.";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Email không hợp lệ.";
+    }
+
+    if (!formData.password) {
+      newErrors.password = "Mật khẩu không được để trống.";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự.";
+    }
+
+    if (!formData.confirm) {
+      newErrors.confirm = "Xác nhận mật khẩu không được để trống.";
+    } else if (formData.password !== formData.confirm) {
+      newErrors.confirm = "Mật khẩu và mật khẩu xác nhận không khớp.";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
 
     // Gửi yêu cầu đăng ký
     try {
       const data = await getRegister(formData);
-      console.log(data);
-
       if (data.ok) {
-        setError("");
+        setErrors({});
         setFormData({ username: "", email: "", password: "", confirm: "" });
         toast.success("Tạo Tài Khoản Thành Công !");
         LoginOrRegister(true);
       }
     } catch (error) {
-      setError(error.message);
-      setSuccess("");
+      setErrors({ general: error.message });
     }
   };
 
@@ -75,8 +97,10 @@ export default function Modal_Register({ onClick, LoginOrRegister }) {
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholder="Tên người dùng của bạn"
-              required
             />
+            {errors.username && (
+              <p className="text-red-500 text-sm">{errors.username}</p>
+            )}
           </div>
           <div>
             <label
@@ -86,15 +110,17 @@ export default function Modal_Register({ onClick, LoginOrRegister }) {
               Email
             </label>
             <input
-              type="email"
+              type="text"
               id="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholder="Email của bạn"
-              required
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm">{errors.email}</p>
+            )}
           </div>
           <div>
             <label
@@ -104,6 +130,7 @@ export default function Modal_Register({ onClick, LoginOrRegister }) {
               Mật khẩu
             </label>
             <input
+              maxLength={20}
               type="password"
               id="password"
               name="password"
@@ -111,8 +138,10 @@ export default function Modal_Register({ onClick, LoginOrRegister }) {
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholder="Mật khẩu"
-              required
             />
+            {errors.password && (
+              <p className="text-red-500 text-sm">{errors.password}</p>
+            )}
           </div>
           <div>
             <label
@@ -122,6 +151,7 @@ export default function Modal_Register({ onClick, LoginOrRegister }) {
               Xác nhận mật khẩu
             </label>
             <input
+              maxLength={20}
               type="password"
               id="confirm"
               name="confirm"
@@ -129,11 +159,14 @@ export default function Modal_Register({ onClick, LoginOrRegister }) {
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholder="Xác nhận mật khẩu"
-              required
             />
+            {errors.confirm && (
+              <p className="text-red-500 text-sm">{errors.confirm}</p>
+            )}
           </div>
-          {error && <p className="text-red-500 text-sm">{error}</p>}
-          {success && <p className="text-green-500 text-sm">{success}</p>}
+          {errors.general && (
+            <p className="text-red-500 text-sm">{errors.general}</p>
+          )}
 
           <button
             type="submit"
