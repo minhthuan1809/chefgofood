@@ -1,5 +1,5 @@
 const initialState = {
-  profile: null, // Change from [] to null
+  profile: null,
 };
 
 export const ProfileReducer = (state = initialState, action) => {

@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getProfileAddress } from "../../../redux/middlewares/addAddress";
 
-// Modal Component
 function EditModal({ isOpen, onClose, onSave, editInfo, handleChange }) {
   if (!isOpen) return null;
-  const profile = useSelector((state) => state.profile.profile);
   return (
     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center p-4">
       <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md w-full max-w-md">
@@ -15,7 +14,7 @@ function EditModal({ isOpen, onClose, onSave, editInfo, handleChange }) {
           <label className="block mb-2">Tên gợi nhớ:</label>
           <input
             name="name"
-            value={editInfo.name}
+            value={editInfo.name || ""}
             onChange={handleChange}
             className="border p-2 w-full rounded"
           />
@@ -24,7 +23,7 @@ function EditModal({ isOpen, onClose, onSave, editInfo, handleChange }) {
           <label className="block mb-2">Địa chỉ:</label>
           <input
             name="address"
-            value={editInfo.address}
+            value={editInfo.address || ""}
             onChange={handleChange}
             className="border p-2 w-full rounded"
           />
@@ -33,7 +32,7 @@ function EditModal({ isOpen, onClose, onSave, editInfo, handleChange }) {
           <label className="block mb-2">Số điện thoại:</label>
           <input
             name="phone"
-            value={editInfo.phone}
+            value={editInfo.phone || ""}
             onChange={handleChange}
             className="border p-2 w-full rounded"
           />
@@ -58,20 +57,25 @@ function EditModal({ isOpen, onClose, onSave, editInfo, handleChange }) {
 }
 
 export default function Address() {
-  const [addresses, setAddresses] = useState([
-    {
-      id: 1,
-      name: "Home",
-      address: "63 D. Yên Bệ, Kim Chung, Hoài Đức, Hà Nội, Việt Nam",
-      phone: "0325397277",
-    },
-    {
-      id: 2,
-      name: "Office",
-      address: "25 Nguyễn Trãi, Thanh Xuân, Hà Nội, Việt Nam",
-      phone: "0987654321",
-    },
-  ]);
+  const profile = useSelector((state) => state.profile.profile);
+  const dispatch = useDispatch();
+  const dataset = useSelector((state) => state.profileAddress.address);
+  const [addresses, setAddresses] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await dispatch(getProfileAddress(profile?.id));
+        if (dataset) {
+          setAddresses(dataset);
+        }
+      } catch (error) {
+        console.error("Error fetching profile address:", error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch, profile?.id, dataset]);
 
   const [isEditing, setIsEditing] = useState(false);
   const [editInfo, setEditInfo] = useState({});
@@ -104,36 +108,46 @@ export default function Address() {
     <div className="p-4 bg-white rounded-lg shadow-md">
       <h1 className="text-xl sm:text-2xl font-bold mb-4">Cập nhật địa chỉ</h1>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-left table-auto border-collapse mb-4">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="px-2 sm:px-4 py-2 border">Tên gợi nhớ</th>
-              <th className="px-2 sm:px-4 py-2 border">Địa chỉ</th>
-              <th className="px-2 sm:px-4 py-2 border">Số điện thoại</th>
-              <th className="px-2 sm:px-4 py-2 border">Thao tác</th>
-            </tr>
-          </thead>
-          <tbody>
-            {addresses.map((address) => (
-              <tr key={address.id}>
-                <td className="px-2 sm:px-4 py-2 border">{address.name}</td>
-                <td className="px-2 sm:px-4 py-2 border">{address.address}</td>
-                <td className="px-2 sm:px-4 py-2 border">{address.phone}</td>
-                <td className="px-2 sm:px-4 py-2 border">
-                  <button
-                    onClick={() => handleEditClick(address.id)}
-                    className="text-blue-500 hover:underline mr-2"
-                  >
-                    Sửa
-                  </button>
-                  <button className="text-red-500 hover:underline">Xóa</button>
-                </td>
+      {addresses.length === 0 ? (
+        <p className="text-center text-gray-500 mb-4">Bạn chưa nhập địa chỉ</p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full text-left table-auto border-collapse mb-4">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="px-2 sm:px-4 py-2 border">Tên gợi nhớ</th>
+                <th className="px-2 sm:px-4 py-2 border">Địa chỉ</th>
+                <th className="px-2 sm:px-4 py-2 border">Số điện thoại</th>
+                <th className="px-2 sm:px-4 py-2 border">Thao tác</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {addresses.map((address) => (
+                <tr key={address.id}>
+                  <td className="px-2 sm:px-4 py-2 border">
+                    {address.tengoinho}
+                  </td>
+                  <td className="px-2 sm:px-4 py-2 border">
+                    {address.address}
+                  </td>
+                  <td className="px-2 sm:px-4 py-2 border">{address.phone}</td>
+                  <td className="px-2 sm:px-4 py-2 border">
+                    <button
+                      onClick={() => handleEditClick(address.id)}
+                      className="text-blue-500 hover:underline mr-2"
+                    >
+                      Sửa
+                    </button>
+                    <button className="text-red-500 hover:underline">
+                      Xóa
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       <div className="flex justify-end">
         <button className="px-4 sm:px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200">

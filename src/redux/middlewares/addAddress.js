@@ -1,12 +1,11 @@
-export const getProfile = (apikey) => {
+export const getProfileAddress = (id) => {
   return async (dispatch) => {
     try {
-      const url = `${import.meta.env.VITE_FASTFOOD_SERVER_API}/profile`;
+      const url = `${import.meta.env.VITE_FASTFOOD_SERVER_API}/address/${id}`;
 
       const response = await fetch(url, {
         method: "GET",
         headers: {
-          "X-Api-Key": apikey,
           "Content-Type": "application/json",
         },
         mode: "cors",
@@ -14,13 +13,14 @@ export const getProfile = (apikey) => {
       });
 
       const data = await response.json();
+      console.log(data.addresses);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       dispatch({
-        type: "add/profile",
-        payload: data.data,
+        type: "add/address",
+        payload: data.addresses,
       });
 
       return data;
