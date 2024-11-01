@@ -13,7 +13,6 @@ export default function Account() {
   const { url } = useParams();
   const [activeTab, setActiveTab] = useState("profile");
   const [loading, setLoading] = useState(false);
-  console.log(url);
   const profile = useSelector((state) => state.profile.profile);
   const profileLinks = [
     {

@@ -18,5 +18,3 @@ export const getApiKey = (state = initialState, action) => {
       return state;
   }
 };
-
-console.log(initialState);

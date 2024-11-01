@@ -14,9 +14,7 @@ export const getLogin = (data) => {
           body: JSON.stringify(data),
         }
       );
-
       const result = await response.json();
-
       if (result.ok) {
         dispatch({
           type: "login/apikey",

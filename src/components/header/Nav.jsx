@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState, useCallback, useMemo, useEffect } from "react";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaCartShopping } from "react-icons/fa6";
 import { IoIosSettings, IoMdLogOut } from "react-icons/io";
 import { MdMenu, MdOutlineCancel } from "react-icons/md";
@@ -130,19 +130,19 @@ const Nav = () => {
   useEffect(() => {
     if (dataLoca) {
       setIsAuthenticated(true);
+      dispatch(getProfile(apiKey));
     }
   }, []);
 
   useEffect(() => {
     const fetchProfile = async () => {
-      if (status === true) {
+      if (status && apiKey) {
         try {
           setIsLoginModalOpen(false);
           setIsAuthenticated(true);
           setIsMenuOpen(false);
 
           await dispatch(getProfile(apiKey));
-          console.log("Fetched Profile:", profile);
         } catch (error) {
           console.error("Failed to fetch profile:", error);
           setIsAuthenticated(false);
@@ -151,7 +151,7 @@ const Nav = () => {
     };
 
     fetchProfile();
-  }, [status, dispatch, apiKey, profile]);
+  }, [status, dispatch, apiKey]);
 
   const toggleDropdown = useCallback(() => {
     setDropdownOpen((prev) => !prev);
@@ -166,8 +166,7 @@ const Nav = () => {
       if (action === "logout") {
         if (confirm("Bạn muốn đăng xuất ?")) {
           setIsAuthenticated(false);
-
-          setDropdownOpen(false);
+          setIsAuthenticated(false);
           dispatch({
             type: "add/profile",
             payload: null,
@@ -180,6 +179,7 @@ const Nav = () => {
           localStorage.removeItem("apikey");
 
           navigate("/");
+          setDropdownOpen(false);
         }
       } else if (path) {
         navigate(path);
@@ -268,7 +268,7 @@ const Nav = () => {
               {isAuthenticated ? (
                 <li>
                   <UserProfile
-                    user={dataProfile}
+                    user={profile}
                     dropdownOpen={dropdownOpen}
                     toggleDropdown={toggleDropdown}
                     onItemClick={handleItemClick}
