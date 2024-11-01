@@ -1,5 +1,5 @@
 const initialState = {
-  apikey: JSON.parse(localStorage.getItem("apikey")) || [],
+  apikey: JSON.parse(localStorage.getItem("apikey")) || null,
   status: false,
 };
 

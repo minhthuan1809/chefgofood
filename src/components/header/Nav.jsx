@@ -8,8 +8,10 @@ import { useDispatch, useSelector } from "react-redux";
 import Modal_login from "./Modal_login";
 import { getProfile } from "../../redux/middlewares/addProfile";
 import Modal_Register from "./Modal_Register";
-
-let dataLoca = localStorage.getItem("apikey");
+import {
+  AddProfileRedux,
+  apikeyRedux,
+} from "../../redux/action/client/profile";
 
 const NavLink = ({ to, children, onClick }) => {
   const location = useLocation();
@@ -109,7 +111,7 @@ const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated] = useState(false);
   const [isLoginOrRegister, setisLoginOrRegister] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -128,10 +130,21 @@ const Nav = () => {
   );
 
   useEffect(() => {
-    if (dataLoca) {
-      setIsAuthenticated(true);
-      dispatch(getProfile(apiKey));
+    async function checkApiKey() {
+      if (apiKey) {
+        // (true);
+        const data = await dispatch(getProfile(apiKey));
+        console.log(data);
+
+        if (!data?.ok) {
+          dispatch(apikeyRedux(null, false));
+          localStorage.removeItem("apikey");
+        } else {
+          dispatch(apikeyRedux(apiKey, true));
+        }
+      }
     }
+    checkApiKey();
   }, []);
 
   useEffect(() => {
@@ -139,13 +152,13 @@ const Nav = () => {
       if (status && apiKey) {
         try {
           setIsLoginModalOpen(false);
-          setIsAuthenticated(true);
+          true;
           setIsMenuOpen(false);
 
           await dispatch(getProfile(apiKey));
         } catch (error) {
           console.error("Failed to fetch profile:", error);
-          setIsAuthenticated(false);
+          false;
         }
       }
     };
@@ -165,17 +178,11 @@ const Nav = () => {
     (path, action) => {
       if (action === "logout") {
         if (confirm("Bạn muốn đăng xuất ?")) {
-          setIsAuthenticated(false);
-          setIsAuthenticated(false);
-          dispatch({
-            type: "add/profile",
-            payload: null,
-          });
-          dispatch({
-            type: "login/apikey",
-            payload: null,
-            status: false,
-          });
+          false;
+          false;
+          dispatch(AddProfileRedux(null));
+
+          dispatch(apikeyRedux(null, false));
           localStorage.removeItem("apikey");
 
           navigate("/");
@@ -229,7 +236,7 @@ const Nav = () => {
           </div>
 
           <div className="hidden md:block">
-            {isAuthenticated ? (
+            {status ? (
               <UserProfile
                 user={profile}
                 dropdownOpen={dropdownOpen}

@@ -1,18 +1,67 @@
 import { IoMdTrash } from "react-icons/io";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FaLink } from "react-icons/fa6";
-import { useState } from "react";
-import { getUpdateProfile } from "../../../service/updatePrrofile";
-let dataLoca = JSON.parse(localStorage.getItem("apikey"));
+import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import { getDelete, getUpdateProfile } from "../../../service/Profile_Client";
+import { useNavigate } from "react-router";
+import { apikeyRedux } from "../../../redux/action/client/profile";
+import { getProfile } from "../../../redux/middlewares/addProfile";
 
 export default function Profile() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const profile = useSelector((state) => state.profile.profile);
-  const [newName, setNewName] = useState(profile.username);
-  const [newUrl, setNewUrl] = useState(profile.avata);
+  const apiKey = useSelector((state) => state.login.apikey);
+
+  // Khởi tạo state với giá trị mặc định là rỗng
+  const [newName, setNewName] = useState(profile?.username);
+  const [newUrl, setNewUrl] = useState(profile?.avata);
+
   async function handleOnChange() {
-    const newData = { avata: newUrl, username: newName };
-    const data = await getUpdateProfile(newData, dataLoca, profile.id);
-    console.log(data);
+    if (window.confirm("Bạn có muốn thay đổi thông tin này?")) {
+      try {
+        const newData = { avata: newUrl, username: newName };
+        const data = await getUpdateProfile(newData, apiKey, profile?.id);
+        if (data?.success) {
+          toast.success("Sửa Thành Công!");
+          const response = await dispatch(getProfile(apiKey));
+          console.log(response);
+        } else {
+          toast.error("Sửa Thất Bại!");
+        }
+      } catch (error) {
+        console.error("Registration error:", error);
+      }
+    }
+  }
+
+  async function handleDelete() {
+    if (window.confirm("Bạn có chắc muốn xóa tài khoản này?")) {
+      try {
+        const response = await getDelete(apiKey);
+        if (response.success) {
+          dispatch(apikeyRedux(null, false));
+          localStorage.removeItem("apikey");
+          navigate("/");
+          toast.success("Tài khoản của bạn đã bị xóa!");
+        } else {
+          toast.error("Xóa tài khoản thất bại!");
+        }
+      } catch (error) {
+        toast.error("Có lỗi xảy ra khi xóa tài khoản!");
+      }
+    }
+  }
+
+  if (!profile) {
+    return (
+      <div className="w-full max-w-4xl mx-auto px-4 py-8">
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <p className="text-center">Không tìm thấy thông tin người dùng</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -23,7 +72,10 @@ export default function Profile() {
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-0">
             Thông tin người dùng
           </h1>
-          <button className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-200 shadow-md">
+          <button
+            className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-200 shadow-md"
+            onClick={handleDelete}
+          >
             <IoMdTrash />
             Xóa tài khoản
           </button>
@@ -31,7 +83,7 @@ export default function Profile() {
 
         <div className="flex flex-col items-center mb-4">
           <img
-            src={profile.avata}
+            src={profile.avata || "/default-avatar.png"}
             alt="Profile"
             className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover mb-4 border-4 border-gray-300"
           />
@@ -39,12 +91,10 @@ export default function Profile() {
             <FaLink size={20} className="mr-2" />
             <input
               value={newUrl}
-              onChange={(e) => {
-                setNewUrl(e.target.value);
-              }}
+              onChange={(e) => setNewUrl(e.target.value)}
               type="text"
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
-              placeholder="Nhập url hình ảnh... "
+              placeholder="Nhập url hình ảnh..."
             />
           </div>
         </div>

@@ -7,6 +7,7 @@ import Profile from "./profiles/Profiles";
 import Address from "./profiles/Address";
 import Vat from "./profiles/Vat";
 import { useSelector } from "react-redux";
+import Loading from "../util/Loading";
 
 export default function Account() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ export default function Account() {
   const [activeTab, setActiveTab] = useState("profile");
   const [loading, setLoading] = useState(false);
   const profile = useSelector((state) => state.profile.profile);
+
   const profileLinks = [
     {
       icon: <FaUser className="text-blue-500" />,
@@ -31,6 +33,12 @@ export default function Account() {
       path: "vat",
     },
   ];
+  const handleNavigation = (path) => {
+    setLoading(true);
+    setActiveTab(path);
+    navigate(`/account/${path}`);
+    setLoading(false);
+  };
 
   useEffect(() => {
     if (url && profileLinks.some((link) => link.path === url)) {
@@ -40,12 +48,13 @@ export default function Account() {
     }
   }, [url]);
 
-  const handleNavigation = (path) => {
-    setLoading(true);
-    setActiveTab(path);
-    navigate(`/account/${path}`);
-    setLoading(false);
-  };
+  useEffect(() => {
+    if (profile === null) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [profile]);
 
   const renderContent = () => {
     switch (activeTab) {
@@ -60,24 +69,20 @@ export default function Account() {
     }
   };
 
-  return (
-    <div className="bg-gray-100 min-h-screen">
-      <header className="bg-white shadow-sm fixed top-0 w-full z-10">
-        <Nav />
-      </header>
-
+  const Render = () => {
+    return (
       <div className="container mx-auto px-4 pt-[6rem]">
         <div className="flex flex-col md:flex-row gap-8">
           <div className="md:w-1/3">
             <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
               <div className="flex flex-col items-center mb-6">
                 <img
-                  src={profile.avata}
+                  src={profile?.avata}
                   alt="Profile"
                   className="w-24 h-24 rounded-full object-cover mb-4 border-4 border-gray-200"
                 />
                 <h2 className="text-2xl font-semibold text-gray-800">
-                  {profile.username}
+                  {profile?.username}
                 </h2>
               </div>
               {profileLinks.map((link, index) => (
@@ -123,16 +128,19 @@ export default function Account() {
           </div>
 
           <div className="md:w-2/3 bg-white p-6 rounded-lg shadow-lg">
-            {loading ? (
-              <div className="flex justify-center items-center h-full">
-                <p className="text-gray-500">Đang tải dữ liệu...</p>
-              </div>
-            ) : (
-              renderContent()
-            )}
+            {renderContent()}
           </div>
         </div>
       </div>
+    );
+  };
+
+  return (
+    <div className="bg-gray-100 min-h-screen">
+      <header className="bg-white shadow-sm fixed top-0 w-full z-10">
+        <Nav />
+      </header>
+      {loading ? <Loading /> : <Render />}
     </div>
   );
 }

@@ -1,4 +1,6 @@
 export const getProfile = (apikey) => {
+  console.log(apikey);
+
   return async (dispatch) => {
     try {
       const url = `${import.meta.env.VITE_FASTFOOD_SERVER_API}/profile`;
@@ -14,16 +16,10 @@ export const getProfile = (apikey) => {
       });
 
       const data = await response.json();
-      console.log(data);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
-      if (!data.success) {
-        throw new Error("API error: " + (data.message || "API error"));
-      }
-
       dispatch({
         type: "add/profile",
         payload: data.data,
