@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { FaUser, FaMapMarkerAlt, FaFileInvoiceDollar } from "react-icons/fa";
+import { FaUser, FaMapMarkerAlt } from "react-icons/fa";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import Nav from "../header/Nav";
 import Profile from "./profiles/Profiles";
 import Address from "./profiles/Address";
-import Vat from "./profiles/Vat";
 import { useSelector } from "react-redux";
 import Loading from "../util/Loading";
+import Password from "./profiles/Password";
+import { TbPasswordUser } from "react-icons/tb";
 
 export default function Account() {
   const navigate = useNavigate();
@@ -28,9 +29,9 @@ export default function Account() {
       path: "address",
     },
     {
-      icon: <FaFileInvoiceDollar className="text-yellow-500" />,
-      text: "Cập nhật hóa đơn VAT của bạn",
-      path: "vat",
+      icon: <TbPasswordUser className="text-yellow-500" />,
+      text: "Cập nhật mật khẩu",
+      path: "password",
     },
   ];
   const handleNavigation = (path) => {
@@ -62,8 +63,8 @@ export default function Account() {
         return <Profile />;
       case "address":
         return <Address />;
-      case "vat":
-        return <Vat />;
+      case "password":
+        return <Password />;
       default:
         return <Profile />;
     }

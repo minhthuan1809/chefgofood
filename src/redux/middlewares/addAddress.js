@@ -13,7 +13,6 @@ export const getProfileAddress = (id) => {
       });
 
       const data = await response.json();
-      console.log(data.addresses);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

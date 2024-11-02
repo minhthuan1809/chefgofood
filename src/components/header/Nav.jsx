@@ -134,7 +134,6 @@ const Nav = () => {
       if (apiKey) {
         // (true);
         const data = await dispatch(getProfile(apiKey));
-        console.log(data);
 
         if (!data?.ok) {
           dispatch(apikeyRedux(null, false));

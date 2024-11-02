@@ -8,6 +8,7 @@ import Account from "../components/page/Account";
 import About from "../components/page/About";
 import Cart from "../components/page/Cart";
 import HomePage from "../components/page/HomePage";
+import DetailProduct from "../components/page/DetailProduct";
 
 export default function RouterDom() {
   return (
@@ -20,6 +21,7 @@ export default function RouterDom() {
         </Route>
 
         <Route path="/history" element={<History />} />
+        <Route path="/detail/:name/:id" element={<DetailProduct />} />
         <Route path="/abouts" element={<About />} />
         <Route path="/carts" element={<Cart />} />
         <Route path="/discount" element={<Discount />} />

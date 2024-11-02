@@ -1,7 +1,7 @@
 import { IoMdTrash } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { FaLink } from "react-icons/fa6";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { getDelete, getUpdateProfile } from "../../../service/Profile_Client";
 import { useNavigate } from "react-router";
@@ -50,6 +50,7 @@ export default function Profile() {
         }
       } catch (error) {
         toast.error("Có lỗi xảy ra khi xóa tài khoản!");
+        console.log(error);
       }
     }
   }
