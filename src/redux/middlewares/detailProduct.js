@@ -1,21 +1,20 @@
-export const getDetailProduct = async (idUser, page) => {
+import { detailAction } from "../action/client/detail";
+
+export const getDetailProduct = (idUser, page) => {
   return async (dispatch) => {
     try {
-      //thuan
       const response = await fetch(
         `${
           import.meta.env.VITE_FASTFOOD_SERVER_API
-        }/detail/${idUser}?limit=5&page=${page}`
+        }/detail/${idUser}?limit=4&page=${page}`
       );
-      dispatch({
-        type: "add/detail",
-        payload: response.data,
-      });
       const result = await response.json();
-      console.log("result", result);
+
+      dispatch(detailAction(result.data));
+
       return result;
     } catch (error) {
-      console.error("Registration error:", error);
+      console.error("Error:", error);
       return { success: false, error: error.message };
     }
   };

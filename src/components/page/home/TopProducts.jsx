@@ -12,10 +12,10 @@ export default function TopProducts() {
   const products = [
     {
       name: "Bánh tráng trộn",
-      price: 20000,
+      price: 200000,
       image:
         "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0.02,
+      discount: 10,
       sold: 1000,
       rating: 4.1,
     },
@@ -395,7 +395,7 @@ export default function TopProducts() {
                       className="w-full h-48 object-cover"
                     />
                     <span className="absolute top-2 left-2 bg-red-600 text-white px-2 py-1 text-sm font-semibold rounded">
-                      {Math.round(product.discount * 100)}% OFF
+                      {product.discount}% OFF
                     </span>
                   </div>
                   <div className="p-4 mt-4">
@@ -410,7 +410,7 @@ export default function TopProducts() {
                         <p className="text-xl font-bold text-red-600">
                           {(
                             product.price *
-                            (1 - product.discount)
+                            (1 - product.discount / 100)
                           ).toLocaleString("vi-VN")}{" "}
                           đ
                         </p>

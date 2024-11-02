@@ -7,28 +7,31 @@ import {
   AiOutlineHeart,
   AiOutlineShareAlt,
 } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import Nav from "../header/Nav";
-import PageFooter from "../footer/PageFooter";
-import { getDetailProduct } from "../../service/detailProduct";
-import Loading from "../util/Loading";
+import { getDetailProduct } from "../../redux/middlewares/detailProduct";
 import ImageModal from "./detail/ImageModal";
 import Evaluate from "./detail/Evaluate";
+import Nav from "../header/Nav";
+import Loading from "../util/Loading";
+import PageFooter from "../footer/PageFooter";
+import { toast } from "react-toastify";
 
 const DetailProduct = () => {
+  const [selectedImage, setSelectedImage] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  const [selectedImage, setSelectedImage] = useState(null);
   const params = useParams();
-  const [product, setProduct] = useState(null);
+  const dispatch = useDispatch();
+  const product = useSelector((state) => state.detail.detailProduct);
 
   useEffect(() => {
     const fetchDetailProduct = async () => {
-      try {
-        const response = await getDetailProduct(params.id, 1);
-        setProduct(response.data);
-      } catch (error) {
-        console.error("Không thể tải thông tin sản phẩm:", error);
+      const data = await dispatch(getDetailProduct(params.id, 1));
+      toast.dismiss();
+
+      if (!data.ok) {
+        toast.error("Đã có lỗi xảy ra !");
       }
     };
     fetchDetailProduct();
@@ -49,13 +52,14 @@ const DetailProduct = () => {
                   <div className="space-y-6">
                     <div className="relative aspect-square rounded-xl overflow-hidden border border-gray-100">
                       <img
+                        onClick={() => setSelectedImage(product.image_url)}
                         src={product.image_url}
                         alt={product.name}
                         className="w-full h-full object-cover transition-all duration-300 hover:scale-105"
                       />
                       {product.discount > 0 && (
                         <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                          Giảm {product.discount * 100}%
+                          Giảm {product.discount}%
                         </div>
                       )}
                     </div>
@@ -73,7 +77,18 @@ const DetailProduct = () => {
                             className="text-gray-400 hover:text-gray-500"
                             title="Chia sẻ"
                           >
-                            <AiOutlineShareAlt className="w-6 h-6" />
+                            <AiOutlineShareAlt
+                              className="w-6 h-6"
+                              onClick={() => {
+                                navigator.clipboard
+                                  .writeText(window.location.href)
+                                  .then(
+                                    toast.success(
+                                      "Đã copy đường dẫn thành công !"
+                                    )
+                                  );
+                              }}
+                            />
                           </button>
                           <button
                             onClick={() => setIsFavorite(!isFavorite)}
@@ -113,19 +128,22 @@ const DetailProduct = () => {
 
                     <div className="space-y-2">
                       <div className="text-3xl font-bold text-blue-600">
-                        {parseInt(product.price).toLocaleString()}₫
+                        {parseInt(product.price) *
+                          (1 - product.discount / 100).toLocaleString()}
+                        ₫
                       </div>
                       {product.discount > 0 && (
                         <div className="flex items-center gap-2">
                           <span className="text-sm text-gray-400 line-through">
-                            {(
-                              parseInt(product.price) /
-                              (1 - product.discount)
-                            ).toLocaleString()}
-                            ₫
+                            {parseInt(product.price).toLocaleString()}₫
                           </span>
                           <span className="text-sm text-red-500">
-                            Tiết kiệm {(product.discount * 100).toFixed(0)}%
+                            Tiết kiệm{" "}
+                            {(
+                              (product.price * product.discount) /
+                              100
+                            ).toLocaleString()}
+                            ₫
                           </span>
                         </div>
                       )}
@@ -175,10 +193,7 @@ const DetailProduct = () => {
         </main>
       )}
       <PageFooter />
-      <ImageModal
-        selectedImage={selectedImage}
-        setSelectedImage={setSelectedImage}
-      />
+      <ImageModal imageUrl={selectedImage} onClose={setSelectedImage} />
     </div>
   );
 };

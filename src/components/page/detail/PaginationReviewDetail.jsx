@@ -1,14 +1,15 @@
-/* eslint-disable react/prop-types */
+// /* eslint-disable react/prop-types */
 import { Stack } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
-import { getDetailProduct } from "../../../service/detailProduct";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
+import { getDetailProduct } from "../../../redux/middlewares/detailProduct";
 
-export default function PaginationReviewDetail({ page, pram }) {
+export default function PaginationReviewDetail({ page }) {
   const params = useParams();
+  const dispatch = useDispatch();
   const handlChangerPage = (_, value) => {
-    getDetailProduct(params.id, 2);
-    console.log(value);
+    dispatch(getDetailProduct(params.id, value));
   };
   return (
     <div>

@@ -19,7 +19,9 @@ const ReviewImages = ({ review, setSelectedImage }) => {
         <div
           key={index}
           className="relative aspect-square rounded-lg overflow-hidden cursor-pointer group"
-          onClick={() => setSelectedImage(image)}
+          onClick={() => {
+            setSelectedImage(image);
+          }}
         >
           <img
             src={image}
@@ -42,7 +44,9 @@ export default function Evaluate({ data, setSelectedImage }) {
         </h1>
       ) : (
         <div>
-          <h2 className="text-2xl font-bold mb-6">Đánh giá từ khách hàng</h2>
+          <h2 className="text-2xl text-center mt-10 font-bold mb-6">
+            Đánh giá từ khách hàng
+          </h2>
           {data.reviews.items.map((review) => (
             <div
               key={review.id}
