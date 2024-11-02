@@ -15,5 +15,3 @@ export const AddressReducer = (state = initialState, action) => {
       return state;
   }
 };
-
-console.log(initialState);
