@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+/* eslint-disable react/prop-types */
+import { useState } from "react";
 import { MdOutlineCancel } from "react-icons/md";
 import { getRegister } from "../../service/register";
 import { toast } from "react-toastify";
 
-export default function Modal_Register({ onClick, LoginOrRegister }) {
+export default function Modal_Register({ onClose, LoginOrRegister }) {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -76,7 +77,7 @@ export default function Modal_Register({ onClick, LoginOrRegister }) {
           <h2 className="text-2xl font-bold text-gray-800">Đăng ký</h2>
           <button
             className="text-gray-500 hover:text-gray-700"
-            onClick={onClick}
+            onClick={onClose}
           >
             <MdOutlineCancel size={24} />
           </button>

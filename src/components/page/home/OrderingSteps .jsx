@@ -1,4 +1,3 @@
-import React from "react";
 import {
   FiGlobe,
   FiUser,
@@ -34,11 +33,6 @@ const OrderingSteps = () => {
       icon: <FiShoppingCart size={24} />,
       title: "Tạo đơn hàng",
       description: "Xác nhận và thanh toán đơn hàng",
-    },
-    {
-      icon: <FiSmile size={24} />,
-      title: "Chuẩn bị tận hưởng",
-      description: "Đơn hàng đang được chuẩn bị",
     },
     {
       icon: <FiSmile size={24} />,

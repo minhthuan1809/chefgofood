@@ -1,5 +1,3 @@
-import { toast } from "react-toastify";
-
 /* eslint-disable no-unused-vars */
 export const getLogin = (data) => {
   return async (dispatch) => {
@@ -15,6 +13,7 @@ export const getLogin = (data) => {
         }
       );
       const result = await response.json();
+
       if (result.ok) {
         dispatch({
           type: "login/apikey",

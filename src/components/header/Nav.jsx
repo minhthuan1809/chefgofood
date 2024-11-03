@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaCartShopping } from "react-icons/fa6";
 import { IoIosSettings, IoMdLogOut } from "react-icons/io";
@@ -12,6 +12,7 @@ import {
   AddProfileRedux,
   apikeyRedux,
 } from "../../redux/action/client/profile";
+import { getUiNavbar } from "../../service/ui/ui_navbav";
 
 const NavLink = ({ to, children, onClick }) => {
   const location = useLocation();
@@ -111,28 +112,17 @@ const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isAuthenticated] = useState(false);
   const [isLoginOrRegister, setisLoginOrRegister] = useState(true);
+  const [dataRender, setDataRender] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const status = useSelector((state) => state.login.status);
   const apiKey = useSelector((state) => state.login.apikey);
   const profile = useSelector((state) => state.profile.profile);
 
-  const NAV_ITEMS = useMemo(
-    () => [
-      { title: "Trang Chủ", path: "/" },
-      { title: "Món ăn", path: "/food" },
-      { title: "Ưu đãi", path: "/discount" },
-      { title: "Giới thiệu", path: "/abouts" },
-    ],
-    []
-  );
-
   useEffect(() => {
     async function checkApiKey() {
       if (apiKey) {
-        // (true);
         const data = await dispatch(getProfile(apiKey));
 
         if (!data?.ok) {
@@ -144,26 +134,23 @@ const Nav = () => {
       }
     }
     checkApiKey();
-  }, []);
+  }, [apiKey, dispatch]);
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      if (status && apiKey) {
-        try {
-          setIsLoginModalOpen(false);
-          true;
-          setIsMenuOpen(false);
-
-          await dispatch(getProfile(apiKey));
-        } catch (error) {
-          console.error("Failed to fetch profile:", error);
-          false;
+    async function fetchData() {
+      try {
+        const data = await getUiNavbar();
+        if (data.ok) {
+          setDataRender(data);
+        } else {
+          throw new Error(data.message);
         }
+      } catch (error) {
+        console.error(error);
       }
-    };
-
-    fetchProfile();
-  }, [status, dispatch, apiKey]);
+    }
+    fetchData();
+  }, []);
 
   const toggleDropdown = useCallback(() => {
     setDropdownOpen((prev) => !prev);
@@ -177,13 +164,9 @@ const Nav = () => {
     (path, action) => {
       if (action === "logout") {
         if (confirm("Bạn muốn đăng xuất ?")) {
-          false;
-          false;
           dispatch(AddProfileRedux(null));
-
           dispatch(apikeyRedux(null, false));
           localStorage.removeItem("apikey");
-
           navigate("/");
           setDropdownOpen(false);
         }
@@ -192,7 +175,7 @@ const Nav = () => {
         setDropdownOpen(false);
       }
     },
-    [navigate]
+    [navigate, dispatch]
   );
 
   const handleLoginClick = useCallback(() => {
@@ -204,34 +187,35 @@ const Nav = () => {
     setisLoginOrRegister(true);
   }, []);
 
-  const Logo = useMemo(
-    () => (
-      <Link to="/" className="flex items-center space-x-2">
-        <div className="w-12 h-12 rounded-full overflow-hidden">
-          <img
-            className="h-full w-full object-cover"
-            src="/path/to/your/logo.jpg"
-            alt="FastFood Logo"
-          />
-        </div>
-        <span className="text-2xl font-bold text-gray-800">FastFood</span>
-      </Link>
-    ),
-    []
-  );
+  const Logo = dataRender.menu?.find((item) => item.id === "5"); // Fetch the logo item
 
   return (
     <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
       <nav className="container mx-auto px-4 py-4">
         <div className="flex w-11/12 m-auto items-center justify-between max-lg:w-full">
-          {Logo}
+          {Logo && (
+            <Link to="/" className="flex items-center space-x-2">
+              <div className="w-12 h-12 rounded-full overflow-hidden">
+                <img
+                  className="h-full w-full object-cover"
+                  src={Logo.image || "https://example.com/default-logo.png"} // Use a default logo image if needed
+                  alt={Logo.title || "FastFood Logo"}
+                />
+              </div>
+              <span className="text-2xl font-bold text-gray-800">
+                {Logo.title}
+              </span>
+            </Link>
+          )}
 
           <div className="hidden md:flex space-x-6">
-            {NAV_ITEMS.map(({ title, path }) => (
-              <NavLink key={path} to={path}>
-                {title}
-              </NavLink>
-            ))}
+            {dataRender.menu
+              ?.filter((item) => item.id !== "5")
+              .map(({ id, title, url, className }) => (
+                <NavLink key={id} to={url || "/"}>
+                  <span className={className}>{title}</span>
+                </NavLink>
+              ))}
           </div>
 
           <div className="hidden md:block">
@@ -254,58 +238,42 @@ const Nav = () => {
 
           <button
             onClick={toggleMenu}
-            className="md:hidden text-3xl text-gray-600"
-            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            className="text-3xl md:hidden focus:outline-none"
           >
             {isMenuOpen ? <MdOutlineCancel /> : <MdMenu />}
           </button>
         </div>
-
         {isMenuOpen && (
-          <div className="mt-4 md:hidden">
-            <ul className="space-y-2">
-              {NAV_ITEMS.map(({ title, path }) => (
-                <li key={path}>
-                  <NavLink to={path} onClick={() => setIsMenuOpen(false)}>
-                    {title}
-                  </NavLink>
-                </li>
-              ))}
-              {isAuthenticated ? (
-                <li>
-                  <UserProfile
-                    user={profile}
-                    dropdownOpen={dropdownOpen}
-                    toggleDropdown={toggleDropdown}
-                    onItemClick={handleItemClick}
-                  />
-                </li>
-              ) : (
-                <li>
-                  <button
-                    onClick={handleLoginClick}
-                    className="w-full bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition duration-300"
-                  >
-                    Đăng nhập
-                  </button>
-                </li>
-              )}
+          <div className="md:hidden">
+            <ul className="py-2 px-4 space-y-1">
+              {dataRender.menu
+                ?.filter((item) => item.id !== "5")
+                .map(({ id, title, url, className }) => (
+                  <li key={id} className="border-b border-gray-200">
+                    <NavLink to={url || "/"} onClick={toggleMenu}>
+                      <span className={className}>{title}</span>
+                    </NavLink>
+                  </li>
+                ))}
             </ul>
           </div>
         )}
       </nav>
-      {isLoginModalOpen &&
-        (isLoginOrRegister ? (
-          <Modal_login
-            onClick={handleCloseLoginModal}
-            LoginOrRegister={setisLoginOrRegister}
-          />
-        ) : (
-          <Modal_Register
-            onClick={handleCloseLoginModal}
-            LoginOrRegister={setisLoginOrRegister}
-          />
-        ))}
+      {isLoginModalOpen && (
+        <Modal_login
+          onClose={handleCloseLoginModal}
+          isLoginOrRegister={isLoginOrRegister}
+          setisLoginOrRegister={setisLoginOrRegister}
+          isLoginModalOpen={isLoginModalOpen}
+        />
+      )}
+      {!isLoginOrRegister && (
+        <Modal_Register
+          onClose={handleCloseLoginModal}
+          isLoginOrRegister={isLoginOrRegister}
+          setisLoginOrRegister={setisLoginOrRegister}
+        />
+      )}
     </div>
   );
 };

@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 
-export default function Modal_login({ onClick, LoginOrRegister }) {
+export default function Modal_login({ onClose, LoginOrRegister }) {
   const dispatch = useDispatch();
   const [statusLogin, setStatusLogin] = useState("");
   const [formData, setFormData] = useState({
@@ -45,11 +45,11 @@ export default function Modal_login({ onClick, LoginOrRegister }) {
         if (checked) {
           // Lưu cookies với thời hạn 30 ngày
           Cookies.set("userEmail", newFormData.email, {
-            expires: 30,
+            expires: 20,
             secure: true,
           });
           Cookies.set("userPassword", newFormData.password, {
-            expires: 30,
+            expires: 20,
             secure: true,
           });
           Cookies.set("rememberMe", "true", { expires: 30, secure: true });
@@ -77,7 +77,7 @@ export default function Modal_login({ onClick, LoginOrRegister }) {
     }
 
     const response = await dispatch(getLogin(formData));
-    console.log(response);
+
     toast.dismiss();
 
     if (response.message === "Invalid username or password.") {
@@ -96,6 +96,7 @@ export default function Modal_login({ onClick, LoginOrRegister }) {
         Cookies.set("rememberMe", "true", { expires: 30, secure: true });
       }
       toast.success("Thành Công !");
+      onClose();
     } else {
       toast.error("Đã có lỗi xảy ra, vui lòng thử lại sau.");
     }
@@ -108,7 +109,7 @@ export default function Modal_login({ onClick, LoginOrRegister }) {
           <h2 className="text-2xl font-bold text-gray-800">Đăng nhập</h2>
           <button
             className="text-gray-500 hover:text-gray-700"
-            onClick={onClick}
+            onClick={onClose}
           >
             <MdOutlineCancel size={24} />
           </button>

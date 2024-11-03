@@ -9,6 +9,7 @@ import About from "../components/page/About";
 import Cart from "../components/page/Cart";
 import HomePage from "../components/page/HomePage";
 import DetailProduct from "../components/page/DetailProduct";
+import ErrorSyteam from "./ErrorSyteam";
 
 export default function RouterDom() {
   return (
@@ -27,6 +28,7 @@ export default function RouterDom() {
         <Route path="/discount" element={<Discount />} />
         <Route path="/food" element={<Products />} />
         <Route path="*" element={<Error />} />
+        <Route path="/error" element={<ErrorSyteam />} />
       </Routes>
     </div>
   );
