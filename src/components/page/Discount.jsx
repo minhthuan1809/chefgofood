@@ -17,6 +17,7 @@ const Discount = () => {
 
   useEffect(() => {
     setLoading(true);
+
     async function fetchData() {
       try {
         const response = await getUiDiscountSystem();
@@ -34,9 +35,11 @@ const Discount = () => {
   }, []);
 
   useEffect(() => {
-    setLoading(true);
-
     async function fetchUserDiscounts() {
+      if (!profile) {
+        setLoading(false);
+        return;
+      }
       try {
         const response = await getUiDiscountUser(profile.id);
         console.log("User", response);
@@ -51,7 +54,7 @@ const Discount = () => {
       }
     }
     fetchUserDiscounts();
-  }, profile);
+  }, [profile]);
 
   return (
     <>

@@ -6,7 +6,7 @@ import TopProducts from "./home/TopProducts";
 
 import { useEffect, useState } from "react";
 import { getUiHeader } from "../../service/ui/ui_header";
-import OrderingSteps from "./home/OrderingSteps ";
+import OrderingSteps from "./home/OrderingSteps";
 import { useNavigate } from "react-router";
 
 export default function Home() {
