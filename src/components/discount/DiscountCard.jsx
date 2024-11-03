@@ -13,6 +13,7 @@ export default function DiscountCard({
   const navigator = useNavigate();
   const apiKey = useSelector((state) => state.login.apikey);
   const handleUse = () => {
+    toast.dismiss();
     if (!apiKey && apiKey !== Array) {
       toast.info("Bạn cần đăng nhập để dùng tính năng này !");
     } else {

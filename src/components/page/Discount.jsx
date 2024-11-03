@@ -42,7 +42,7 @@ const Discount = () => {
       }
       try {
         const response = await getUiDiscountUser(profile.id);
-        console.log("User", response);
+
         if (!response.ok) {
           navigator("/error");
         }

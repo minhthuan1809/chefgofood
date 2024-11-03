@@ -4,7 +4,6 @@ export const getUiDiscountUser = async (IdUser) => {
       `${import.meta.env.VITE_FASTFOOD_SERVER_API}/discount/user/${IdUser}`
     );
     const result = await response.json();
-    console.log(result);
 
     return result;
   } catch (error) {

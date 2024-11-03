@@ -22,7 +22,7 @@ import * as VscIcons from "react-icons/vsc";
 import * as WiIcons from "react-icons/wi";
 import { getUiFooter } from "../../service/ui/ui_footer";
 import { useNavigate } from "react-router";
-
+import Loading from "../util/Loading";
 const IconLibraries = {
   Fa: FaIcons,
   Ai: AiIcons,
@@ -78,7 +78,7 @@ export default function PageFooter() {
   }, []);
 
   if (!footer && footer !== Array) {
-    navigate("/error");
+    <Loading />;
     return null;
   }
 

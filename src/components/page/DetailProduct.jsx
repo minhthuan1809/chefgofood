@@ -70,7 +70,11 @@ const DetailProduct = () => {
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
                         <span className="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700">
-                          {product.type.toUpperCase()}
+                          {product.type
+                            .toUpperCase()
+                            .replace("FOOD", "Đồ ăn")
+                            .replace("CAKE", "Bánh")
+                            .replace("WATER", "Đồ uống")}
                         </span>
                         <div className="flex gap-4">
                           <button

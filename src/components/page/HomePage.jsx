@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { getUiHeader } from "../../service/ui/ui_header";
 import OrderingSteps from "./home/OrderingSteps";
 import { useNavigate } from "react-router";
+import Loading from "../util/Loading";
 
 export default function Home() {
   const [header, setHeader] = useState({});
@@ -17,7 +18,7 @@ export default function Home() {
       try {
         const data = await getUiHeader();
         if (!data.ok) {
-          setHeader(null);
+          navigate("/error");
           throw new Error(data.message);
         }
         setHeader(data);
@@ -29,7 +30,7 @@ export default function Home() {
     fetchData();
   }, []);
   if (header === null) {
-    navigate("/error");
+    <Loading />;
     return null;
   }
   return (

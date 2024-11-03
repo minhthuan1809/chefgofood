@@ -16,7 +16,6 @@ export const getProducts = (keySearch, total) => {
       }
 
       const data = await response.json();
-      console.log(data);
 
       dispatch({
         type: "add/product",

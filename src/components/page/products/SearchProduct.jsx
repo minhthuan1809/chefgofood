@@ -1,12 +1,24 @@
 import { useDispatch } from "react-redux";
 import { getProducts } from "../../../redux/middlewares/addProduct";
+import { useState, useCallback, useEffect } from "react";
 
 export default function SearchProduct() {
   const dispatch = useDispatch();
-  const handleSearch = (e) => {
-    e.preventDefault();
-    dispatch(getProducts(e.target.value));
-  };
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Debounce the search term input
+  const handleSearch = useCallback((e) => {
+    setSearchTerm(e.target.value);
+  }, []);
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      dispatch(getProducts(searchTerm));
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm, dispatch]);
+
   return (
     <div>
       <input

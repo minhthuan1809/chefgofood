@@ -19,8 +19,6 @@ const Products = () => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    console.log(dataProduct);
-
     const fetchData = async () => {
       setLoading(true);
       const data = await dispatch(getProducts("", 1));
