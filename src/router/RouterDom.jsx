@@ -10,7 +10,8 @@ import Cart from "../components/page/Cart";
 import HomePage from "../components/page/HomePage";
 import DetailProduct from "../components/page/DetailProduct";
 import ErrorSyteam from "./ErrorSyteam";
-
+import Login from "../admin/components/Login";
+import AppAdmin from "../admin/AppAdmin";
 export default function RouterDom() {
   return (
     <div>
@@ -29,6 +30,10 @@ export default function RouterDom() {
         <Route path="/food" element={<Products />} />
         <Route path="*" element={<Error />} />
         <Route path="/error" element={<ErrorSyteam />} />
+
+        {/* // admin  */}
+        <Route path="/admin/dashboard/login" element={<Login />} />
+        <Route path="/admin/dashboard" element={<AppAdmin />} />
       </Routes>
     </div>
   );
