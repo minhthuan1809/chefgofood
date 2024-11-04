@@ -9,7 +9,6 @@ export default function App() {
     <div>
       <RouterDom />
 
-      <SupportChat />
       <ToastContainer position="top-right" autoClose={1000} />
     </div>
   );

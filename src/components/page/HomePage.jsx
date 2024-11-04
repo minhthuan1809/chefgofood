@@ -9,6 +9,7 @@ import { getUiHeader } from "../../service/ui/ui_header";
 import OrderingSteps from "./home/OrderingSteps";
 import { useNavigate } from "react-router";
 import Loading from "../util/Loading";
+import SupportChat from "../messger/SupportChat";
 
 export default function Home() {
   const [header, setHeader] = useState({});
@@ -36,6 +37,7 @@ export default function Home() {
     <div className="min-h-screen bg-gray-100">
       <header>
         <Nav />
+        <SupportChat />
       </header>
       <main>
         <section className="relative h-screen">

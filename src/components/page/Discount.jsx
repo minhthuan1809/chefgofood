@@ -6,6 +6,7 @@ import { getUiDiscountUser } from "../../service/discount/discount_user";
 import { useNavigate } from "react-router";
 import DiscountCard from "../discount/DiscountCard";
 import Loading from "../util/Loading";
+import SupportChat from "../messger/SupportChat";
 
 const Discount = () => {
   const status = useSelector((state) => state.login.status);
@@ -64,6 +65,7 @@ const Discount = () => {
         <>
           <header>
             <Nav />
+            <SupportChat />
           </header>
           <div className="bg-gray-100 min-h-screen py-[7rem]">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -1,81 +1,40 @@
-import { useState } from "react";
-import {
-  HiHome,
-  HiQueueList,
-  HiArchiveBox,
-  HiChartBar,
-  HiEnvelope,
-  HiUsers,
-  HiTag,
-  HiCog6Tooth,
-  HiMagnifyingGlass,
-} from "react-icons/hi2";
+/* eslint-disable no-unused-vars */
+import { useEffect, useState } from "react";
+import { PiVectorThreeFill } from "react-icons/pi";
 import Dashboard from "./components/page/Dashboard";
-import { useParams } from "react-router";
-
+import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { getDecentralization } from "../redux/middlewares/admin/decentralization";
+import AdminSidebar from "./components/AdminSidebar";
+import { HiMagnifyingGlass } from "react-icons/hi2";
+import Error from "../router/Error";
 const AppAdmin = () => {
   const [activeItem, setActiveItem] = useState("dashboard");
-  const pram = useParams();
+  const [page, setPage] = useState(null);
+  const dispatch = useDispatch();
+  const { url } = useParams();
   const menuItems = [
     {
-      icon: <HiHome size={20} />,
-      label: "Trang Chủ",
-      id: "dashboard",
-      path: "/dashboard",
-    },
-    {
-      icon: <HiQueueList size={20} />,
-      label: "Đơn Hàng",
-      id: "orders",
-      path: "/orders",
-    },
-    {
-      icon: <HiEnvelope size={20} />,
-      label: "Tin Nhắn",
-      id: "messages",
-      path: "/messages",
-    },
-    {
-      icon: <HiChartBar size={20} />,
-      label: "Thống Kê",
-      id: "stats",
-      path: "/stats",
-    },
-    {
-      icon: <HiUsers size={20} />,
-      label: "Người Dùng",
-      id: "users",
-      path: "/users",
-    },
-    {
-      icon: <HiArchiveBox size={20} />,
-      label: "Sản Phẩm",
-      id: "products",
-      path: "/products",
-    },
-    {
-      icon: <HiTag size={20} />,
-      label: "Mã Giảm Giá",
-      id: "discounts",
-      path: "/discounts",
-    },
-    {
-      icon: <HiCog6Tooth size={20} />,
-      label: "Cài Đặt",
-      id: "settings",
-      path: "/settings",
-    },
-    {
-      icon: <HiCog6Tooth size={20} />,
-      label: "Layout",
-      id: "Layout",
-      path: "/Layout",
+      path: "dashboard",
+      page: <Dashboard />,
     },
   ];
+  useEffect(() => {
+    dispatch(getDecentralization());
+  }, [dispatch]);
 
+  useEffect(() => {
+    const matchedItem = menuItems.find((item) => item.path === url);
+    if (matchedItem) {
+      setActiveItem(url);
+      setPage(matchedItem.page);
+    } else {
+      setPage(<Error />);
+    }
+  }, [url]);
   return (
-    <div className=" ">
-      <div className="w-64 bg-white h-screen shadow-lg flex flex-col fixed">
+    <div className="flex h-screen">
+      <div className="w-64 bg-white h-full shadow-lg flex flex-col">
         <div className="p-6 border-b">
           <h2 className="text-2xl font-bold text-blue-600 mb-6">
             Admin Dashboard
@@ -105,28 +64,11 @@ const AppAdmin = () => {
             />
           </div>
         </div>
-        <nav className="p-4 flex-1">
-          {menuItems.map((item) => (
-            <a
-              key={item.id}
-              href="#"
-              className={`flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-50 transition-colors ${
-                activeItem === item.id
-                  ? "bg-blue-100 text-blue-600"
-                  : "text-gray-700"
-              }`}
-              onClick={(e) => {
-                e.preventDefault();
-                setActiveItem(item.id);
-              }}
-            >
-              <span className="text-xl">{item.icon}</span>
-              <span>{item.label}</span>
-            </a>
-          ))}
+        <nav className="p-4 flex-1 overflow-y-auto">
+          <AdminSidebar />
         </nav>
       </div>
-      {activeItem === "dashboard" && <Dashboard />}
+      <div className="flex-1 p-6 overflow-y-auto">{page}</div>
     </div>
   );
 };

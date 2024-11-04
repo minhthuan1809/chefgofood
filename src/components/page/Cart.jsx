@@ -3,6 +3,7 @@ import Nav from "../header/Nav";
 import PageFooter from "../footer/PageFooter";
 import { FaTrashAlt, FaShoppingCart, FaMinus, FaPlus } from "react-icons/fa";
 import PayCart from "./cart/PayCart";
+import SupportChat from "../messger/SupportChat";
 
 const initialCartItems = [
   {
@@ -63,6 +64,7 @@ export default function Cart() {
     <div className="min-h-screen flex flex-col">
       <header className="fixed top-0 w-full z-50 bg-white">
         <Nav />
+        <SupportChat />
       </header>
 
       <main className="flex-grow pt-20 px-4 lg:px-8">

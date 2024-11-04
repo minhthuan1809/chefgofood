@@ -4,6 +4,7 @@ import PageFooter from "../footer/PageFooter";
 import Nav from "../header/Nav";
 import PropTypes from "prop-types";
 import { DynamicIcon } from "../util/iconLibraries";
+import SupportChat from "../messger/SupportChat";
 
 const FeatureCard = ({ iconName, title, description }) => (
   <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md">
@@ -76,6 +77,7 @@ export default function About() {
     <>
       <header>
         <Nav />
+        <SupportChat />
       </header>
       <div className="pt-[6rem] bg-gray-100 min-h-screen">
         <header className="bg-blue-600 text-white py-8 sm:py-16">

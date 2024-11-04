@@ -1,5 +1,3 @@
-import React from "react";
-
 import { FiDollarSign, FiShoppingBag, FiUsers, FiBell } from "react-icons/fi";
 import { FaEye } from "react-icons/fa";
 import StatCard from "../dashboard/StatCard";
@@ -10,9 +8,9 @@ import TopProducts from "../dashboard/TopProducts";
 
 const Dashboard = () => {
   return (
-    <div className="flex">
-      <main className="flex-1 p-6 bg-gray-50 ml-64">
-        <div className="max-w-7xl mx-auto">
+    <div>
+      <main>
+        <div className="max-w-7xl mx-auto ">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-2xl font-bold">Dashboard Overview</h1>
             <div className="flex items-center space-x-4">
@@ -50,10 +48,10 @@ const Dashboard = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-            {/* <RevenueChart />
+            <RevenueChart />
             <OrdersChart />
             <WeatherChart />
-            <TopProducts /> */}
+            <TopProducts />
           </div>
         </div>
       </main>

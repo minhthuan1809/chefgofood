@@ -8,6 +8,7 @@ import Loading from "../util/Loading";
 import RenderProduct from "./products/RenderProduct";
 import PaginationPage from "./products/PaginationPage";
 import SearchProduct from "./products/SearchProduct";
+import SupportChat from "../messger/SupportChat";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -53,6 +54,7 @@ const Products = () => {
     <div className="bg-gray-100">
       <header>
         <Nav />
+        <SupportChat />
       </header>
       <main className="container m-auto px-2 sm:px-4 xl:w-[85%] sm:py-8">
         <div className="flex flex-col pt-[6rem] sm:flex-row justify-between items-center mb-4 sm:mb-8">
