@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   FaCartPlus,
   FaChevronLeft,
@@ -7,347 +7,23 @@ import {
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { PiContactlessPaymentLight } from "react-icons/pi";
-
+import { getUiTopProduct } from "../../../service/ui/ui_topProduct";
+import { useNavigate } from "react-router";
 export default function TopProducts() {
-  const products = [
-    {
-      name: "Bánh tráng trộn",
-      price: 200000,
-      image:
-        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 10,
-      sold: 1000,
-      rating: 4.1,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
-      discount: 0.5,
-      sold: 1000,
-      rating: 4.5,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image:
-        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0.02,
-      sold: 1000,
-      rating: 4.1,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
-      discount: 0.5,
-      sold: 1000,
-      rating: 4.5,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image:
-        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0.02,
-      sold: 1000,
-      rating: 4.1,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
-      discount: 0.5,
-      sold: 1000,
-      rating: 4.5,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image:
-        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0.02,
-      sold: 1000,
-      rating: 4.1,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
-      discount: 0.5,
-      sold: 1000,
-      rating: 4.5,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image:
-        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0.02,
-      sold: 1000,
-      rating: 4.1,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
-      discount: 0.5,
-      sold: 1000,
-      rating: 4.5,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image:
-        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0.02,
-      sold: 1000,
-      rating: 4.1,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
-      discount: 0.5,
-      sold: 1000,
-      rating: 4.5,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image:
-        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0.02,
-      sold: 1000,
-      rating: 4.1,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
-      discount: 0.5,
-      sold: 1000,
-      rating: 4.5,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image:
-        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0.02,
-      sold: 1000,
-      rating: 4.1,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
-      discount: 0.5,
-      sold: 1000,
-      rating: 4.5,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image:
-        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0.02,
-      sold: 1000,
-      rating: 4.1,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
-      discount: 0.5,
-      sold: 1000,
-      rating: 4.5,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image:
-        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0.02,
-      sold: 1000,
-      rating: 4.1,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
-      discount: 0.5,
-      sold: 1000,
-      rating: 4.5,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image:
-        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0.02,
-      sold: 1000,
-      rating: 4.1,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
-      discount: 0.5,
-      sold: 1000,
-      rating: 4.5,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image:
-        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0.02,
-      sold: 1000,
-      rating: 4.1,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
-      discount: 0.5,
-      sold: 1000,
-      rating: 4.5,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image:
-        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0.02,
-      sold: 1000,
-      rating: 4.1,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
-      discount: 0.5,
-      sold: 1000,
-      rating: 4.5,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image:
-        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0.02,
-      sold: 1000,
-      rating: 4.1,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
-      discount: 0.5,
-      sold: 1000,
-      rating: 4.5,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image:
-        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0.02,
-      sold: 1000,
-      rating: 4.1,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
-      discount: 0.5,
-      sold: 1000,
-      rating: 4.5,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image:
-        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0.02,
-      sold: 1000,
-      rating: 4.1,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
-      discount: 0.5,
-      sold: 1000,
-      rating: 4.5,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image:
-        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0.02,
-      sold: 1000,
-      rating: 4.1,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
-      discount: 0.5,
-      sold: 1000,
-      rating: 4.5,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image:
-        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0.02,
-      sold: 1000,
-      rating: 4.1,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
-      discount: 0.5,
-      sold: 1000,
-      rating: 4.5,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image:
-        "https://donchicken.vn/pub/media/catalog/product/cache/8872124951f387c8ded3f228faa55bea/g/a/garangiavi_ngotcay_2.jpg",
-      discount: 0.02,
-      sold: 1000,
-      rating: 4.1,
-    },
-    {
-      name: "Bánh tráng trộn",
-      price: 20000,
-      image: "https://tuyetthitbo.com/uploads/source/7.jpg",
-      discount: 0.5,
-      sold: 1000,
-      rating: 4.5,
-    },
-  ];
-
+  const [dataproduct, getDataProduct] = useState([]);
+  const navigator = useNavigate();
   const scrollRef = useRef(null);
   const [isAtStart, setIsAtStart] = useState(true);
-  const [isAtEnd, setIsAtEnd] = useState(false);
 
   const scroll = (scrollOffset) => {
     scrollRef.current.scrollLeft += scrollOffset;
-    checkScrollPosition();
+    setTimeout(checkScrollPosition, 100);
   };
 
   const checkScrollPosition = () => {
-    const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+    const { scrollLeft } = scrollRef.current;
     setIsAtStart(scrollLeft === 0);
-    setIsAtEnd(scrollLeft + clientWidth >= scrollWidth);
+    // Sửa logic kiểm tra cuối để chính xác hơn
   };
 
   useEffect(() => {
@@ -359,6 +35,15 @@ export default function TopProducts() {
       ref.removeEventListener("scroll", checkScrollPosition);
     };
   }, []);
+
+  useEffect(() => {
+    async function fectData() {
+      const data = await getUiTopProduct();
+      if (!data.ok) navigator("/error");
+      getDataProduct(data.data.products);
+    }
+    fectData();
+  }, [navigator]);
 
   return (
     <div>
@@ -381,7 +66,7 @@ export default function TopProducts() {
               className="flex overflow-x-auto space-x-6 scrollbar-hide scroll-smooth pb-4"
               style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
-              {products.map((product, index) => (
+              {dataproduct.map((product, index) => (
                 <motion.div
                   key={index}
                   className="flex-shrink-0 w-64 md:w-80 bg-white shadow-lg rounded-lg overflow-hidden"
@@ -390,8 +75,8 @@ export default function TopProducts() {
                 >
                   <div className="relative">
                     <img
-                      src={product.image}
-                      alt={product.name}
+                      src={product.image_url}
+                      alt={product.description}
                       className="w-full h-48 object-cover"
                     />
                     <span className="absolute top-2 left-2 bg-red-600 text-white px-2 py-1 text-sm font-semibold rounded">
@@ -426,7 +111,7 @@ export default function TopProducts() {
                       <div className="flex items-center mt-3 text-gray-600">
                         <FaStar className="text-yellow-500 mr-1" />
                         <span>{product.rating}</span>
-                        <span className="ml-3">{product.sold} đã bán</span>
+                        <span className="ml-3">{product.quantity} đã bán</span>
                       </div>
                       <button className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors duration-300 relative group">
                         <span className="absolute right-[3rem] bottom-1 w-max opacity-0 group-hover:opacity-100 bg-red-500 text-white text-xs p-2 rounded transition-opacity duration-300">
@@ -439,14 +124,16 @@ export default function TopProducts() {
                 </motion.div>
               ))}
             </div>
-            {!isAtEnd && (
-              <button
-                onClick={() => scroll(500)}
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md z-10 hover:bg-gray-100 transition duration-300"
-              >
-                <FaChevronRight className="text-gray-600" />
-              </button>
-            )}
+            {/* Sửa phần hiển thị nút phải */}
+            {scrollRef.current &&
+              scrollRef.current.scrollWidth > scrollRef.current.clientWidth && (
+                <button
+                  onClick={() => scroll(500)}
+                  className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md z-10 hover:bg-gray-100 transition duration-300"
+                >
+                  <FaChevronRight className="text-gray-600" />
+                </button>
+              )}
           </div>
         </div>
       </section>
