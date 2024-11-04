@@ -6,7 +6,7 @@ import { IoIosSettings, IoMdLogOut } from "react-icons/io";
 import { MdMenu, MdOutlineCancel } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import Modal_login from "./Modal_login";
-import { getProfile } from "../../redux/middlewares/addProfile";
+import { getProfile } from "../../redux/middlewares/client/addProfile";
 import Modal_Register from "./Modal_Register";
 import {
   AddProfileRedux,

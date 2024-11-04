@@ -3,7 +3,7 @@ import Nav from "../header/Nav";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { getProducts } from "../../redux/middlewares/addProduct";
+import { getProducts } from "../../redux/middlewares/client/addProduct";
 import Loading from "../util/Loading";
 import RenderProduct from "./products/RenderProduct";
 import PaginationPage from "./products/PaginationPage";

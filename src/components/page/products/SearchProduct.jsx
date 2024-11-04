@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { getProducts } from "../../../redux/middlewares/addProduct";
+import { getProducts } from "../../../redux/middlewares/client/addProduct";
 import { useState, useCallback, useEffect } from "react";
 
 export default function SearchProduct() {
