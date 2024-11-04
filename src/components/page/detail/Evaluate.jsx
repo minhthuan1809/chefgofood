@@ -39,7 +39,7 @@ export default function Evaluate({ data, setSelectedImage }) {
   return (
     <div className="space-y-6">
       {data.reviews.items.length < 1 ? (
-        <h1 className="text-2xl font-bold text-center">
+        <h1 className="text-2xl font-bold text-center p-4">
           Sản phẩm chưa được đánh giá
         </h1>
       ) : (
