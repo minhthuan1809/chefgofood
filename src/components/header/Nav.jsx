@@ -262,15 +262,13 @@ const Nav = () => {
       {isLoginModalOpen && (
         <Modal_login
           onClose={handleCloseLoginModal}
-          isLoginOrRegister={isLoginOrRegister}
           setisLoginOrRegister={setisLoginOrRegister}
-          isLoginModalOpen={isLoginModalOpen}
         />
       )}
       {!isLoginOrRegister && (
         <Modal_Register
           onClose={handleCloseLoginModal}
-          isLoginOrRegister={isLoginOrRegister}
+          isLoginModalOpen={setIsLoginModalOpen}
           setisLoginOrRegister={setisLoginOrRegister}
         />
       )}

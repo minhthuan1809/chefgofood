@@ -35,6 +35,7 @@ export function EditModal({
         <div className="mb-4">
           <label className="block mb-2">Tên gợi nhớ:</label>
           <input
+            maxLength={255}
             name="note"
             value={editInfo.note || ""}
             onChange={handleChange}
@@ -47,6 +48,7 @@ export function EditModal({
         <div className="mb-4">
           <label className="block mb-2">Địa chỉ:</label>
           <input
+            maxLength={255}
             name="address"
             value={editInfo.address || ""}
             onChange={handleChange}
@@ -59,6 +61,7 @@ export function EditModal({
         <div className="mb-4">
           <label className="block mb-2">Số điện thoại:</label>
           <input
+            maxLength={15}
             name="phone"
             type="number"
             value={editInfo.phone || ""}

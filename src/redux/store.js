@@ -1,10 +1,10 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { thunk } from "redux-thunk";
-import { getApiKey } from "./reducer/apikey";
-import { ProfileReducer } from "./reducer/profileReducer";
-import { AddressReducer } from "./reducer/addressReducer";
-import { ProductReducer } from "./reducer/addProduct";
-import { detailReducer } from "./reducer/detailreducer";
+import { getApiKey } from "./reducer/client/apikey";
+import { ProfileReducer } from "./reducer/client/profileReducer";
+import { AddressReducer } from "./reducer/client/addressReducer";
+import { ProductReducer } from "./reducer/client/addProduct";
+import { detailReducer } from "./reducer/client/detailreducer";
 
 const rootReducer = combineReducers({
   login: getApiKey,

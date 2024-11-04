@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProfileAddress } from "../../../redux/middlewares/addAddress";
+import { getProfileAddress } from "../../../redux/middlewares/client/addAddress";
 import {
   createAddress,
   deleteAddress,

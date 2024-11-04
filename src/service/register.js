@@ -16,10 +16,6 @@ export const getRegister = async (data) => {
       }
     );
 
-    if (!response.ok) {
-      throw new Error("Đăng ký thất bại. Vui lòng thử lại.");
-    }
-
     const result = await response.json();
     return result;
   } catch (error) {

@@ -1,4 +1,4 @@
-import { detailAction } from "../action/client/detail";
+import { detailAction } from "../../action/client/detail";
 
 export const getDetailProduct = (idUser, page) => {
   return async (dispatch) => {

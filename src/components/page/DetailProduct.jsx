@@ -9,7 +9,7 @@ import {
 } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { getDetailProduct } from "../../redux/middlewares/detailProduct";
+import { getDetailProduct } from "../../redux/middlewares/client/detailProduct";
 import ImageModal from "./detail/ImageModal";
 import Evaluate from "./detail/Evaluate";
 import Nav from "../header/Nav";
@@ -116,6 +116,9 @@ const DetailProduct = () => {
                         <div className="flex items-center gap-2">
                           {renderStars(product.average_rating)}
                           <span className="text-gray-500">
+                            ({Math.floor(product.average_rating * 10) / 10}/5)
+                          </span>
+                          <span className="text-gray-500">
                             ({product.average_rating}/5)
                           </span>
                         </div>
@@ -132,8 +135,10 @@ const DetailProduct = () => {
 
                     <div className="space-y-2">
                       <div className="text-3xl font-bold text-blue-600">
-                        {parseInt(product.price) *
-                          (1 - product.discount / 100).toLocaleString()}
+                        {(
+                          parseInt(product.price) *
+                          (1 - product.discount / 100)
+                        ).toLocaleString()}
                         ₫
                       </div>
                       {product.discount > 0 && (

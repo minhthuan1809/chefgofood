@@ -8,7 +8,7 @@ import DiscountCard from "../discount/DiscountCard";
 import Loading from "../util/Loading";
 
 const Discount = () => {
-  const apiKey = useSelector((state) => state.login.apikey);
+  const status = useSelector((state) => state.login.status);
   const profile = useSelector((state) => state.profile.profile);
   const [loading, setLoading] = useState(false);
   const [discounts, setDiscounts] = useState([]);
@@ -70,7 +70,7 @@ const Discount = () => {
               <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
                 Mã giảm giá của bạn
               </h1>
-              {apiKey ? (
+              {status ? (
                 <div>
                   <form className="mb-8">
                     <div className="flex flex-col sm:flex-row shadow-sm rounded-lg overflow-hidden">
@@ -89,6 +89,11 @@ const Discount = () => {
                     </div>
                   </form>
 
+                  {discountsUser.length === 0 && (
+                    <p className="text-center text-gray-600">
+                      Bạn chưa có mã nào
+                    </p>
+                  )}
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
                     {discountsUser.map((discount, index) => (
                       <DiscountCard key={index} {...discount} />

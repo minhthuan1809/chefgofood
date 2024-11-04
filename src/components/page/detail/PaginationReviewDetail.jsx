@@ -3,7 +3,7 @@ import { Stack } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
-import { getDetailProduct } from "../../../redux/middlewares/detailProduct";
+import { getDetailProduct } from "../../../redux/middlewares/client/detailProduct";
 
 export default function PaginationReviewDetail({ page }) {
   const params = useParams();

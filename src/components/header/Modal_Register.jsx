@@ -4,7 +4,11 @@ import { MdOutlineCancel } from "react-icons/md";
 import { getRegister } from "../../service/register";
 import { toast } from "react-toastify";
 
-export default function Modal_Register({ onClose, LoginOrRegister }) {
+export default function Modal_Register({
+  onClose,
+  isLoginModalOpen,
+  setisLoginOrRegister,
+}) {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -58,12 +62,17 @@ export default function Modal_Register({ onClose, LoginOrRegister }) {
 
     // Gửi yêu cầu đăng ký
     try {
+      toast.dismiss();
       const data = await getRegister(formData);
+
       if (data.ok) {
         setErrors({});
         setFormData({ username: "", email: "", password: "", confirm: "" });
-        toast.success("Tạo Tài Khoản Thành Công !");
-        LoginOrRegister(true);
+        setisLoginOrRegister(true); // Chuyển về trạng thái đăng nhập
+        isLoginModalOpen(true); // Mở modal đăng nhập
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
       }
     } catch (error) {
       setErrors({ general: error.message });
@@ -94,6 +103,7 @@ export default function Modal_Register({ onClose, LoginOrRegister }) {
               type="text"
               id="username"
               name="username"
+              maxLength={20}
               value={formData.username}
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -111,6 +121,7 @@ export default function Modal_Register({ onClose, LoginOrRegister }) {
               Email
             </label>
             <input
+              maxLength={50}
               type="text"
               id="email"
               name="email"
@@ -131,7 +142,7 @@ export default function Modal_Register({ onClose, LoginOrRegister }) {
               Mật khẩu
             </label>
             <input
-              maxLength={20}
+              maxLength={15}
               type="password"
               id="password"
               name="password"
@@ -152,7 +163,7 @@ export default function Modal_Register({ onClose, LoginOrRegister }) {
               Xác nhận mật khẩu
             </label>
             <input
-              maxLength={20}
+              maxLength={15}
               type="password"
               id="confirm"
               name="confirm"
@@ -180,8 +191,11 @@ export default function Modal_Register({ onClose, LoginOrRegister }) {
           <p className="text-sm text-gray-600">
             Đã có tài khoản?
             <button
-              className="text-blue-500 hover:text-blue-600"
-              onClick={() => LoginOrRegister(true)}
+              className="text-blue-500 pl-2 hover:text-blue-600"
+              onClick={() => {
+                isLoginModalOpen(true);
+                setisLoginOrRegister(true);
+              }}
             >
               Đăng nhập
             </button>

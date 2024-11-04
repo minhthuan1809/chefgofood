@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 import { MdOutlineCancel } from "react-icons/md";
 import { useDispatch } from "react-redux";
-import { getLogin } from "../../redux/middlewares/login";
+import { getLogin } from "../../redux/middlewares/client/login";
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 
-export default function Modal_login({ onClose, LoginOrRegister }) {
+export default function Modal_login({ onClose, setisLoginOrRegister }) {
   const dispatch = useDispatch();
   const [statusLogin, setStatusLogin] = useState("");
   const [formData, setFormData] = useState({
@@ -126,7 +126,7 @@ export default function Modal_login({ onClose, LoginOrRegister }) {
               Email
             </label>
             <input
-              maxLength={30}
+              maxLength={50}
               type="email"
               id="email"
               name="email"
@@ -145,7 +145,7 @@ export default function Modal_login({ onClose, LoginOrRegister }) {
               Mật khẩu
             </label>
             <input
-              maxLength={20}
+              maxLength={50}
               type="password"
               id="password"
               name="password"
@@ -181,11 +181,11 @@ export default function Modal_login({ onClose, LoginOrRegister }) {
           </button>
         </form>
         <div className="mt-4 text-center">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 ">
             Chưa có tài khoản?
             <button
-              className="text-blue-500 hover:text-blue-600 ml-1"
-              onClick={() => LoginOrRegister(false)}
+              className="text-blue-500 ml-2 hover:text-blue-600 ml-1"
+              onClick={() => setisLoginOrRegister(false)}
             >
               Đăng ký ngay
             </button>

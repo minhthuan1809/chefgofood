@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import { PiContactlessPaymentLight } from "react-icons/pi";
 import { getUiTopProduct } from "../../../service/ui/ui_topProduct";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 export default function TopProducts() {
   const [dataproduct, getDataProduct] = useState([]);
   const navigator = useNavigate();
@@ -39,6 +40,7 @@ export default function TopProducts() {
   useEffect(() => {
     async function fectData() {
       const data = await getUiTopProduct();
+
       if (!data.ok) navigator("/error");
       getDataProduct(data.data.products);
     }
@@ -73,20 +75,46 @@ export default function TopProducts() {
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div className="relative">
-                    <img
-                      src={product.image_url}
-                      alt={product.description}
-                      className="w-full h-48 object-cover"
-                    />
-                    <span className="absolute top-2 left-2 bg-red-600 text-white px-2 py-1 text-sm font-semibold rounded">
-                      {product.discount}% OFF
-                    </span>
-                  </div>
+                  <Link
+                    to={`/detail/${product.name
+                      .toLowerCase()
+                      .normalize("NFD")
+                      .replace(/[\u0300-\u036f]/g, "")
+                      .replace(/đ/g, "d")
+                      .replace(/[^a-z0-9\s-]/g, "")
+                      .replace(/\s+/g, "-")
+                      .replace(/-+/g, "-")
+                      .trim()}/${product.id}`}
+                  >
+                    <div className="relative">
+                      <img
+                        src={product.image_url}
+                        alt={product.description}
+                        className="w-full h-48 object-cover"
+                      />
+                      {product.discount > 0 && (
+                        <span className="absolute top-2 left-2 bg-red-600 text-white px-2 py-1 text-sm font-semibold rounded">
+                          {product.discount}% OFF
+                        </span>
+                      )}
+                    </div>
+                  </Link>
                   <div className="p-4 mt-4">
-                    <h3 className="text-xl font-semibold mb-1">
-                      {product.name}
-                    </h3>
+                    <Link
+                      to={`/detail/${product.name
+                        .toLowerCase()
+                        .normalize("NFD")
+                        .replace(/[\u0300-\u036f]/g, "")
+                        .replace(/đ/g, "d")
+                        .replace(/[^a-z0-9\s-]/g, "")
+                        .replace(/\s+/g, "-")
+                        .replace(/-+/g, "-")
+                        .trim()}/${product.id}`}
+                    >
+                      <h3 className="text-xl font-semibold mb-1">
+                        {product.name}
+                      </h3>{" "}
+                    </Link>
                     <div className="flex justify-between items-center">
                       <div>
                         <p className="text-gray-500 line-through">
@@ -110,7 +138,7 @@ export default function TopProducts() {
                     <div className="flex justify-between">
                       <div className="flex items-center mt-3 text-gray-600">
                         <FaStar className="text-yellow-500 mr-1" />
-                        <span>{product.rating}</span>
+                        <span>{product.average_rating}</span>
                         <span className="ml-3">{product.quantity} đã bán</span>
                       </div>
                       <button className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors duration-300 relative group">

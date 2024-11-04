@@ -82,7 +82,7 @@ const AppAdmin = () => {
           </h2>
           <div className="flex items-center space-x-4">
             <img
-              src="/api/placeholder/40/40"
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5aZnsestsA7FsrvvOF-dFwvfNJx1VphgRRISfSQDYV1lzclKTTCu5wnFuUKXDpLq6FUM&usqp=CAU"
               alt="Ảnh đại diện"
               className="w-10 h-10 rounded-full ring-2 ring-blue-500"
             />

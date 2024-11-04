@@ -2,7 +2,7 @@
 import { Stack } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import { useDispatch } from "react-redux";
-import { getProducts } from "../../../redux/middlewares/addProduct";
+import { getProducts } from "../../../redux/middlewares/client/addProduct";
 export default function PaginationPage({ page }) {
   const dispatch = useDispatch();
   const handleSetPage = (_, value) => {

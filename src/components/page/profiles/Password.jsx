@@ -132,6 +132,7 @@ export default function Password() {
               <label className="text-sm font-medium">Mật khẩu hiện tại</label>
               <div className="relative">
                 <input
+                  maxLength={15}
                   type={showCurrentPassword ? "text" : "password"}
                   placeholder="Nhập mật khẩu hiện tại"
                   className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
@@ -160,6 +161,7 @@ export default function Password() {
               <label className="text-sm font-medium">Mật khẩu mới</label>
               <div className="relative">
                 <input
+                  maxLength={15}
                   type={showNewPassword ? "text" : "password"}
                   placeholder="Nhập mật khẩu mới"
                   className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
@@ -190,6 +192,7 @@ export default function Password() {
               </label>
               <div className="relative">
                 <input
+                  maxLength={15}
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="Xác nhận mật khẩu mới"
                   className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"

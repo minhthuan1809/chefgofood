@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { getDelete, getUpdateProfile } from "../../../service/Profile_Client";
 import { useNavigate } from "react-router";
 import { apikeyRedux } from "../../../redux/action/client/profile";
-import { getProfile } from "../../../redux/middlewares/addProfile";
+import { getProfile } from "../../../redux/middlewares/client/addProfile";
 
 export default function Profile() {
   const navigate = useNavigate();

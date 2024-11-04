@@ -33,7 +33,10 @@ export default function RouterDom() {
 
         {/* // admin  */}
         <Route path="/admin/dashboard/login" element={<Login />} />
-        <Route path="/admin/dashboard" element={<AppAdmin />} />
+        <Route path="/admin">
+          <Route index element={<Navigate to="/admin/dashboard" replace />} />
+          <Route path=":url" element={<AppAdmin />} />
+        </Route>
       </Routes>
     </div>
   );
