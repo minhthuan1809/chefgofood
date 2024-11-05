@@ -107,7 +107,7 @@ export default function AdminSidebar() {
     navigate(`/admin${path}`);
   };
   const handleLogout = () => {
-    Cookies.remove("apikey_dashboard");
+    Cookies.remove("admin_apikey");
     dispatch(LoginAdminAction(null));
     dispatch(DecentralizationAction(null));
     toast.success("Đăng xuất thành công !");
@@ -116,7 +116,7 @@ export default function AdminSidebar() {
   return (
     <div>
       {menuItems.map((item) => {
-        if (!item.dataDecentralization) return null;
+        if (!item.dataDecentralization) return;
         return (
           <div
             key={item.id}

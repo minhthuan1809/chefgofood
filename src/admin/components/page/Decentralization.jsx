@@ -7,6 +7,7 @@ import { BiSolidHide, BiSolidShow } from "react-icons/bi";
 import { decentralizationDelete } from "../../../service/server/decentralization/delete";
 import Loading from "../../../components/util/Loading";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 import ModelDecentralization from "../model_decentralization/ModelDecentralization";
 const Decentralization = () => {
   const [showModal, setShowModal] = useState(false);
@@ -14,12 +15,12 @@ const Decentralization = () => {
   const [showPassword, setShowPassword] = useState(null);
   const apikey = useSelector((state) => state.loginAdmin.apikey_dashboard);
   const [admins, setAdmins] = useState([]);
-  const navigator = useNavigate();
+  const cookies = Cookies.get("admin_apikey");
 
   const fetchData = async () => {
+    console.log("cookies", cookies);
     const data = await getdecentralization(apikey);
     setAdmins(data.data.admins);
-    console.log(data.data.admins);
   };
   useEffect(() => {
     fetchData();

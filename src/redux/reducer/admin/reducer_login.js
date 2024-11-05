@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 const initialState = {
-  apikey_dashboard: Cookies.get("apikey_dashboard") || null,
+  apikey_dashboard: Cookies.get("admin_apikey") || null,
 };
 
 export const LoginAdminReducer = (state = initialState, action) => {

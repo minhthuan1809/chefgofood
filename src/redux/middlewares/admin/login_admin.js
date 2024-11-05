@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
 import { LoginAdminAction } from "../../action/admin/loginAdmin";
 import Cookies from "js-cookie";
+
 export const getLoginAdmin = (value) => {
   return async (dispatch) => {
     try {
@@ -23,14 +24,14 @@ export const getLoginAdmin = (value) => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
+      // Set the cookie with the correct name
+      Cookies.set("admin_apikey", data.api_key, { expires: 7 });
       dispatch(LoginAdminAction(data));
-      Cookies.set("apikey_dashboard", data.api_key);
-      toast.success(data.message);
 
+      toast.success(data.message);
       return data;
     } catch (error) {
       console.error("Fetch error:", error.message);
-
       throw error;
     }
   };

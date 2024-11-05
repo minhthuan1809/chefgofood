@@ -10,16 +10,17 @@ import { HiMagnifyingGlass } from "react-icons/hi2";
 import Error from "../router/Error";
 import { toast } from "react-toastify";
 import Decentralization from "./components/page/Decentralization";
+import Cookies from "js-cookie";
 const AppAdmin = () => {
   const [activeItem, setActiveItem] = useState("dashboard");
   const [page, setPage] = useState(null);
   const dispatch = useDispatch();
-  const apikey = useSelector((state) => state.loginAdmin.apikey_dashboard);
   const dataDecentralization = useSelector(
     (state) => state.decentralization.DecentralizationReducer_dashboard
   );
   const navigate = useNavigate();
   const { url } = useParams();
+  const apikey_cookies = Cookies.get("admin_apikey");
   const menuItems = [
     {
       path: "dashboard",
@@ -29,15 +30,13 @@ const AppAdmin = () => {
   ];
   useEffect(() => {
     async function fetchData() {
-      const data = await dispatch(getDecentralization(apikey));
-
-      console.log("data", dataDecentralization);
+      const data = await dispatch(getDecentralization(apikey_cookies));
 
       if (!data.ok) {
         toast.dismiss();
+        Cookies.remove("admin_apikey");
         toast.info("Bạn cần đăng nhập lại ");
         navigate("/admin/dashboard/login");
-        return null;
       }
     }
     fetchData();

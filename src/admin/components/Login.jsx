@@ -1,24 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MdEmail, MdLock } from "react-icons/md";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
 import { getLoginAdmin } from "../../redux/middlewares/admin/login_admin";
-
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     rememberMe: false,
   });
   const dispatch = useDispatch();
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
-    dispatch(getLoginAdmin(formData));
-  };
+    const response = await dispatch(getLoginAdmin(formData));
 
+    if (response.ok) {
+      navigate("/admin/dashboard");
+    }
+  };
+  useEffect(() => {
+    if (Cookies.get("admin_apikey")) {
+      navigate("/admin/dashboard");
+    }
+  }, []);
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
