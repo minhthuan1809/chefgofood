@@ -26,7 +26,6 @@ export const getUpdateProfile = async (data, apikey, id) => {
 
 export const getDelete = async (apikey) => {
   try {
-    //thuan
     const response = await fetch(
       `${import.meta.env.VITE_FASTFOOD_SERVER_API}/delete`,
       {

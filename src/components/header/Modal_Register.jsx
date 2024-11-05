@@ -103,7 +103,7 @@ export default function Modal_Register({
               type="text"
               id="username"
               name="username"
-              maxLength={20}
+              maxLength={40}
               value={formData.username}
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"

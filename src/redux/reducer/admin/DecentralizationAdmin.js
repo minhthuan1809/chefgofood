@@ -1,15 +1,15 @@
-import Cookies from "js-cookie";
-
 const initialState = {
-  DecentralizationReducer_dashboard: Cookies.get("apikey_dashboard") || null,
+  DecentralizationReducer_dashboard: null,
 };
 
 export const DecentralizationReducer = (state = initialState, action) => {
   switch (action.type) {
     case "add/Decentralization/admin": {
+      console.log("thuan");
+
       return {
         ...state,
-        products: action.payload,
+        DecentralizationReducer_dashboard: action.payload,
       };
     }
 

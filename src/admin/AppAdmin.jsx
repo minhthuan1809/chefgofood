@@ -2,26 +2,46 @@
 import { useEffect, useState } from "react";
 import { PiVectorThreeFill } from "react-icons/pi";
 import Dashboard from "./components/page/Dashboard";
-import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { getDecentralization } from "../redux/middlewares/admin/decentralization";
 import AdminSidebar from "./components/AdminSidebar";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import Error from "../router/Error";
+import { toast } from "react-toastify";
+import Decentralization from "./components/page/Decentralization";
 const AppAdmin = () => {
   const [activeItem, setActiveItem] = useState("dashboard");
   const [page, setPage] = useState(null);
   const dispatch = useDispatch();
+  const apikey = useSelector((state) => state.loginAdmin.apikey_dashboard);
+  const dataDecentralization = useSelector(
+    (state) => state.decentralization.DecentralizationReducer_dashboard
+  );
+  const navigate = useNavigate();
   const { url } = useParams();
   const menuItems = [
     {
       path: "dashboard",
       page: <Dashboard />,
     },
+    { path: "decentralization", page: <Decentralization /> },
   ];
   useEffect(() => {
-    dispatch(getDecentralization());
-  }, [dispatch]);
+    async function fetchData() {
+      const data = await dispatch(getDecentralization(apikey));
+
+      console.log("data", dataDecentralization);
+
+      if (!data.ok) {
+        toast.dismiss();
+        toast.info("Bạn cần đăng nhập lại ");
+        navigate("/admin/dashboard/login");
+        return null;
+      }
+    }
+    fetchData();
+  }, [dispatch, url]);
 
   useEffect(() => {
     const matchedItem = menuItems.find((item) => item.path === url);
@@ -46,8 +66,10 @@ const AppAdmin = () => {
               className="w-10 h-10 rounded-full ring-2 ring-blue-500"
             />
             <div>
-              <h3 className="font-medium">Bernard V Martin</h3>
-              <p className="text-sm text-gray-500">Quản lý bán hàng</p>
+              <h3 className="font-medium">{dataDecentralization?.username}</h3>
+              <p className="text-sm text-gray-500">
+                {dataDecentralization?.email}
+              </p>
             </div>
           </div>
         </div>
