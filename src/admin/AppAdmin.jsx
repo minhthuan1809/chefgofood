@@ -11,6 +11,9 @@ import Error from "../router/Error";
 import { toast } from "react-toastify";
 import Decentralization from "./components/page/Decentralization";
 import Cookies from "js-cookie";
+import Messages from "./components/page/Messages";
+import Setting from "./components/page/Setting";
+import Sale from "./components/page/Sale";
 const AppAdmin = () => {
   const [activeItem, setActiveItem] = useState("dashboard");
   const [page, setPage] = useState(null);
@@ -27,6 +30,9 @@ const AppAdmin = () => {
       page: <Dashboard />,
     },
     { path: "decentralization", page: <Decentralization /> },
+    { path: "messages", page: <Messages /> },
+    { path: "settings", page: <Setting /> },
+    { path: "discounts", page: <Sale /> },
   ];
   useEffect(() => {
     async function fetchData() {

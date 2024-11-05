@@ -14,6 +14,7 @@ export const getDecentralization = (apikey) => {
       });
 
       const data = await response.json();
+      console.log("xác thực apikey", data);
       if (response.ok) {
         toast.dismiss();
         toast.success(data.message);

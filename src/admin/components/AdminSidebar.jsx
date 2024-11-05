@@ -70,14 +70,14 @@ export default function AdminSidebar() {
       label: "Sản Phẩm",
       id: "products",
       path: "/products",
-      dataDecentralization: dataDecentralization?.order,
+      dataDecentralization: dataDecentralization?.product,
     },
     {
       icon: <HiTag size={20} />,
       label: "Mã Giảm Giá",
       id: "discounts",
       path: "/discounts",
-      dataDecentralization: dataDecentralization?.order,
+      dataDecentralization: dataDecentralization?.discount,
     },
     {
       icon: <BiSolidLayout size={20} />,
@@ -114,24 +114,27 @@ export default function AdminSidebar() {
     navigate("/admin/dashboard/login");
   };
   return (
-    <div>
-      {menuItems.map((item) => {
-        if (!item.dataDecentralization) return;
-        return (
-          <div
-            key={item.id}
-            className={`flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-50 transition-colors cursor-pointer ${
-              currentPath === item.id.toLowerCase()
-                ? "bg-blue-100 text-blue-600"
-                : "text-gray-700"
-            }`}
-            onClick={() => handleMenuItemClick(item.id, item.path)}
-          >
-            <span className="text-xl">{item.icon}</span>
-            <span>{item.label}</span>
-          </div>
-        );
-      })}
+    <div className="relative h-full flex flex-col">
+      <div className="flex-1">
+        {menuItems.map((item) => {
+          if (!item.dataDecentralization) return "";
+
+          return (
+            <div
+              key={item.id}
+              className={`flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-50 transition-colors cursor-pointer ${
+                currentPath === item.id.toLowerCase()
+                  ? "bg-blue-100 text-blue-600"
+                  : "text-gray-700"
+              }`}
+              onClick={() => handleMenuItemClick(item.id, item.path)}
+            >
+              <span className="text-xl">{item.icon}</span>
+              <span>{item.label}</span>
+            </div>
+          );
+        })}
+      </div>
       <button
         className="flex w-full items-center space-x-3 p-3 rounded-lg hover:bg-blue-50 transition-colors cursor-pointer"
         onClick={handleLogout}

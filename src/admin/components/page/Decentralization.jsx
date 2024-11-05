@@ -15,10 +15,8 @@ const Decentralization = () => {
   const [showPassword, setShowPassword] = useState(null);
   const apikey = useSelector((state) => state.loginAdmin.apikey_dashboard);
   const [admins, setAdmins] = useState([]);
-  const cookies = Cookies.get("admin_apikey");
 
   const fetchData = async () => {
-    console.log("cookies", cookies);
     const data = await getdecentralization(apikey);
     setAdmins(data.data.admins);
   };

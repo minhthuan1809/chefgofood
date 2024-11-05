@@ -17,7 +17,6 @@ export default function Login() {
   const dispatch = useDispatch();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
     const response = await dispatch(getLoginAdmin(formData));
 
     if (response.ok) {
