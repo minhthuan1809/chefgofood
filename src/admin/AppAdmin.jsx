@@ -15,6 +15,9 @@ import Messages from "./components/page/Messages";
 import Setting from "./components/page/Setting";
 import Sale from "./components/page/Sale";
 import Product from "./components/page/Product";
+import UserAdmin from "./components/page/UserAdmin";
+import DiscountUser from "./components/page/DiscountUser";
+import Trademark from "./components/layout/Trademark";
 const AppAdmin = () => {
   const [page, setPage] = useState(null);
   const dispatch = useDispatch();
@@ -32,8 +35,11 @@ const AppAdmin = () => {
     { path: "decentralization", page: <Decentralization /> },
     { path: "messages", page: <Messages /> },
     { path: "settings", page: <Setting /> },
-    { path: "discounts", page: <Sale /> },
+    { path: "discounts-main", page: <Sale /> },
+    { path: "discounts-user", page: <DiscountUser /> },
     { path: "products", page: <Product /> },
+    { path: "users", page: <UserAdmin /> },
+    { path: "title", page: <Trademark /> },
   ];
   useEffect(() => {
     async function fetchData() {
@@ -50,7 +56,10 @@ const AppAdmin = () => {
   }, [dispatch, url]);
 
   useEffect(() => {
-    const matchedItem = menuItems.find((item) => item.path === url);
+    const matchedItem = menuItems.find(
+      (item) => item.path.toLowerCase() === url.toLowerCase()
+    );
+    console.log(url);
     if (matchedItem) {
       setPage(matchedItem.page);
     } else {

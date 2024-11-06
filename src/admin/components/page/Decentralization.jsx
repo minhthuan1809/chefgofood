@@ -125,7 +125,8 @@ const Decentralization = () => {
         onClick={() => handleModalOpen()}
         className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg flex items-center gap-2"
       >
-        <HiPlus className="text-xl" /> Add Product
+        <HiPlus className="text-xl" />
+        Thêm tài khoản
       </button>
     </div>
   );

@@ -89,8 +89,7 @@ const ProductManagement = () => {
     setEditData(null);
   };
   if (isLoading) {
-    <Loading />;
-    return;
+    return <Loading />;
   }
   return (
     <div className="p-4 w-full mx-auto">
@@ -208,7 +207,7 @@ const ProductManagement = () => {
                           .replace("water", "Nước")
                           .replace("food", "Đồ ăn")}
                       </td>
-                      <td className="p-2 text-center text-sm w-[6rem]">
+                      <td className="p-2 text-center text-sm w-[7rem]">
                         <span
                           className={`px-2 py-1 rounded text-sm ${
                             product.lock
