@@ -18,6 +18,7 @@ import Product from "./components/page/Product";
 import UserAdmin from "./components/page/UserAdmin";
 import DiscountUser from "./components/page/DiscountUser";
 import Trademark from "./components/layout/Trademark";
+
 const AppAdmin = () => {
   const [page, setPage] = useState(null);
   const dispatch = useDispatch();
@@ -31,16 +32,18 @@ const AppAdmin = () => {
     {
       path: "dashboard",
       page: <Dashboard />,
+      id: 1,
     },
-    { path: "decentralization", page: <Decentralization /> },
-    { path: "messages", page: <Messages /> },
-    { path: "settings", page: <Setting /> },
-    { path: "discounts-main", page: <Sale /> },
-    { path: "discounts-user", page: <DiscountUser /> },
-    { path: "products", page: <Product /> },
-    { path: "users", page: <UserAdmin /> },
-    { path: "title", page: <Trademark /> },
+    { path: "decentralization", page: <Decentralization />, id: 2 },
+    { path: "messages", page: <Messages />, id: 3 },
+    { path: "settings", page: <Setting />, id: 4 },
+    { path: "discounts-main", page: <Sale />, id: 5 },
+    { path: "discounts-user", page: <DiscountUser />, id: 6 },
+    { path: "products", page: <Product />, id: 7 },
+    { path: "users", page: <UserAdmin />, id: 8 },
+    { path: "title", page: <Trademark />, id: 9 },
   ];
+
   useEffect(() => {
     async function fetchData() {
       const data = await dispatch(getDecentralization(apikey_cookies));
@@ -66,6 +69,7 @@ const AppAdmin = () => {
       setPage(<Error />);
     }
   }, [url]);
+
   return (
     <div className="flex h-screen">
       <div className="w-64 bg-white h-full shadow-lg flex flex-col">
