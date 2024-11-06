@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
-import { PiVectorThreeFill } from "react-icons/pi";
+
 import Dashboard from "./components/page/Dashboard";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,8 +14,8 @@ import Cookies from "js-cookie";
 import Messages from "./components/page/Messages";
 import Setting from "./components/page/Setting";
 import Sale from "./components/page/Sale";
+import Product from "./components/page/Product";
 const AppAdmin = () => {
-  const [activeItem, setActiveItem] = useState("dashboard");
   const [page, setPage] = useState(null);
   const dispatch = useDispatch();
   const dataDecentralization = useSelector(
@@ -33,6 +33,7 @@ const AppAdmin = () => {
     { path: "messages", page: <Messages /> },
     { path: "settings", page: <Setting /> },
     { path: "discounts", page: <Sale /> },
+    { path: "products", page: <Product /> },
   ];
   useEffect(() => {
     async function fetchData() {
@@ -51,7 +52,6 @@ const AppAdmin = () => {
   useEffect(() => {
     const matchedItem = menuItems.find((item) => item.path === url);
     if (matchedItem) {
-      setActiveItem(url);
       setPage(matchedItem.page);
     } else {
       setPage(<Error />);

@@ -46,6 +46,16 @@ export default function LeftSeting() {
               {Object.entries(dataDecentralization || {}).map(
                 ([key, value]) => {
                   if (typeof value === "boolean") {
+                    const translations = {
+                      order: "Đơn hàng",
+                      statistics: "Thống kê",
+                      product: "Sản phẩm",
+                      layout: "Giao diện",
+                      mess: "Tin nhắn",
+                      user: "Người dùng",
+                      discount: "Giảm giá",
+                      decentralization: "Phân quyền",
+                    };
                     return (
                       <div
                         key={key}
@@ -56,7 +66,9 @@ export default function LeftSeting() {
                             value ? "bg-green-500" : "bg-red-500"
                           }`}
                         />
-                        <span className="text-sm capitalize">{key}</span>
+                        <span className="text-sm">
+                          {translations[key] || key}
+                        </span>
                       </div>
                     );
                   }

@@ -1,199 +1,144 @@
-/* eslint-disable no-unused-vars */
-import React, { useState } from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Box,
-} from "@mui/material";
-import {
-  Add as AddIcon,
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-  Upload as UploadIcon,
-} from "@mui/icons-material";
+import { useState } from "react";
+import { BiRefresh } from "react-icons/bi";
+import { FaPlus, FaEdit, FaTrash, FaSearch } from "react-icons/fa";
 
-const Product = () => {
-  const [products, setProducts] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [editingId, setEditingId] = useState(null);
-  const [formData, setFormData] = useState({
-    name: "",
-    price: "",
-    category: "",
-    image: null,
-  });
+const ProductManagement = () => {
+  const [products, setProducts] = useState([
+    {
+      id: "bò_1",
+      name: "Burger Beef",
+      description: "Burger bò tươi ngon với phô mai và rau",
+      sold: 150,
+      price: 50000,
+      quantity: 10000,
+      type: "food",
+      status: "Còn hàng",
+      discount: 0,
+      image_url: "https://reneenicolesk...",
+      created_at: "2024-11-01 00:00:00",
+    },
+  ]);
 
-  const columns = [
-    { id: "image", label: "Hình ảnh", width: 100 },
-    { id: "name", label: "Tên sản phẩm" },
-    { id: "price", label: "Giá" },
-    { id: "category", label: "Danh mục" },
-    { id: "actions", label: "Thao tác" },
-  ];
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const handleAdd = () => {
-    setEditingId(null);
-    setFormData({
-      name: "",
-      price: "",
-      category: "",
-      image: null,
-    });
-    setOpen(true);
+  const handleDeleteProduct = (id) => {
+    setProducts(products.filter((product) => product.id !== id));
   };
 
-  const handleEdit = (record) => {
-    setEditingId(record.id);
-    setFormData(record);
-    setOpen(true);
-  };
-
-  const handleDelete = () => {
-    if (window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) {
-      // Add delete logic here
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (editingId) {
-      // Add update logic here
-    } else {
-      // Add create logic here
-    }
-    setOpen(false);
-  };
+  const filteredProducts = products.filter(
+    (product) =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Box sx={{ mb: 2 }}>
-        <Button variant="contained" startIcon={<AddIcon />} onClick={handleAdd}>
-          Thêm sản phẩm
-        </Button>
-      </Box>
+    <div className="p-4 max-w-6xl mx-auto">
+      <div className="bg-white rounded-lg shadow">
+        <div className="p-4 flex items-center justify-between border-b">
+          <h2 className="text-xl font-bold text-gray-500">Quản lý sản phẩm</h2>
+          <button
+            onClick={() => setShowAddForm(!showAddForm)}
+            className="flex items-center px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            <FaPlus className="mr-2" />
+            Thêm
+          </button>
+        </div>
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell key={column.id} style={{ width: column.width }}>
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {products.map((product) => (
-              <TableRow key={product.id}>
-                <TableCell>
-                  {product.image && (
-                    <img src={product.image} alt={product.name} width={50} />
-                  )}
-                </TableCell>
-                <TableCell>{product.name}</TableCell>
-                <TableCell>{product.price}</TableCell>
-                <TableCell>{product.category}</TableCell>
-                <TableCell>
-                  <Button
-                    startIcon={<EditIcon />}
-                    onClick={() => handleEdit(product)}
-                  >
-                    Sửa
-                  </Button>
-                  <Button
-                    startIcon={<DeleteIcon />}
-                    onClick={() => handleDelete(product.id)}
-                  >
-                    Xóa
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>
-          {editingId ? "Sửa sản phẩm" : "Thêm sản phẩm mới"}
-        </DialogTitle>
-        <DialogContent>
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
-            <TextField
-              fullWidth
-              label="Tên sản phẩm"
-              value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-              margin="normal"
-              required
-            />
-            <TextField
-              fullWidth
-              label="Giá"
-              type="number"
-              value={formData.price}
-              onChange={(e) =>
-                setFormData({ ...formData, price: e.target.value })
-              }
-              margin="normal"
-              required
-            />
-            <FormControl fullWidth margin="normal" required>
-              <InputLabel>Danh mục</InputLabel>
-              <Select
-                value={formData.category}
-                onChange={(e) =>
-                  setFormData({ ...formData, category: e.target.value })
-                }
-              >
-                <MenuItem value="food">Đồ ăn</MenuItem>
-                <MenuItem value="drink">Đồ uống</MenuItem>
-              </Select>
-            </FormControl>
-            <Button
-              variant="contained"
-              component="label"
-              startIcon={<UploadIcon />}
-              sx={{ mt: 2 }}
-            >
-              Chọn ảnh
+        <div className="p-4">
+          {/* Search Bar */}
+          <div className="mb-4 flex gap-2">
+            <div className="relative flex-1">
+              <FaSearch className="absolute left-3 top-3 text-gray-400" />
               <input
-                type="file"
-                hidden
-                onChange={(e) =>
-                  setFormData({ ...formData, image: e.target.files[0] })
-                }
+                type="text"
+                placeholder="Tìm kiếm sản phẩm..."
+                className="w-full pl-10 pr-4 py-2 border rounded"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
-            </Button>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpen(false)}>Hủy</Button>
-          <Button onClick={handleSubmit} variant="contained">
-            {editingId ? "Cập nhật" : "Thêm mới"}
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Box>
+            </div>
+            <button
+              onClick={() => setSearchTerm("")}
+              className="px-4 py-2 border rounded hover:bg-gray-100"
+            >
+              <BiRefresh className="text-xl text-gray-500" />
+            </button>
+          </div>
+
+          {/* Products Table */}
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="p-2 text-left text-gray-500">Hình ảnh</th>
+                  <th className="p-2 text-left text-gray-500">Tên</th>
+                  <th className="p-2 text-left text-gray-500">Mô tả</th>
+                  <th className="p-2 text-right text-gray-500">Giá</th>
+                  <th className="p-2 text-right text-gray-500">Số lượng</th>
+                  <th className="p-2 text-center text-gray-500">Loại</th>
+                  <th className="p-2 text-center text-gray-500">Trạng thái</th>
+                  <th className="p-2 text-center text-gray-500">Hành động</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredProducts.map((product) => (
+                  <tr key={product.id} className="border-t hover:bg-gray-50">
+                    <td className="p-2">
+                      <img
+                        src={product.image_url}
+                        alt={product.name}
+                        className="w-16 h-16 object-cover rounded"
+                      />
+                    </td>
+                    <td className="p-2">{product.name}</td>
+                    <td className="p-2">{product.description}</td>
+                    <td className="p-2 text-right">
+                      {parseInt(product.price).toLocaleString()}đ
+                    </td>
+                    <td className="p-2 text-right">{product.quantity}</td>
+                    <td className="p-2 text-center">{product.type}</td>
+                    <td className="p-2 text-center">
+                      <span
+                        className={`px-2 py-1 rounded ${
+                          product.status === "Còn hàng"
+                            ? "bg-green-100 text-green-800"
+                            : product.status === "Hết hàng"
+                            ? "bg-red-100 text-red-800"
+                            : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
+                        {product.status}
+                      </span>
+                    </td>
+                    <td className="p-2 text-center">
+                      <div className="flex justify-center gap-2">
+                        <button
+                          className="p-2 text-blue-500 hover:bg-blue-100 rounded"
+                          onClick={() => {
+                            /* Edit logic */
+                          }}
+                        >
+                          <FaEdit />
+                        </button>
+                        <button
+                          className="p-2 text-red-500 hover:bg-red-100 rounded"
+                          onClick={() => handleDeleteProduct(product.id)}
+                        >
+                          <FaTrash />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
-export default Product;
+export default ProductManagement;

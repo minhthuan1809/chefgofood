@@ -1,7 +1,7 @@
-export const getdecentralization = async (apikey) => {
+export const getdecentralization = async (apikey, searchTerm) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_ADMIN_API}/admin`,
+      `${import.meta.env.VITE_FASTFOOD_ADMIN_API}/admin?q=${searchTerm}`,
       {
         headers: {
           "X-Api-Key": apikey,

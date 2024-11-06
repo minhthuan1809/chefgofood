@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable react/prop-types */
+import { useState } from "react";
 import { decentralizationCreate } from "../../../service/server/decentralization/create";
 import { toast } from "react-toastify";
 import { IoIosCreate } from "react-icons/io";
@@ -33,6 +34,7 @@ const ModelDecentralization = ({ user, onClose, refetch }) => {
       statistics: user ? user.statistics : false,
       user: user ? user.user : false,
     },
+    note: user ? user.note : "",
   });
 
   const [errors, setErrors] = useState({
@@ -126,7 +128,7 @@ const ModelDecentralization = ({ user, onClose, refetch }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-[500px] max-h-[90vh] overflow-y-auto">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-[500px] max-h-[90vh] overflow-y-none scrollbar-none">
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-bold mb-4">
             {user ? "Chỉnh sửa người dùng" : "Thêm người dùng mới"}
