@@ -4,7 +4,6 @@ export const getDecentralization = (apikey) => {
   return async (dispatch) => {
     try {
       const url = `${import.meta.env.VITE_FASTFOOD_ADMIN_API}/admin/role`;
-      console.log("url", url);
       const response = await fetch(url, {
         method: "GET",
         headers: {
@@ -14,7 +13,6 @@ export const getDecentralization = (apikey) => {
       });
 
       const data = await response.json();
-      console.log("xác thực apikey", data);
       if (response.ok) {
         toast.dismiss();
         toast.success(data.message);

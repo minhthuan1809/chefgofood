@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+
 import {
   IoLockClosedOutline,
   IoEyeOffOutline,
@@ -59,8 +59,17 @@ export default function Setting() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const data = {
+      current_password: oldPassword,
+      new_password: newPassword,
+    };
     if (validatePassword()) {
-      handleChangePassword(e);
+      handleChangePassword(
+        data,
+        setNewPassword,
+        setOldPassword,
+        setConfirmPassword
+      );
     }
   };
 

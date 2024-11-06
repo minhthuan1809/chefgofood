@@ -9,6 +9,7 @@ import { detailReducer } from "./reducer/client/detailreducer";
 //admin
 import { LoginAdminReducer } from "./reducer/admin/reducer_login";
 import { DecentralizationReducer } from "./reducer/admin/DecentralizationAdmin";
+import { ProductAdminReducer } from "./reducer/admin/productReducer";
 
 const rootReducer = combineReducers({
   login: getApiKey,
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   detail: detailReducer,
   loginAdmin: LoginAdminReducer,
   decentralization: DecentralizationReducer,
+  productsAdmin: ProductAdminReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
