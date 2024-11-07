@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { BiRefresh } from "react-icons/bi";
 import { FaEdit, FaPlus, FaSearch, FaTrash } from "react-icons/fa";
 import { MdDiscount } from "react-icons/md";
 
@@ -49,11 +50,9 @@ export default function HistoryDiscount() {
               className="pl-10 p-2 border rounded-lg w-full focus:outline-none focus:border-blue-500"
             />
           </div>
-          <select className="p-2 border rounded-lg focus:outline-none focus:border-blue-500">
-            <option value="">Tất cả trạng thái</option>
-            <option value="active">Đang hoạt động</option>
-            <option value="expired">Hết hạn</option>
-          </select>
+          <button className="px-4 py-2 border rounded hover:bg-gray-100">
+            <BiRefresh className="text-xl text-gray-500" />
+          </button>
           <select className="p-2 border rounded-lg focus:outline-none focus:border-blue-500">
             <option value="">Tất cả danh mục</option>
             <option value="food">Đồ ăn</option>
@@ -132,30 +131,6 @@ export default function HistoryDiscount() {
             ))}
           </tbody>
         </table>
-      </div>
-
-      {/* Pagination */}
-      <div className="flex justify-between items-center mt-4 bg-white p-4 rounded-lg shadow">
-        <div className="text-sm text-gray-500">
-          Hiển thị 1-10 trong số 50 mục
-        </div>
-        <div className="flex gap-2">
-          <button className="px-3 py-1 border rounded hover:bg-gray-50">
-            Trước
-          </button>
-          <button className="px-3 py-1 bg-blue-600 text-white rounded">
-            1
-          </button>
-          <button className="px-3 py-1 border rounded hover:bg-gray-50">
-            2
-          </button>
-          <button className="px-3 py-1 border rounded hover:bg-gray-50">
-            3
-          </button>
-          <button className="px-3 py-1 border rounded hover:bg-gray-50">
-            Sau
-          </button>
-        </div>
       </div>
     </div>
   );
