@@ -5,8 +5,7 @@ import { getUserAdmin } from "../../../service/server/user/useraAdmin";
 import PaginationPage from "../util/PaginationPage";
 import { deleteUser } from "../../../service/server/user/deleteUser";
 import { toast } from "react-toastify";
-import RenderUser from "../user/renderUser";
-import { TiDeleteOutline } from "react-icons/ti";
+import RenderUser from "../user/RenderUser";
 import ModelAddEditUser from "../_model_user/ModelAddEditUser";
 
 export default function UserAdmin() {
