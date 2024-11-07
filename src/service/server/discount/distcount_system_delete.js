@@ -1,11 +1,9 @@
-export const getdecentralization = async (apikey, searchTerm) => {
+export const deleteDiscountAdmin = async (id) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_ADMIN_API}/admin?q=${searchTerm}`,
+      `${import.meta.env.VITE_FASTFOOD_SERVER_API}/discount/${id}`,
       {
-        headers: {
-          "X-Api-Key": apikey,
-        },
+        method: "DELETE",
       }
     );
 

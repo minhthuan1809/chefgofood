@@ -1,11 +1,13 @@
-export const getdecentralization = async (apikey, searchTerm) => {
+export const getCreateDiscountSystem = async (data) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_ADMIN_API}/admin?q=${searchTerm}`,
+      `${import.meta.env.VITE_FASTFOOD_SERVER_API}/discount`,
       {
+        method: "POST",
         headers: {
-          "X-Api-Key": apikey,
+          "Content-Type": "application/json",
         },
+        body: JSON.stringify(data),
       }
     );
 

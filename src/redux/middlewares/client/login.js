@@ -13,6 +13,7 @@ export const getLogin = (data) => {
         }
       );
       const result = await response.json();
+      console.log(result);
 
       if (result.ok) {
         dispatch({

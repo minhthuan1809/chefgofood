@@ -1,28 +1,67 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaEdit, FaTrash, FaPlus, FaSearch } from "react-icons/fa";
 import { MdDiscount } from "react-icons/md";
+import { getDiscountAdmin } from "../../../service/server/discount/discount_system";
+import { BiRefresh } from "react-icons/bi";
+import PaginationPage from "../util/PaginationPage";
+import Loading from "../util/Loading";
+import { deleteDiscountAdmin } from "../../../service/server/discount/distcount_system_delete";
+import { toast } from "react-toastify";
+import DiscountModalSystem from "../_modal_discount/Model_system";
 
 export default function Sale() {
-  const [coupons] = useState([
-    {
-      id: 1,
-      code: "FOOD30",
-      discount: "0.3%",
-      minOrder: "2,000₫",
-      duration: "3 ngày",
-      category: "Đồ ăn",
-      status: "Đang hoạt động",
-    },
-    {
-      id: 2,
-      code: "DRINK50",
-      discount: "0.5%",
-      minOrder: "5,000₫",
-      duration: "5 ngày",
-      category: "Đồ uống",
-      status: "Hết hạn",
-    },
-  ]);
+  const [discounts, setDiscounts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(20);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [discount, setDiscount] = useState(null);
+  const [categoryFilter, setCategoryFilter] = useState("");
+
+  const fetchData = async () => {
+    setIsLoading(true);
+    const result = await getDiscountAdmin(page, limit, searchTerm);
+    console.log(result);
+
+    let filteredDiscounts = result.data.discounts;
+
+    // Lọc theo danh mục
+    if (categoryFilter) {
+      filteredDiscounts = filteredDiscounts.filter(
+        (discount) => discount.type === categoryFilter
+      );
+    }
+
+    setDiscounts(filteredDiscounts);
+    setPage(result.data.pagination.total_pages);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      fetchData();
+    }, 500);
+    return () => clearTimeout(timeout);
+  }, [page, limit, searchTerm, categoryFilter]);
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Bạn có chắc chắn muốn xóa mã giảm giá này không?"))
+      return;
+    const result = await deleteDiscountAdmin(id);
+    if (result.ok) {
+      toast.dismiss();
+      toast.success(result.message);
+      fetchData();
+    } else {
+      toast.dismiss();
+      toast.error(result.message);
+    }
+  };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="p-6">
@@ -32,7 +71,13 @@ export default function Sale() {
           <MdDiscount className="text-blue-600" />
           Quản lý mã giảm giá
         </h1>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700">
+        <button
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700"
+          onClick={() => {
+            setIsOpen(true);
+            setDiscount(null);
+          }}
+        >
           <FaPlus />
           Thêm mã mới
         </button>
@@ -45,21 +90,44 @@ export default function Sale() {
             <FaSearch className="absolute left-3 top-3 text-gray-400" />
             <input
               type="text"
+              value={searchTerm}
               placeholder="Tìm kiếm mã giảm giá..."
               className="pl-10 p-2 border rounded-lg w-full focus:outline-none focus:border-blue-500"
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <select className="p-2 border rounded-lg focus:outline-none focus:border-blue-500">
-            <option value="">Tất cả trạng thái</option>
-            <option value="active">Đang hoạt động</option>
-            <option value="expired">Hết hạn</option>
-          </select>
-          <select className="p-2 border rounded-lg focus:outline-none focus:border-blue-500">
+          <button
+            className="px-4 py-2 border rounded bg-white hover:bg-gray-100 shadow-sm flex items-center gap-2"
+            onClick={fetchData}
+          >
+            <BiRefresh className="text-xl text-gray-500" />
+          </button>
+
+          <select
+            className="p-2 border rounded-lg focus:outline-none focus:border-blue-500"
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+          >
             <option value="">Tất cả danh mục</option>
             <option value="food">Đồ ăn</option>
-            <option value="drink">Đồ uống</option>
-            <option value="drink">Bánh</option>
+            <option value="water">Đồ uống</option>
+            <option value="cake">Bánh</option>
           </select>
+
+          <div className="flex items-center gap-2">
+            <label className="text-gray-500">Số lượng:</label>
+            <select
+              className="border rounded px-3 py-2 outline-none shadow-sm focus:ring-2 focus:ring-blue-500"
+              onChange={(e) => setLimit(parseInt(e.target.value))}
+              value={limit}
+            >
+              {Array.from({ length: 100 }, (_, index) => (
+                <option key={index} value={index + 1}>
+                  {index + 1}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 
@@ -69,19 +137,28 @@ export default function Sale() {
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                STT
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Mã giảm giá
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Giảm giá
+                Tên
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Đơn tối thiểu
+                Giảm
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Thời hạn
+                Tối thiểu
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Danh mục
+                Số lượng
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Thời gian
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Loại
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Trạng thái
@@ -92,38 +169,64 @@ export default function Sale() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {coupons.map((coupon) => (
+            {discounts.map((coupon, index) => (
               <tr key={coupon.id}>
+                <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
                 <td className="px-6 py-4 whitespace-nowrap">{coupon.code}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{coupon.name}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {coupon.discount}
+                  {coupon.discount_percent}%
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {coupon.minOrder}
+                  {new Intl.NumberFormat("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  }).format(coupon.minimum_price)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {coupon.duration}
+                  {coupon.quantity}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {coupon.category}
+                  {coupon.valid_from} - {coupon.valid_to}
+                  <br />
+                  <span className="text-sm text-gray-500">
+                    ({coupon.days_remaining} ngày còn lại)
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {coupon.type
+                    .replace("cake", "Bánh")
+                    .replace("water", "Đồ uống")
+                    .replace("food", "Đồ ăn")}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
                     className={`px-2 py-1 rounded-full text-xs ${
-                      coupon.status === "Đang hoạt động"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-red-100 text-red-800"
+                      coupon.message.toLowerCase().includes("hết hạn")
+                        ? "bg-red-100 text-red-800"
+                        : coupon.message.toLowerCase().includes("tạm dừng")
+                        ? "bg-yellow-100 text-yellow-800"
+                        : "bg-green-100 text-green-800"
                     }`}
                   >
-                    {coupon.status}
+                    {coupon.message}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex gap-3">
-                    <button className="text-blue-600 hover:text-blue-800">
+                    <button
+                      className="text-blue-600 hover:text-blue-800"
+                      onClick={() => {
+                        setIsOpen(true);
+                        setDiscount(coupon);
+                      }}
+                    >
                       <FaEdit />
                     </button>
-                    <button className="text-red-600 hover:text-red-800">
+                    <button
+                      className="text-red-600 hover:text-red-800"
+                      onClick={() => handleDelete(coupon.id)}
+                    >
                       <FaTrash />
                     </button>
                   </div>
@@ -133,30 +236,13 @@ export default function Sale() {
           </tbody>
         </table>
       </div>
-
-      {/* Pagination */}
-      <div className="flex justify-between items-center mt-4 bg-white p-4 rounded-lg shadow">
-        <div className="text-sm text-gray-500">
-          Hiển thị 1-10 trong số 50 mục
-        </div>
-        <div className="flex gap-2">
-          <button className="px-3 py-1 border rounded hover:bg-gray-50">
-            Trước
-          </button>
-          <button className="px-3 py-1 bg-blue-600 text-white rounded">
-            1
-          </button>
-          <button className="px-3 py-1 border rounded hover:bg-gray-50">
-            2
-          </button>
-          <button className="px-3 py-1 border rounded hover:bg-gray-50">
-            3
-          </button>
-          <button className="px-3 py-1 border rounded hover:bg-gray-50">
-            Sau
-          </button>
-        </div>
-      </div>
+      <DiscountModalSystem
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        discount={discount}
+        fetchData={fetchData}
+      />
+      {page > 1 && <PaginationPage count={page} setPage={setPage} />}
     </div>
   );
 }

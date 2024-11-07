@@ -35,7 +35,7 @@ export default function RouterDom() {
         <Route path="/admin/dashboard/login" element={<Login />} />
         <Route path="/admin">
           <Route index element={<Navigate to="/admin/dashboard" replace />} />
-          <Route path=":url" element={<AppAdmin />} />
+          <Route path=":url/:id?" element={<AppAdmin />} />
         </Route>
       </Routes>
     </div>

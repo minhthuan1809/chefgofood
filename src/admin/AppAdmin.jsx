@@ -18,6 +18,8 @@ import Product from "./components/page/Product";
 import UserAdmin from "./components/page/UserAdmin";
 import DiscountUser from "./components/page/DiscountUser";
 import Trademark from "./components/layout/Trademark";
+import HistoryDiscount from "./components/page/HistoryDiscount";
+import Review from "./components/page/Review";
 
 const AppAdmin = () => {
   const [page, setPage] = useState(null);
@@ -42,6 +44,8 @@ const AppAdmin = () => {
     { path: "products", page: <Product />, id: 7 },
     { path: "users", page: <UserAdmin />, id: 8 },
     { path: "title", page: <Trademark />, id: 9 },
+    { path: "history-discounts", page: <HistoryDiscount />, id: 10 },
+    { path: "review", page: <Review />, id: 11 },
   ];
 
   useEffect(() => {

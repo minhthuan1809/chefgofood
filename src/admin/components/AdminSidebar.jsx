@@ -11,6 +11,7 @@ import {
   HiTag,
   HiCog6Tooth,
   HiChevronDown,
+  HiStar,
 } from "react-icons/hi2";
 import { PiVectorThreeFill } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,14 +20,13 @@ import { LoginAdminAction } from "../../redux/action/admin/loginAdmin";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import { DecentralizationAction } from "../../redux/action/admin/decentralization";
-import { FaHome, FaInfoCircle } from "react-icons/fa";
+import { FaHistory, FaHome, FaInfoCircle } from "react-icons/fa";
 import { FaList, FaTrademark } from "react-icons/fa6";
 
 const AdminSidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname.split("/").pop();
-  const [activeItem, setActiveItem] = useState(currentPath || "dashboard");
   const [openMenus, setOpenMenus] = useState({});
 
   const dataDecentralization = useSelector(
@@ -96,7 +96,20 @@ const AdminSidebar = () => {
           id: "discounts-main",
           path: "/discounts-main",
         },
+        {
+          icon: <FaHistory size={20} />,
+          label: "Lịch sử sử dụng",
+          id: "history-discounts",
+          path: "/history-discounts",
+        },
       ],
+    },
+    {
+      icon: <HiStar size={20} />,
+      label: "Đánh giá",
+      id: "review",
+      path: "/review",
+      dataDecentralization: true,
     },
     {
       icon: <BiSolidLayout size={20} />,
@@ -155,7 +168,6 @@ const AdminSidebar = () => {
         [id]: !prev[id],
       }));
     } else {
-      setActiveItem(id);
       navigate(`/admin${path}`);
     }
   };

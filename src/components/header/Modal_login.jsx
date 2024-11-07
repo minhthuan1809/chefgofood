@@ -79,14 +79,9 @@ export default function Modal_login({ onClose, setisLoginOrRegister }) {
     const response = await dispatch(getLogin(formData));
 
     toast.dismiss();
-
-    if (response.message === "Invalid username or password.") {
-      setStatusLogin("Email hoặc mật khẩu không chính xác.");
-      toast.error("Email hoặc mật khẩu không chính xác.");
-    } else if (response.status === "block") {
-      toast.info("Tài Khoản này không tồn tại !");
-    } else if (response.ok) {
-      // Cập nhật cookies khi đăng nhập thành công và đã check remember me
+    if (!response.ok) {
+      toast.error(response.message);
+    } else {
       if (formData.rememberMe) {
         Cookies.set("userEmail", formData.email, { expires: 30, secure: true });
         Cookies.set("userPassword", formData.password, {
@@ -95,10 +90,8 @@ export default function Modal_login({ onClose, setisLoginOrRegister }) {
         });
         Cookies.set("rememberMe", "true", { expires: 30, secure: true });
       }
-      toast.success("Thành Công !");
+      toast.success(response.message);
       onClose();
-    } else {
-      toast.error("Đã có lỗi xảy ra, vui lòng thử lại sau.");
     }
   };
 
