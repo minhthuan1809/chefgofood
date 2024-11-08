@@ -23,7 +23,6 @@ export default function Sale() {
     setIsLoading(true);
     const result = await getDiscountAdmin(page, limit, searchTerm);
     console.log(result);
-
     let filteredDiscounts = result.data.discounts;
 
     // Lọc theo danh mục

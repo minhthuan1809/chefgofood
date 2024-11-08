@@ -18,8 +18,10 @@ export default function DiscountUser() {
   const [coupons, setCoupons] = useState(null);
   const [editData, setEditData] = useState(null);
   const [filterStatus, setFilterStatus] = useState("all"); // Thêm state cho bộ lọc trạng thái
+  const [loading, setLoading] = useState(false);
 
   async function fetchData() {
+    setLoading(true);
     const res = await getDiscountUser(page, limit, searchTerm);
     let filteredCoupons = res.data.discounts;
 
@@ -32,6 +34,7 @@ export default function DiscountUser() {
 
     setCoupons(filteredCoupons);
     setTotalPages(Math.ceil(filteredCoupons.length / limit));
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -64,12 +67,11 @@ export default function DiscountUser() {
   const handleReset = () => {
     setSearchTerm("");
     setFilterStatus("all");
-    setFilterDateRange({ from: "", to: "" });
     setPage(1);
     fetchData();
   };
 
-  if (!coupons) return <Loading />;
+  if (!coupons || loading) return <Loading />;
   return (
     <div className="p-6">
       {/* Header */}
@@ -100,7 +102,12 @@ export default function DiscountUser() {
               className="pl-10 p-2 border rounded-lg w-full focus:outline-none focus:border-blue-500"
             />
           </div>
-
+          <button
+            onClick={handleReset}
+            className="px-4 py-2 border rounded hover:bg-gray-100 flex items-center gap-2"
+          >
+            <BiRefresh className="text-xl text-gray-500" />
+          </button>
           {/* Bộ lọc trạng thái */}
           <select
             className="p-2 border rounded-lg focus:outline-none focus:border-blue-500"
@@ -113,14 +120,6 @@ export default function DiscountUser() {
             <option value="chờ bắt đầu">Chờ bắt đầu</option>
             <option value="đang hoạt động">Đang hoạt động</option>
           </select>
-
-          <button
-            onClick={handleReset}
-            className="px-4 py-2 border rounded hover:bg-gray-100 flex items-center gap-2"
-          >
-            <BiRefresh className="text-xl text-gray-500" />
-            <span>Đặt lại</span>
-          </button>
 
           {/* Số lượng */}
           <div className="flex items-center gap-2">

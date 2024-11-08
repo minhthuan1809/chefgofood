@@ -109,7 +109,7 @@ const AdminSidebar = () => {
       label: "Đánh giá",
       id: "review",
       path: "/review",
-      dataDecentralization: true,
+      dataDecentralization: dataDecentralization?.review,
     },
     {
       icon: <BiSolidLayout size={20} />,
