@@ -4,6 +4,7 @@ import { PiContactlessPaymentLight } from "react-icons/pi";
 import { Link } from "react-router-dom";
 
 const RenderProduct = ({ product, idProduct }) => {
+  if (product.lock) return null;
   const calculateDiscountedPrice = (price, discount) => {
     const discountRate = discount > 1 ? discount / 100 : discount;
     return price * (1 - discountRate);
@@ -17,7 +18,14 @@ const RenderProduct = ({ product, idProduct }) => {
     product.discount > 1
       ? `${product.discount}%`
       : `${product.discount * 100}%`;
+  const inittailCart = {
+    data: JSON.parse(localStorage.getItem("ProductToCart")) || {},
+  };
 
+  const addProductToCart = (e) => {
+    const data = { ...inittailCart.data, [e.id]: e };
+    localStorage.setItem("ProductToCart", JSON.stringify(data));
+  };
   return (
     <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
       <div className="relative">
@@ -81,7 +89,10 @@ const RenderProduct = ({ product, idProduct }) => {
             <span>{product.sold} đã bán</span>
           </div>
           <div className="flex space-x-1 sm:space-x-2">
-            <button className="bg-blue-500 text-white p-1 sm:p-2 rounded-full hover:bg-blue-600 transition-colors duration-300">
+            <button
+              onClick={() => addProductToCart(product)}
+              className="bg-blue-500 text-white p-1 sm:p-2 rounded-full hover:bg-blue-600 transition-colors duration-300"
+            >
               <FaCartPlus size={16} />
             </button>
             <button className="bg-red-500 text-white p-1 sm:p-2 rounded-full hover:bg-red-600 transition-colors duration-300">

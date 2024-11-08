@@ -27,7 +27,7 @@ const Products = () => {
       setLoading(false);
     };
     fetchData();
-  }, []);
+  }, [page, selectedCategory]);
 
   // Hàm để lọc sản phẩm theo loại
   const filterProductsByCategory = (products, category) => {

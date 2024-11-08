@@ -64,7 +64,7 @@ export default function Sale() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-1">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold flex items-center gap-2">
@@ -85,7 +85,7 @@ export default function Sale() {
 
       {/* Search and Filter */}
       <div className="bg-white p-4 rounded-lg shadow mb-6">
-        <div className="flex gap-4">
+        <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1 relative">
             <FaSearch className="absolute left-3 top-3 text-gray-400" />
             <input
@@ -132,7 +132,7 @@ export default function Sale() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="bg-white rounded-lg shadow overflow-x-auto">
         <table className="w-full">
           <thead className="bg-gray-50">
             <tr>
@@ -140,7 +140,7 @@ export default function Sale() {
                 STT
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Mã giảm giá
+                code
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Tên
@@ -172,7 +172,22 @@ export default function Sale() {
             {discounts.map((coupon, index) => (
               <tr key={coupon.id}>
                 <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{coupon.code}</td>
+                <td
+                  className="px-6 py-4 whitespace-nowrap cursor-pointer hover:text-blue-600"
+                  onClick={() => {
+                    toast.dismiss();
+                    navigator.clipboard
+                      .writeText(coupon.code)
+                      .then(() => {
+                        toast.success("Đã copy mã giảm giá");
+                      })
+                      .catch(() => {
+                        toast.error("Lỗi copy mã giảm giá");
+                      });
+                  }}
+                >
+                  {coupon.code}
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap">{coupon.name}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {coupon.discount_percent}%
@@ -206,6 +221,8 @@ export default function Sale() {
                         ? "bg-red-100 text-red-800"
                         : coupon.message.toLowerCase().includes("tạm dừng")
                         ? "bg-yellow-100 text-yellow-800"
+                        : coupon.message.toLowerCase().includes("chờ bắt đầu")
+                        ? "bg-gray-100 text-gray-800"
                         : "bg-green-100 text-green-800"
                     }`}
                   >

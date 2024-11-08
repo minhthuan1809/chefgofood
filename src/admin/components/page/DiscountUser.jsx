@@ -1,31 +1,75 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaEdit, FaTrash, FaPlus, FaSearch } from "react-icons/fa";
 import { MdDiscount } from "react-icons/md";
+import { getDiscountUser } from "../../../service/server/discount/discount_system_user";
+import { BiRefresh } from "react-icons/bi";
+import PaginationPage from "../util/PaginationPage";
+import { toast } from "react-toastify";
+import Loading from "../util/Loading";
+import { deleteDiscountUser } from "../../../service/server/discount/discount_system_delete_user";
+import Modal_user from "../_modal_discount_user/Modal_user";
 
 export default function DiscountUser() {
-  const [coupons] = useState([
-    {
-      id: 1,
-      email: "thuan18092003@gmial.com",
-      code: "FOOD30",
-      discount: "0.3%",
-      minOrder: "2,000₫",
-      duration: "3 ngày",
-      category: "Đồ ăn",
-      status: "Đang hoạt động",
-    },
-    {
-      id: 2,
-      email: "thuan18092003@gmial.com",
-      code: "DRINK50",
-      discount: "0.5%",
-      minOrder: "5,000₫",
-      duration: "5 ngày",
-      category: "Đồ uống",
-      status: "Hết hạn",
-    },
-  ]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(20);
+  const [totalPages, setTotalPages] = useState(1);
+  const [coupons, setCoupons] = useState(null);
+  const [editData, setEditData] = useState(null);
+  const [filterStatus, setFilterStatus] = useState("all"); // Thêm state cho bộ lọc trạng thái
 
+  async function fetchData() {
+    const res = await getDiscountUser(page, limit, searchTerm);
+    let filteredCoupons = res.data.discounts;
+
+    // Lọc theo trạng thái
+    if (filterStatus !== "all") {
+      filteredCoupons = filteredCoupons.filter((coupon) =>
+        coupon.message.toLowerCase().includes(filterStatus)
+      );
+    }
+
+    setCoupons(filteredCoupons);
+    setTotalPages(Math.ceil(filteredCoupons.length / limit));
+  }
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      fetchData();
+    }, 1000);
+    return () => clearTimeout(timeout);
+  }, [page, limit, searchTerm, filterStatus]);
+
+  const calculateDaysLeft = (validTo) => {
+    const today = new Date();
+    const endDate = new Date(validTo);
+    const diffTime = endDate - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays > 0 ? diffDays : 0;
+  };
+
+  const handleDelete = async (id) => {
+    if (!confirm("Bạn có chắc chắn muốn xóa mã giảm giá này không?")) return;
+    const res = await deleteDiscountUser(id);
+    toast.dismiss();
+    if (res.ok) {
+      toast.success("Đã xóa mã giảm giá");
+      fetchData();
+    } else {
+      toast.error("Lỗi xóa mã giảm giá");
+    }
+  };
+
+  const handleReset = () => {
+    setSearchTerm("");
+    setFilterStatus("all");
+    setFilterDateRange({ from: "", to: "" });
+    setPage(1);
+    fetchData();
+  };
+
+  if (!coupons) return <Loading />;
   return (
     <div className="p-6">
       {/* Header */}
@@ -34,7 +78,10 @@ export default function DiscountUser() {
           <MdDiscount className="text-blue-600" />
           Quản lý mã giảm giá
         </h1>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700">
+        <button
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700"
+          onClick={() => setIsOpen(true)}
+        >
           <FaPlus />
           Thêm mã mới
         </button>
@@ -42,51 +89,85 @@ export default function DiscountUser() {
 
       {/* Search and Filter */}
       <div className="bg-white p-4 rounded-lg shadow mb-6">
-        <div className="flex gap-4">
+        <div className="flex flex-wrap gap-4">
           <div className="flex-1 relative">
             <FaSearch className="absolute left-3 top-3 text-gray-400" />
             <input
               type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Tìm kiếm mã giảm giá..."
               className="pl-10 p-2 border rounded-lg w-full focus:outline-none focus:border-blue-500"
             />
           </div>
-          <select className="p-2 border rounded-lg focus:outline-none focus:border-blue-500">
-            <option value="">Tất cả trạng thái</option>
-            <option value="active">Đang hoạt động</option>
-            <option value="expired">Hết hạn</option>
+
+          {/* Bộ lọc trạng thái */}
+          <select
+            className="p-2 border rounded-lg focus:outline-none focus:border-blue-500"
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+          >
+            <option value="all">Tất cả trạng thái</option>
+            <option value="hết hạn">Hết hạn</option>
+            <option value="tạm dừng">Tạm dừng</option>
+            <option value="chờ bắt đầu">Chờ bắt đầu</option>
+            <option value="đang hoạt động">Đang hoạt động</option>
           </select>
-          <select className="p-2 border rounded-lg focus:outline-none focus:border-blue-500">
-            <option value="">Tất cả danh mục</option>
-            <option value="food">Đồ ăn</option>
-            <option value="drink">Đồ uống</option>
-            <option value="drink">Bánh</option>
-          </select>
+
+          <button
+            onClick={handleReset}
+            className="px-4 py-2 border rounded hover:bg-gray-100 flex items-center gap-2"
+          >
+            <BiRefresh className="text-xl text-gray-500" />
+            <span>Đặt lại</span>
+          </button>
+
+          {/* Số lượng */}
+          <div className="flex items-center gap-2">
+            <label className="text-gray-500">Số lượng:</label>
+            <select
+              className="border rounded px-3 py-2 outline-none"
+              value={limit}
+              onChange={(e) => setLimit(parseInt(e.target.value))}
+            >
+              {Array.from({ length: 100 }, (_, index) => (
+                <option key={index} value={index + 1}>
+                  {index + 1}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="bg-white rounded-lg shadow overflow-auto">
         <table className="w-full">
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                STT
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Code
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Gmail
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Mã giảm giá
+                Tên
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Giảm giá
+                Mô tả
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Giảm giá (%)
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Đơn tối thiểu
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Thời hạn
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Danh mục
+                Thời gian
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Trạng thái
@@ -97,48 +178,101 @@ export default function DiscountUser() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {coupons.map((coupon) => (
+            {coupons.map((coupon, index) => (
               <tr key={coupon.id}>
+                <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
+                <td className="px-6 py-4 whitespace-nowrap cursor-pointer hover:text-blue-600">
+                  <span
+                    onClick={() => {
+                      toast.dismiss();
+                      navigator.clipboard
+                        .writeText(coupon.code)
+                        .then(() => {
+                          toast.success("Đã copy mã giảm giá");
+                        })
+                        .catch(() => {
+                          toast.error("Lỗi copy mã giảm giá");
+                        });
+                    }}
+                  >
+                    {coupon.code}
+                  </span>
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap">{coupon.email}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{coupon.code}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{coupon.name}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {coupon.discount}
+                  {coupon.description}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {coupon.minOrder}
+                  {coupon.discount_percent}%
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {coupon.duration}
+                  {new Intl.NumberFormat("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  }).format(coupon.minimum_price)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {coupon.category}
+                  {new Date(coupon.valid_from).toISOString().split("T")[0]} -{" "}
+                  {new Date(coupon.valid_to).toISOString().split("T")[0]}
+                  <br />
+                  <span className="text-sm text-gray-500">
+                    ({calculateDaysLeft(coupon.valid_to)} ngày còn lại)
+                  </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
                     className={`px-2 py-1 rounded-full text-xs ${
-                      coupon.status === "Đang hoạt động"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-red-100 text-red-800"
+                      coupon.message.toLowerCase().includes("hết hạn")
+                        ? "bg-red-100 text-red-800"
+                        : coupon.message.toLowerCase().includes("tạm dừng")
+                        ? "bg-yellow-100 text-yellow-800"
+                        : coupon.message.toLowerCase().includes("chờ bắt đầu")
+                        ? "bg-gray-100 text-gray-800"
+                        : "bg-green-100 text-green-800"
                     }`}
                   >
-                    {coupon.status}
+                    {coupon.message}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex gap-3">
-                    <button className="text-blue-600 hover:text-blue-800">
+                    <button
+                      className="text-blue-600 hover:text-blue-800"
+                      onClick={() => {
+                        setEditData(coupon);
+                        setIsOpen(true);
+                      }}
+                    >
                       <FaEdit />
                     </button>
-                    <button className="text-red-600 hover:text-red-800">
+                    <button
+                      onClick={() => handleDelete(coupon.id)}
+                      className="text-red-600 hover:text-red-800"
+                    >
                       <FaTrash />
                     </button>
-                  </div>
+                  </div>{" "}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      {/* Modal */}
+      <Modal_user
+        isOpen={isOpen}
+        onClose={() => {
+          setIsOpen(false);
+          setEditData(null);
+        }}
+        editData={editData}
+        fetchData={fetchData}
+      />
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <PaginationPage count={totalPages} setPage={setPage} />
+      )}
     </div>
   );
 }
