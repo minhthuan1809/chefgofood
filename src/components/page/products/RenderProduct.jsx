@@ -14,10 +14,7 @@ const RenderProduct = ({ product, idProduct }) => {
     product.price,
     product.discount
   );
-  const displayDiscount =
-    product.discount > 1
-      ? `${product.discount}%`
-      : `${product.discount * 100}%`;
+  const displayDiscount = product.discount * 100;
   const inittailCart = {
     data: JSON.parse(localStorage.getItem("ProductToCart")) || {},
   };
