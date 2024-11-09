@@ -53,7 +53,7 @@ export const getCartDeleteQuantity = async (id) => {
 export const addCartPay = async (data, id) => {
   try {
     const response = await fetch(
-      `http://localhost/WebDoAn/model/order/detail_order.php/${id}`,
+      `${import.meta.env.VITE_FASTFOOD_SERVER_API}/order/create`,
       {
         method: "POST",
         headers: {

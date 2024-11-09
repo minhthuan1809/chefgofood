@@ -1,8 +1,8 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import Nav from "../header/Nav";
 import PageFooter from "../footer/PageFooter";
 import { FaTrashAlt, FaShoppingCart, FaMinus, FaPlus } from "react-icons/fa";
-import PayCart from "./cart/PayCart";
 import SupportChat from "../messger/SupportChat";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartRender } from "../../redux/middlewares/client/cart_middleware";
@@ -11,9 +11,106 @@ import { toast } from "react-toastify";
 import {
   getCartDelete,
   getCartDeleteQuantity,
+  addCart,
 } from "../../service/cart_client";
-import { addCart } from "../../service/cart_client";
+import PayCart from "./cart/PayCart";
 
+// Helper functions
+const calculateItemPrice = (item) => {
+  const basePrice = item.price * item.quantity;
+  const discountAmount = (basePrice * item.discount) / 100;
+  return basePrice - discountAmount;
+};
+
+const calculateTotalPrice = (items) => {
+  return items.reduce((sum, item) => {
+    const basePrice = item.price * item.quantity;
+    const discountAmount = (basePrice * item.discount) / 100;
+    return sum + (basePrice - discountAmount);
+  }, 0);
+};
+
+// Cart Item Component
+const CartItem = ({
+  item,
+  onDelete,
+  onUpdateQuantity,
+  onDeleteQuantity,
+  isSelected,
+  onSelect,
+}) => {
+  const itemPrice = calculateItemPrice(item);
+  const discountAmount = (item.price * item.quantity * item.discount) / 100;
+
+  return (
+    <li className="py-4 flex flex-row sm:items-center gap-4 border-b border-gray-200">
+      <div className="flex items-center gap-4">
+        {item.warning && (
+          <input
+            type="checkbox"
+            className="w-4 h-4"
+            checked={isSelected}
+            onChange={() => onSelect(item.id)}
+          />
+        )}
+        {!item.warning && <div className="p-3"></div>}
+        <img
+          src={item.image_url}
+          alt={item.product_name}
+          className="w-20 h-20 object-cover rounded"
+        />
+      </div>
+
+      <div className="flex-1">
+        <h3 className="text-lg font-semibold">{item.product_name}</h3>
+        <p className="text-gray-600">
+          Đơn giá: {item.price.toLocaleString("vi-VN")}₫
+        </p>
+        {item.discount > 0 && (
+          <div>
+            <p className="text-red-500">Giảm giá: {item.discount}%</p>
+            <p className="text-green-600">
+              Tiết kiệm: {discountAmount.toLocaleString("vi-VN")}₫
+            </p>
+          </div>
+        )}
+        <p className="font-semibold text-blue-600 mt-1">
+          Thành tiền: {itemPrice.toLocaleString("vi-VN")}₫
+        </p>
+      </div>
+
+      <div className="flex items-center gap-4">
+        {item.warning ? (
+          <div className="flex items-center border rounded-md">
+            <button
+              className="p-2 hover:bg-gray-100"
+              onClick={() => onDeleteQuantity(item)}
+            >
+              <FaMinus className="w-4 h-4" />
+            </button>
+            <span className="px-4">{item.quantity}</span>
+            <button
+              className="p-2 hover:bg-gray-100"
+              onClick={() => onUpdateQuantity(item)}
+            >
+              <FaPlus className="w-4 h-4" />
+            </button>
+          </div>
+        ) : (
+          <div className="text-red-500 font-semibold p-2">Hết hàng</div>
+        )}
+        <button
+          className="text-red-500 hover:text-red-700 p-2"
+          onClick={() => onDelete(item.id)}
+        >
+          <FaTrashAlt className="w-5 h-5" />
+        </button>
+      </div>
+    </li>
+  );
+};
+
+// Main Cart Component
 export default function Cart() {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -24,95 +121,99 @@ export default function Cart() {
 
   const fetchCart = async () => {
     setLoading(true);
-    await dispatch(getCartRender(apiKey));
-    setLoading(false);
+    try {
+      await dispatch(getCartRender(apiKey));
+    } catch (error) {
+      toast.error("Lỗi khi tải giỏ hàng!");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     fetchCart();
   }, [apiKey]);
 
-  // Initialize selectedItems when DataCart is loaded
   useEffect(() => {
     if (DataCart) {
-      const initialSelected = DataCart.filter((item) => item.warning).map(
-        (item) => item.id
-      );
+      const availableItems = DataCart.filter((item) => item.warning);
+      const initialSelected = availableItems.map((item) => item.id);
       setSelectedItems(initialSelected);
     }
   }, [DataCart]);
 
-  // Calculate total price whenever selectedItems or DataCart changes
   useEffect(() => {
     if (DataCart) {
-      const total = DataCart.reduce((sum, item) => {
-        return selectedItems.includes(item.id)
-          ? sum + item.price * item.quantity
-          : sum;
-      }, 0);
+      const selectedProducts = DataCart.filter((item) =>
+        selectedItems.includes(item.id)
+      );
+      const total = calculateTotalPrice(selectedProducts);
       setTotalPrice(total);
     }
   }, [selectedItems, DataCart]);
 
-  // Handle checkbox changes
   const handleCheckboxChange = (itemId) => {
     setSelectedItems((prev) => {
       if (prev.includes(itemId)) {
         return prev.filter((id) => id !== itemId);
-      } else {
-        return [...prev, itemId];
       }
+      return [...prev, itemId];
     });
   };
 
-  // Handle select all checkbox
   const handleSelectAll = () => {
     if (DataCart) {
-      if (
-        selectedItems.length === DataCart.filter((item) => item.warning).length
-      ) {
+      const availableItems = DataCart.filter((item) => item.warning);
+      if (selectedItems.length === availableItems.length) {
         setSelectedItems([]);
       } else {
-        const allAvailableIds = DataCart.filter((item) => item.warning).map(
-          (item) => item.id
-        );
+        const allAvailableIds = availableItems.map((item) => item.id);
         setSelectedItems(allAvailableIds);
       }
     }
   };
 
-  // Handle quantity changes
-  const updateQuantity = async (id) => {
+  const handleUpdateQuantity = async (item) => {
     toast.dismiss();
-    const updateItem = await addCart(id.product_id, apiKey);
-    if (updateItem.ok) {
-      toast.success(updateItem.message);
-      fetchCart();
-    } else {
-      toast.error(updateItem.message);
+    try {
+      const updateItem = await addCart(item.product_id, apiKey);
+      if (updateItem.ok) {
+        toast.success(updateItem.message);
+        await fetchCart();
+      } else {
+        toast.error(updateItem.message);
+      }
+    } catch (error) {
+      toast.error("Lỗi khi cập nhật số lượng!");
     }
   };
 
-  const deleteQuantity = async (item) => {
+  const handleDeleteQuantity = async (item) => {
     toast.dismiss();
-    if (item.quantity === 1) {
-      if (!confirm("Xóa sản phẩm này khỏi giỏ hàng?")) return;
+    try {
+      if (item.quantity === 1) {
+        if (!confirm("Xóa sản phẩm này khỏi giỏ hàng?")) return;
+      }
       await getCartDeleteQuantity(item.id);
-    } else if (item.quantity > 1) {
-      await getCartDeleteQuantity(item.id);
+      await fetchCart();
+    } catch (error) {
+      toast.error("Lỗi khi giảm số lượng!");
     }
-    fetchCart();
   };
 
   const handleDelete = async (id) => {
     toast.dismiss();
-    const deleteItem = await getCartDelete(id);
-    if (deleteItem.ok) {
-      toast.success(deleteItem.message);
-      setSelectedItems((prev) => prev.filter((itemId) => itemId !== id));
-      fetchCart();
-    } else {
-      toast.error(deleteItem.message);
+    try {
+      const deleteItem = await getCartDelete(id);
+      if (deleteItem.ok) {
+        toast.success(deleteItem.message);
+        setSelectedItems((prev) => prev.filter((itemId) => itemId !== id));
+        await fetchCart();
+      } else {
+        toast.error(deleteItem.message);
+      }
+    } catch (error) {
+      toast.error("Lỗi khi xóa sản phẩm!");
     }
   };
 
@@ -155,95 +256,37 @@ export default function Cart() {
             </div>
           </div>
 
-          {DataCart?.length === 0 && (
-            <div className="text-center text-gray-500 p-4">
+          {DataCart.length === 0 ? (
+            <div className="text-center text-gray-500 p-8">
               Giỏ hàng của bạn trống
             </div>
-          )}
+          ) : (
+            <div className="flex flex-col lg:flex-row lg:gap-8">
+              <div className="w-full lg:w-2/3 p-4">
+                <div className="max-h-[110vh] overflow-y-auto">
+                  <ul className="divide-y divide-gray-200">
+                    {DataCart.map((item) => (
+                      <CartItem
+                        key={item.id}
+                        item={item}
+                        onDelete={handleDelete}
+                        onUpdateQuantity={handleUpdateQuantity}
+                        onDeleteQuantity={handleDeleteQuantity}
+                        isSelected={selectedItems.includes(item.id)}
+                        onSelect={handleCheckboxChange}
+                      />
+                    ))}
+                  </ul>
+                </div>
+              </div>
 
-          <div className="flex flex-col lg:flex-row lg:gap-8">
-            <div className="w-full lg:w-2/3 p-4">
-              <div className="max-h-[110vh] overflow-y-auto">
-                <ul className="divide-y divide-gray-200">
-                  {DataCart.map((item) => (
-                    <li
-                      key={item.id}
-                      className="py-4 flex flex-row sm:items-center gap-4"
-                    >
-                      <div className="flex items-center gap-4">
-                        {!item.warning ? (
-                          <div className="text-red-500 font-semibold p-2">
-                            Hết hàng
-                          </div>
-                        ) : (
-                          <input
-                            type="checkbox"
-                            className="w-4 h-4"
-                            checked={selectedItems.includes(item.id)}
-                            onChange={() => handleCheckboxChange(item.id)}
-                          />
-                        )}
-                        <img
-                          src={item.image_url}
-                          alt={item.product_name}
-                          className="w-20 h-20 object-cover rounded"
-                        />
-                      </div>
-
-                      <div className="flex-1">
-                        <h3 className="text-lg font-semibold">
-                          {item.product_name}
-                        </h3>
-                        <p className="text-gray-600">
-                          {item.price.toLocaleString("vi-VN")} ₫
-                        </p>
-                      </div>
-
-                      <div className="flex items-center gap-4">
-                        <div className="flex items-center border rounded-md">
-                          {!item.warning ? (
-                            <div className="text-red-500 font-semibold p-2">
-                              Hết hàng
-                            </div>
-                          ) : (
-                            <>
-                              <button
-                                className="p-1 sm:p-2 hover:bg-gray-100"
-                                onClick={() => deleteQuantity(item)}
-                              >
-                                <FaMinus className="w-4 h-4" />
-                              </button>
-                              <span className="px-2 sm:px-4">
-                                {item.quantity}
-                              </span>
-                              <button
-                                className="p-1 sm:p-2 hover:bg-gray-100"
-                                onClick={() => updateQuantity(item)}
-                              >
-                                <FaPlus className="w-4 h-4" />
-                              </button>
-                            </>
-                          )}
-                        </div>
-                        <button
-                          className="text-red-500 hover:text-red-700 p-2"
-                          onClick={() => handleDelete(item.id)}
-                        >
-                          <FaTrashAlt className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+              <div className="w-full lg:w-1/3 p-4 bg-gray-50">
+                {selectedItemsData.length > 0 && (
+                  <PayCart items={selectedItemsData} totalPrice={totalPrice} />
+                )}
               </div>
             </div>
-
-            <div className="w-full lg:w-1/3 p-4 bg-gray-50">
-              {DataCart.length > 0 && (
-                <PayCart items={selectedItemsData} totalPrice={totalPrice} />
-              )}
-            </div>
-          </div>
+          )}
         </div>
       </main>
 

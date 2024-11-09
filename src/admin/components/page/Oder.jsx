@@ -1,82 +1,73 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaSearch, FaFilter } from "react-icons/fa";
+import { ConfirmOrder, detailOrder } from "../../../service/server/oder";
+import OrderDetailModal from "../Modal_detail_oder/modal_oder";
+import Loading from "../util/Loading";
+import { BiRefresh } from "react-icons/bi";
+import PaginationPage from "../util/PaginationPage";
 
 export default function Oder() {
-  const [orders, setOrders] = useState([
-    {
-      id: 1,
-      customerName: "Nguyễn Văn A",
-      orderDate: "2024-01-15",
-      total: 1500000,
-      status: "Chờ xác nhận",
-      items: [
-        {
-          name: "Sản phẩm 1",
-          quantity: 2,
-          price: 500000,
-        },
-        {
-          name: "Sản phẩm 2",
-          quantity: 1,
-          price: 500000,
-        },
-      ],
-    },
-  ]);
-
+  const [orders, setOrders] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [showOrderDetail, setShowOrderDetail] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [totalPages, setTotalPages] = useState(1);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(30);
 
-  const handleConfirmOrder = (orderId) => {
-    setOrders(
-      orders.map((order) => {
-        if (order.id === orderId) {
-          return { ...order, status: "Đang giao hàng" };
-        }
-        return order;
-      })
-    );
+  const fetchOrders = async () => {
+    const result = await ConfirmOrder(page, limit, searchTerm);
+    if (result.ok) {
+      let filteredOrders = result.data.orders;
+
+      if (selectedStatus !== "all") {
+        filteredOrders = filteredOrders.filter((order) => {
+          const status = order.status.toLowerCase();
+          switch (selectedStatus) {
+            case "pending":
+              return status === "pending";
+            case "delivering":
+              return status === "delivery";
+            case "preparing":
+              return status === "preparing";
+
+            default:
+              return true;
+          }
+        });
+      }
+
+      setOrders(filteredOrders);
+      setTotalPages(result.data.pagination.total_pages);
+    }
   };
 
-  const handleDelivery = (orderId) => {
-    setOrders(
-      orders.map((order) => {
-        if (order.id === orderId) {
-          return { ...order, status: "Đang giao hàng" };
-        }
-        return order;
-      })
-    );
+  useEffect(() => {
+    fetchOrders();
+  }, [page, limit, searchTerm, selectedStatus]);
+
+  const handleViewDetail = async (order) => {
+    const result = await detailOrder(order.id);
+    if (result.ok) {
+      setSelectedOrder(result.data);
+      setShowOrderDetail(true);
+    }
   };
 
-  const handleComplete = (orderId) => {
-    setOrders(
-      orders.map((order) => {
-        if (order.id === orderId) {
-          return { ...order, status: "Hoàn thành" };
-        }
-        return order;
-      })
-    );
+  const handleReset = () => {
+    setSearchTerm("");
+    setSelectedStatus("all");
+    setPage(1);
+    setLimit(30);
+    fetchOrders();
   };
 
-  const handleCancelOrder = (orderId) => {
-    setOrders(
-      orders.map((order) => {
-        if (order.id === orderId) {
-          return { ...order, status: "Đã hủy" };
-        }
-        return order;
-      })
-    );
+  const handleCloseModal = () => {
+    setShowOrderDetail(false);
   };
 
-  const handleViewDetail = (order) => {
-    setSelectedOrder(order);
-    setShowOrderDetail(true);
-  };
+  if (!orders) return <Loading />;
 
   return (
     <div className="p-6">
@@ -93,7 +84,12 @@ export default function Oder() {
           />
           <FaSearch className="absolute left-3 top-3 text-gray-400" />
         </div>
-
+        <button
+          onClick={handleReset}
+          className="px-4 py-2 border rounded hover:bg-gray-100 flex items-center gap-2"
+        >
+          <BiRefresh className="text-xl text-gray-500" />
+        </button>
         <div className="flex items-center gap-2">
           <FaFilter className="text-gray-400" />
           <select
@@ -103,11 +99,22 @@ export default function Oder() {
           >
             <option value="all">Tất cả</option>
             <option value="pending">Chờ xác nhận</option>
-            <option value="making">Đang làm đồ</option>
-            <option value="made">Đã làm xong</option>
+            <option value="preparing">Đang chuẩn bị</option>
             <option value="delivering">Đang giao hàng</option>
-            <option value="completed">Hoàn thành</option>
-            <option value="cancelled">Đã hủy</option>
+          </select>
+        </div>
+        <div className="flex items-center gap-2">
+          <label className="text-gray-500">Số lượng:</label>
+          <select
+            className="border rounded px-3 py-2 outline-none"
+            value={limit}
+            onChange={(e) => setLimit(parseInt(e.target.value))}
+          >
+            {Array.from({ length: 100 }, (_, index) => (
+              <option key={index} value={index + 1}>
+                {index + 1}
+              </option>
+            ))}
           </select>
         </div>
       </div>
@@ -148,62 +155,56 @@ export default function Oder() {
                   </button>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {order.customerName}
+                  {order.username}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {order.orderDate}
+                  {order.created_at}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {order.total.toLocaleString("vi-VN")}đ
+                  {order.total_price.toLocaleString("vi-VN")}đ
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
                     className={`px-2 py-1 rounded-full text-xs font-medium
                     ${
-                      order.status === "Chờ xác nhận"
+                      order.status
+                        .toLocaleLowerCase()
+                        .replace("completed", "Hoàn thành")
+                        .replace("pending", "Chờ xác nhận")
+                        .replace("preparing", "Đang chuẩn bị")
+                        .replace("delivery", "Đã giao")
+                        .replace("cancel", "Đã hủy") === "Chờ xác nhận"
                         ? "bg-yellow-100 text-yellow-800"
-                        : order.status === "Đang làm đồ"
-                        ? "bg-blue-100 text-blue-800"
-                        : order.status === "Đã làm xong"
-                        ? "bg-indigo-100 text-indigo-800"
-                        : order.status === "Đang giao hàng"
-                        ? "bg-purple-100 text-purple-800"
-                        : order.status === "Hoàn thành"
+                        : order.status
+                            .toLocaleLowerCase()
+                            .replace("completed", "Hoàn thành")
+                            .replace("pending", "Chờ xác nhận")
+                            .replace("preparing", "Đang chuẩn bị")
+                            .replace("delivery", "Đã giao")
+                            .replace("cancel", "Đã hủy") === "Đã giao"
+                        ? "bg-green-100 text-green-800"
+                        : order.status
+                            .toLocaleLowerCase()
+                            .replace("completed", "Hoàn thành")
+                            .replace("pending", "Chờ xác nhận")
+                            .replace("preparing", "Đang chuẩn bị")
+                            .replace("delivery", "Đã giao")
+                            .replace("cancel", "Đã hủy") === "Hoàn thành"
                         ? "bg-green-100 text-green-800"
                         : "bg-red-100 text-red-800"
                     }`}
                   >
-                    {order.status}
+                    {order.status
+                      .toLocaleLowerCase()
+                      .replace("completed", "Hoàn thành")
+                      .replace("pending", "Chờ xác nhận")
+                      .replace("preparing", "Đang chuẩn bị")
+                      .replace("delivery", "Đang giao")
+                      .replace("cancel", "Đã hủy")}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex gap-2">
-                    {order.status === "Chờ xác nhận" && (
-                      <>
-                        <button
-                          onClick={() => handleConfirmOrder(order.id)}
-                          className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                        >
-                          Xác nhận
-                        </button>
-                        <button
-                          onClick={() => handleCancelOrder(order.id)}
-                          className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                        >
-                          Hủy
-                        </button>
-                      </>
-                    )}
-
-                    {order.status === "Đang giao hàng" && (
-                      <button
-                        onClick={() => handleComplete(order.id)}
-                        className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
-                      >
-                        Hoàn thành
-                      </button>
-                    )}
-                  </div>
+                  <div className="flex gap-2">btn</div>
                 </td>
               </tr>
             ))}
@@ -211,116 +212,14 @@ export default function Oder() {
         </table>
       </div>
 
-      {/* Modal Chi tiết đơn hàng */}
       {showOrderDetail && selectedOrder && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold">
-                Chi tiết đơn hàng #{selectedOrder.id}
-              </h3>
-              <button
-                onClick={() => setShowOrderDetail(false)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-gray-600">Khách hàng:</p>
-                  <p className="font-medium">{selectedOrder.customerName}</p>
-                </div>
-                <div>
-                  <p className="text-gray-600">Ngày đặt:</p>
-                  <p className="font-medium">{selectedOrder.orderDate}</p>
-                </div>
-                <div>
-                  <p className="text-gray-600">Trạng thái:</p>
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs font-medium
-                    ${
-                      selectedOrder.status === "Chờ xác nhận"
-                        ? "bg-yellow-100 text-yellow-800"
-                        : selectedOrder.status === "Đang làm đồ"
-                        ? "bg-blue-100 text-blue-800"
-                        : selectedOrder.status === "Đã làm xong"
-                        ? "bg-indigo-100 text-indigo-800"
-                        : selectedOrder.status === "Đang giao hàng"
-                        ? "bg-purple-100 text-purple-800"
-                        : selectedOrder.status === "Hoàn thành"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-red-100 text-red-800"
-                    }`}
-                  >
-                    {selectedOrder.status}
-                  </span>
-                </div>
-              </div>
-
-              <div>
-                <h4 className="font-medium mb-2">Danh sách sản phẩm</h4>
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <table className="min-w-full">
-                    <thead>
-                      <tr>
-                        <th className="text-left text-sm font-medium text-gray-500">
-                          Sản phẩm
-                        </th>
-                        <th className="text-right text-sm font-medium text-gray-500">
-                          Số lượng
-                        </th>
-                        <th className="text-right text-sm font-medium text-gray-500">
-                          Đơn giá
-                        </th>
-                        <th className="text-right text-sm font-medium text-gray-500">
-                          Thành tiền
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {selectedOrder.items.map((item, index) => (
-                        <tr key={index}>
-                          <td className="py-2">{item.name}</td>
-                          <td className="text-right">{item.quantity}</td>
-                          <td className="text-right">
-                            {item.price.toLocaleString("vi-VN")}đ
-                          </td>
-                          <td className="text-right">
-                            {(item.price * item.quantity).toLocaleString(
-                              "vi-VN"
-                            )}
-                            đ
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <div className="border-t pt-4">
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">Tổng cộng:</span>
-                  <span className="font-bold text-lg">
-                    {selectedOrder.total.toLocaleString("vi-VN")}đ
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex justify-end gap-2 mt-6">
-                <button
-                  onClick={() => setShowOrderDetail(false)}
-                  className="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200"
-                >
-                  Đóng
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <OrderDetailModal
+          selectedOrder={selectedOrder}
+          onClose={handleCloseModal}
+        />
+      )}
+      {totalPages > 1 && (
+        <PaginationPage count={totalPages} setPage={setPage} />
       )}
     </div>
   );
