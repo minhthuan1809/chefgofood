@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import {
   FaClock,
@@ -10,6 +11,7 @@ import { ImCancelCircle } from "react-icons/im";
 import Nav from "../header/Nav";
 import { getHistory } from "../../service/HistoryOder";
 import { useSelector } from "react-redux";
+import OrderDetailModal from "../history/Modal_history";
 
 const getStatusColor = (status) => {
   switch (status.toLowerCase()) {
@@ -29,100 +31,110 @@ const getStatusColor = (status) => {
 };
 
 const OrderCard = ({ order }) => {
-  // Get the first product image as the order thumbnail
+  const [showModal, setShowModal] = useState(false);
   const thumbnailImage = order.products[0]?.image_url || "";
   const isActive = ["pending", "preparing", "delivery"].includes(
     order.status.toLowerCase()
   );
 
   return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden my-8">
-      <div className="md:flex">
-        <div className="md:w-1/3">
-          <img
-            src={thumbnailImage}
-            alt="Order thumbnail"
-            className="w-full h-48 object-cover md:h-full"
-          />
-        </div>
-        <div className="p-6 md:w-2/3">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-bold text-gray-800">
-              Đơn hàng #{order.order_id}
-            </h3>
-            <span
-              className={`${
-                isActive ? "animate-bounce " : ""
-              }bg-${getStatusColor(
-                order.status
-              )}-500 text-white px-3 py-1 rounded-full text-sm font-medium`}
-            >
-              {order.status
-                .toLocaleLowerCase()
-                .replace("completed", "Hoàn thành")
-                .replace("pending", "Chờ xác nhận")
-                .replace("preparing", "Đang chuẩn bị")
-                .replace("delivery", "Đang giao")
-                .replace("cancel", "Đã hủy")}
-            </span>
+    <>
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden my-8">
+        <div className="md:flex">
+          <div className="md:w-1/3">
+            <img
+              src={thumbnailImage}
+              alt="Order thumbnail"
+              className="w-full h-48 object-cover md:h-full"
+            />
           </div>
-          <div className="text-gray-600 mb-4">
-            <p>Địa chỉ: {order.address}</p>
-            <p>Số điện thoại: {order.phone}</p>
-            <p>Phương thức thanh toán: {order.payment_method}</p>
-            <p>Trạng thái thanh toán: {order.payment_status}</p>
-          </div>
-          <div className="flex justify-between items-center text-sm text-gray-600">
-            <div className="flex items-center">
-              <FaClock
-                className={`w-4 h-4 mr-2 text-${getStatusColor(
+          <div className="p-6 md:w-2/3">
+            <div className="flex justify-between items-center mb-4">
+              <b
+                className="text-xl font-bold text-gray-800 cursor-pointer"
+                onClick={() => setShowModal(true)}
+              >
+                Đơn hàng #{order.order_id}
+              </b>
+              <span
+                className={`${
+                  isActive ? "animate-bounce " : ""
+                }bg-${getStatusColor(
                   order.status
-                )}-500`}
-              />
-              <span>{order.created_at}</span>
-            </div>
-            <div className="flex items-center">
-              <FaDollarSign className="w-4 h-4 mr-2 text-green-500" />
-              <span className="font-semibold">
-                {parseInt(order.total_price).toLocaleString()}đ
+                )}-500 text-white px-3 py-1 rounded-full text-sm font-medium`}
+              >
+                {order.status
+                  .toLocaleLowerCase()
+                  .replace("completed", "Hoàn thành")
+                  .replace("pending", "Chờ xác nhận")
+                  .replace("preparing", "Đang chuẩn bị")
+                  .replace("delivery", "Đang giao")
+                  .replace("cancel", "Đã hủy")}
               </span>
             </div>
-          </div>
+            <div className="text-gray-600 mb-4">
+              <p>Địa chỉ: {order.address}</p>
+              <p>Số điện thoại: {order.phone}</p>
+              <p>Phương thức thanh toán: {order.payment_method}</p>
+              <p>Trạng thái thanh toán: {order.payment_status}</p>
+            </div>
+            <div className="flex justify-between items-center text-sm text-gray-600">
+              <div className="flex items-center">
+                <FaClock
+                  className={`w-4 h-4 mr-2 text-${getStatusColor(
+                    order.status
+                  )}-500`}
+                />
+                <span>{order.created_at}</span>
+              </div>
+              <div className="flex items-center">
+                <FaDollarSign className="w-4 h-4 mr-2 text-green-500" />
+                <span className="font-semibold">
+                  {parseInt(order.total_price).toLocaleString()}đ
+                </span>
+              </div>
+            </div>
 
-          {!isActive && (
-            <div className="mt-4 flex gap-4">
-              <button className="bg-blue-500 mt-12 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300 ease-in-out flex items-center">
-                <FaRedoAlt className="mr-2" />
-                Đặt lại
-              </button>
-              {order.status.toLowerCase() === "completed" && (
-                <button className="bg-yellow-500 mt-12 text-white px-4 py-2 rounded-full hover:bg-yellow-600 transition duration-300 ease-in-out flex items-center">
-                  <FaStar className="mr-2" />
-                  Đánh Giá
+            {!isActive && (
+              <div className="mt-4 flex gap-4">
+                <button className="bg-blue-500 mt-12 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300 ease-in-out flex items-center">
+                  <FaRedoAlt className="mr-2" />
+                  Đặt lại
                 </button>
-              )}
-            </div>
-          )}
-          {isActive && (
-            <div className="mt-4">
-              <button
-                disabled={["preparing", "delivery"].includes(
-                  order.status.toLowerCase()
+                {order.status.toLowerCase() === "completed" && (
+                  <button className="bg-yellow-500 mt-12 text-white px-4 py-2 rounded-full hover:bg-yellow-600 transition duration-300 ease-in-out flex items-center">
+                    <FaStar className="mr-2" />
+                    Đánh Giá
+                  </button>
                 )}
-                className={`mt-12 text-white px-4 py-2 rounded-full transition duration-300 ease-in-out flex items-center ${
-                  ["preparing", "delivery"].includes(order.status.toLowerCase())
-                    ? "bg-gray-800"
-                    : "bg-red-500 hover:bg-red-600"
-                }`}
-              >
-                <ImCancelCircle className="mr-2" />
-                Hủy đơn hàng
-              </button>
-            </div>
-          )}
+              </div>
+            )}
+            {isActive && (
+              <div className="mt-4">
+                <button
+                  disabled={["preparing", "delivery"].includes(
+                    order.status.toLowerCase()
+                  )}
+                  className={`mt-12 text-white px-4 py-2 rounded-full transition duration-300 ease-in-out flex items-center ${
+                    ["preparing", "delivery"].includes(
+                      order.status.toLowerCase()
+                    )
+                      ? "bg-gray-800"
+                      : "bg-red-500 hover:bg-red-600"
+                  }`}
+                >
+                  <ImCancelCircle className="mr-2" />
+                  Hủy đơn hàng
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+      {showModal && (
+        <OrderDetailModal order={order} onClose={() => setShowModal(false)} />
+      )}
+    </>
   );
 };
 
@@ -173,23 +185,45 @@ export default function History() {
             </p>
           </div>
 
-          <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-            <h2 className="text-2xl font-semibold mb-6 text-indigo-700 border-b-2 border-indigo-200 pb-2">
-              Đơn Hàng Đang Đặt
-            </h2>
-            {activeOrders.map((order) => (
-              <OrderCard key={order.order_id} order={order} />
-            ))}
-          </div>
+          {orders.length === 0 ? (
+            <div className="bg-white rounded-lg shadow-lg p-8 text-center">
+              <p className="text-gray-600 text-xl">
+                Bạn chưa có đơn hàng nào gần đây
+              </p>
+            </div>
+          ) : (
+            <>
+              <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
+                <h2 className="text-2xl font-semibold mb-6 text-indigo-700 border-b-2 border-indigo-200 pb-2">
+                  Đơn Hàng Đang Đặt
+                </h2>
+                {activeOrders.length > 0 ? (
+                  activeOrders.map((order) => (
+                    <OrderCard key={order.order_id} order={order} />
+                  ))
+                ) : (
+                  <p className="text-center text-gray-600">
+                    Không có đơn hàng đang đặt
+                  </p>
+                )}
+              </div>
 
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <h2 className="text-2xl font-semibold mb-6 text-indigo-700 border-b-2 border-indigo-200 pb-2">
-              Đơn Hàng Đã Đặt
-            </h2>
-            {completedOrders.map((order) => (
-              <OrderCard key={order.order_id} order={order} />
-            ))}
-          </div>
+              <div className="bg-white rounded-lg shadow-lg p-8">
+                <h2 className="text-2xl font-semibold mb-6 text-indigo-700 border-b-2 border-indigo-200 pb-2">
+                  Đơn Hàng Đã Đặt
+                </h2>
+                {completedOrders.length > 0 ? (
+                  completedOrders.map((order) => (
+                    <OrderCard key={order.order_id} order={order} />
+                  ))
+                ) : (
+                  <p className="text-center text-gray-600">
+                    Không có đơn hàng đã đặt
+                  </p>
+                )}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </>

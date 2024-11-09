@@ -45,7 +45,7 @@ export default function Oder() {
 
   useEffect(() => {
     fetchOrders();
-  }, [page, limit, searchTerm, selectedStatus]);
+  });
 
   const handleViewDetail = async (order) => {
     const result = await detailOrder(order.id);
