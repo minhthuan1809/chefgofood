@@ -47,7 +47,24 @@ const AdminSidebar = () => {
       label: "Đơn Hàng",
       id: "orders",
       path: "/orders",
+      hasSubmenu: true,
+
       dataDecentralization: dataDecentralization?.order,
+      submenu: [
+        {
+          icon: <HiUsers size={20} />,
+          label: "Đơn hàng chờ xử lý",
+          id: "orders-pending",
+          path: "/orders-pending",
+        },
+
+        {
+          icon: <FaHistory size={20} />,
+          label: "Lịch sử sử dụng",
+          id: "orders-history",
+          path: "/orders-history",
+        },
+      ],
     },
     {
       icon: <HiEnvelope size={20} />,

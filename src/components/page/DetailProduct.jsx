@@ -16,27 +16,35 @@ import Nav from "../header/Nav";
 import Loading from "../util/Loading";
 import PageFooter from "../footer/PageFooter";
 import { toast } from "react-toastify";
+import { addCart } from "../../service/cart_client";
 
 const DetailProduct = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
-  const [quantity, setQuantity] = useState(1);
   const params = useParams();
   const dispatch = useDispatch();
   const product = useSelector((state) => state.detail.detailProduct);
-
+  const apiKey = useSelector((state) => state.login.apikey);
   useEffect(() => {
     const fetchDetailProduct = async () => {
       const data = await dispatch(getDetailProduct(params.id, 1));
       toast.dismiss();
-
+      console.log("thuan", data);
       if (!data.ok) {
         toast.error("Đã có lỗi xảy ra !");
       }
     };
     fetchDetailProduct();
   }, [params.id]);
-
+  const addProductToCart = async () => {
+    toast.dismiss();
+    const addItem = await addCart(product.id, apiKey);
+    if (addItem.ok) {
+      toast.success(addItem.message);
+    } else {
+      toast.error(addItem.message);
+    }
+  };
   return (
     <div className="min-h-screen flex flex-col">
       <Nav />
@@ -57,6 +65,18 @@ const DetailProduct = () => {
                         alt={product.name}
                         className="w-full h-full object-cover transition-all duration-300 hover:scale-105"
                       />
+                      {!product.status && (
+                        <div className="absolute top-4 left-4">
+                          <div className="bg-red-50 border-2 border-red-500 px-4 py-2 rounded-lg">
+                            <div className="flex items-center space-x-2">
+                              <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                              <span className="text-red-600 font-semibold tracking-wide text-sm">
+                                Hết hàng
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                       {product.discount > 0 && (
                         <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
                           Giảm {product.discount}%
@@ -159,35 +179,27 @@ const DetailProduct = () => {
                     </div>
 
                     <div className="space-y-6">
-                      <div className="flex items-center gap-4">
-                        <span className="text-gray-700">Số lượng:</span>
-                        <div className="flex items-center border border-gray-200 rounded-lg">
-                          <button
-                            onClick={() =>
-                              setQuantity(Math.max(1, quantity - 1))
-                            }
-                            className="px-4 py-2 hover:bg-gray-50 transition"
-                            title="Giảm số lượng"
-                          >
-                            -
-                          </button>
-                          <span className="px-4">{quantity}</span>
-                          <button
-                            onClick={() => setQuantity(quantity + 1)}
-                            className="px-4 py-2 hover:bg-gray-50 transition"
-                            title="Tăng số lượng"
-                          >
-                            +
-                          </button>
-                        </div>
-                      </div>
-
-                      <div className=" flex gap-4 mt-6 ">
-                        <button className="w-full flex items-center justify-center bg-red-600 text-white py-3 rounded-lg transition hover:bg-red-700">
+                      <div className="flex gap-4 mt-6">
+                        <button
+                          className={`w-full flex items-center justify-center py-3 rounded-lg transition ${
+                            product.status
+                              ? "bg-red-600 hover:bg-red-700 text-white"
+                              : "bg-gray-300 cursor-not-allowed text-gray-500"
+                          }`}
+                          disabled={!product.status}
+                        >
                           <AiOutlineShoppingCart className="mr-2" />
                           Mua ngay
                         </button>
-                        <button className="w-full flex items-center justify-center bg-blue-600 text-white py-3 rounded-lg transition hover:bg-blue-700">
+                        <button
+                          className={`w-full flex items-center justify-center py-3 rounded-lg transition ${
+                            product.status
+                              ? "bg-blue-600 hover:bg-blue-700 text-white"
+                              : "bg-gray-300 cursor-not-allowed text-gray-500"
+                          }`}
+                          disabled={!product.status}
+                          onClick={addProductToCart}
+                        >
                           <AiOutlineShoppingCart className="mr-2" />
                           Thêm vào giỏ hàng
                         </button>

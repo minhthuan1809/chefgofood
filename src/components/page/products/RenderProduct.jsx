@@ -2,8 +2,13 @@
 import { FaStar, FaCartPlus } from "react-icons/fa";
 import { PiContactlessPaymentLight } from "react-icons/pi";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { addCart } from "../../../service/cart_client";
 
 const RenderProduct = ({ product, idProduct }) => {
+  const apiKey = useSelector((state) => state.login.apikey);
+
   if (product.lock) return null;
   const calculateDiscountedPrice = (price, discount) => {
     const discountRate = discount > 1 ? discount / 100 : discount;
@@ -14,15 +19,18 @@ const RenderProduct = ({ product, idProduct }) => {
     product.price,
     product.discount
   );
-  const displayDiscount = product.discount * 100;
-  const inittailCart = {
-    data: JSON.parse(localStorage.getItem("ProductToCart")) || {},
+  const displayDiscount = `${product.discount}%`;
+
+  const addProductToCart = async () => {
+    toast.dismiss();
+    const addItem = await addCart(product.id, apiKey);
+    if (addItem.ok) {
+      toast.success(addItem.message);
+    } else {
+      toast.error(addItem.message);
+    }
   };
 
-  const addProductToCart = (e) => {
-    const data = { ...inittailCart.data, [e.id]: e };
-    localStorage.setItem("ProductToCart", JSON.stringify(data));
-  };
   return (
     <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
       <div className="relative">
@@ -37,16 +45,34 @@ const RenderProduct = ({ product, idProduct }) => {
             .replace(/-+/g, "-")
             .trim()}/${idProduct}`}
         >
-          <img
-            src={product.image_url}
-            alt={product.name}
-            className="w-full h-36 sm:h-48 object-cover"
-          />
-          {product.discount > 0 && (
-            <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded-md text-xs sm:text-sm font-bold">
-              {displayDiscount} OFF
-            </div>
-          )}
+          <div className="relative">
+            <img
+              src={product.image_url}
+              alt={product.name}
+              className={`w-full h-36 sm:h-48 object-cover ${
+                !product.status ? "opacity-60 grayscale" : ""
+              }`}
+            />
+            {!product.status && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/30 backdrop-blur-[2px]">
+                <div className="bg-white/90 px-4 py-2 rounded-lg shadow-xl">
+                  <div className="flex flex-col items-center">
+                    <span className="text-red-600 font-bold text-lg tracking-wider">
+                      HẾT HÀNG
+                    </span>
+                    <span className="text-gray-600 text-xs mt-1">
+                      Sẽ sớm trở lại
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+            {product.discount > 0 && (
+              <div className="absolute top-2 left-2 bg-gradient-to-r from-red-500 to-pink-500 text-white px-3 py-1 rounded-full text-xs sm:text-sm font-medium shadow-lg">
+                {displayDiscount} OFF
+              </div>
+            )}
+          </div>
         </Link>
       </div>
       <div className="p-2 sm:p-4">
@@ -67,13 +93,21 @@ const RenderProduct = ({ product, idProduct }) => {
         </Link>
         <div className="flex justify-between items-center mb-1 sm:mb-2">
           <div>
-            <span className="text-red-500 font-bold text-sm sm:text-lg">
-              {discountedPrice.toLocaleString("vi-VN")} ₫
-            </span>
-            {product.discount > 0 && (
-              <span className="text-gray-500 line-through ml-1 sm:ml-2 text-xs sm:text-sm">
-                {product.price.toLocaleString("vi-VN")} ₫
+            {!product.status ? (
+              <span className="text-red-500 font-bold text-sm sm:text-lg">
+                Hết hàng
               </span>
+            ) : (
+              <>
+                <span className="text-red-500 font-bold text-sm sm:text-lg">
+                  {discountedPrice.toLocaleString("vi-VN")} ₫
+                </span>
+                {product.discount > 0 && (
+                  <span className="text-gray-500 line-through ml-1 sm:ml-2 text-xs sm:text-sm">
+                    {product.price.toLocaleString("vi-VN")} ₫
+                  </span>
+                )}
+              </>
             )}
           </div>
         </div>
@@ -88,11 +122,23 @@ const RenderProduct = ({ product, idProduct }) => {
           <div className="flex space-x-1 sm:space-x-2">
             <button
               onClick={() => addProductToCart(product)}
-              className="bg-blue-500 text-white p-1 sm:p-2 rounded-full hover:bg-blue-600 transition-colors duration-300"
+              disabled={!product.status}
+              className={`${
+                product.status
+                  ? "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
+                  : "bg-gray-300 cursor-not-allowed"
+              } text-white p-1.5 sm:p-2 rounded-full transition-all duration-300 shadow-md hover:shadow-lg`}
             >
               <FaCartPlus size={16} />
             </button>
-            <button className="bg-red-500 text-white p-1 sm:p-2 rounded-full hover:bg-red-600 transition-colors duration-300">
+            <button
+              disabled={!product.status}
+              className={`${
+                product.status
+                  ? "bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700"
+                  : "bg-gray-300 cursor-not-allowed"
+              } text-white p-1.5 sm:p-2 rounded-full transition-all duration-300 shadow-md hover:shadow-lg`}
+            >
               <PiContactlessPaymentLight size={16} />
             </button>
           </div>

@@ -62,11 +62,16 @@ const UserMenuItem = ({ icon, text, badge, onClick, path }) => {
   );
 };
 
-const UserDropdown = ({ isOpen, onItemClick }) => {
+const UserDropdown = ({ isOpen, onItemClick, DataCart }) => {
   if (!isOpen) return null;
 
   const USER_MENU_ITEMS = [
-    { icon: <FaCartShopping />, text: "Giỏ hàng", badge: "8", path: "/carts" },
+    {
+      icon: <FaCartShopping />,
+      text: "Giỏ hàng",
+      badge: DataCart?.length,
+      path: "/carts",
+    },
     { icon: <FaCartShopping />, text: "Lịch sử đơn hàng", path: "/history" },
     { icon: <IoIosSettings />, text: "Cập nhật tài khoản", path: "/account" },
     { icon: <IoMdLogOut />, text: "Đăng xuất", action: "logout" },
@@ -87,7 +92,13 @@ const UserDropdown = ({ isOpen, onItemClick }) => {
   );
 };
 
-const UserProfile = ({ user, dropdownOpen, toggleDropdown, onItemClick }) => (
+const UserProfile = ({
+  user,
+  dropdownOpen,
+  toggleDropdown,
+  onItemClick,
+  DataCart,
+}) => (
   <div className="relative">
     <div
       onClick={toggleDropdown}
@@ -104,7 +115,11 @@ const UserProfile = ({ user, dropdownOpen, toggleDropdown, onItemClick }) => (
         {user?.username || "User"}
       </span>
     </div>
-    <UserDropdown isOpen={dropdownOpen} onItemClick={onItemClick} />
+    <UserDropdown
+      isOpen={dropdownOpen}
+      onItemClick={onItemClick}
+      DataCart={DataCart}
+    />
   </div>
 );
 
@@ -119,7 +134,7 @@ const Nav = () => {
   const status = useSelector((state) => state.login.status);
   const apiKey = useSelector((state) => state.login.apikey);
   const profile = useSelector((state) => state.profile.profile);
-
+  const DataCart = useSelector((state) => state.cart.cartItems);
   useEffect(() => {
     async function checkApiKey() {
       if (apiKey) {
@@ -225,6 +240,7 @@ const Nav = () => {
                 dropdownOpen={dropdownOpen}
                 toggleDropdown={toggleDropdown}
                 onItemClick={handleItemClick}
+                DataCart={DataCart}
               />
             ) : (
               <button

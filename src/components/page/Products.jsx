@@ -97,7 +97,7 @@ const Products = () => {
         </div>
       </main>
       <footer className="flex justify-center pb-4 sm:pb-6">
-        <PaginationPage page={page} />
+        {page > 1 && <PaginationPage page={page} />}
       </footer>
     </div>
   );

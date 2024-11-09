@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useRef, useState, useEffect } from "react";
 import {
   FaCartPlus,
@@ -10,11 +11,15 @@ import { PiContactlessPaymentLight } from "react-icons/pi";
 import { getUiTopProduct } from "../../../service/ui/ui_topProduct";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { addCart } from "../../../service/cart_client";
+import { useSelector } from "react-redux";
 export default function TopProducts() {
   const [dataproduct, getDataProduct] = useState([]);
   const navigator = useNavigate();
   const scrollRef = useRef(null);
   const [isAtStart, setIsAtStart] = useState(true);
+  const apiKey = useSelector((state) => state.login.apikey);
 
   const scroll = (scrollOffset) => {
     scrollRef.current.scrollLeft += scrollOffset;
@@ -46,7 +51,15 @@ export default function TopProducts() {
     }
     fectData();
   }, [navigator]);
-
+  const addProductToCart = async (id) => {
+    toast.dismiss();
+    const addItem = await addCart(id, apiKey);
+    if (addItem.ok) {
+      toast.success(addItem.message);
+    } else {
+      toast.error(addItem.message);
+    }
+  };
   return (
     <div>
       <section className="py-16 bg-white">
@@ -128,7 +141,10 @@ export default function TopProducts() {
                           đ
                         </p>
                       </div>
-                      <button className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition-colors duration-300 relative group">
+                      <button
+                        onClick={() => addProductToCart(product.id)}
+                        className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition-colors duration-300 relative group"
+                      >
                         <span className="absolute right-[3rem] bottom-1 w-max opacity-0 group-hover:opacity-100 bg-blue-500 text-white text-xs p-2 rounded transition-opacity duration-300">
                           Thêm vào giỏ hàng
                         </span>

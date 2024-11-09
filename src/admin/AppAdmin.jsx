@@ -20,6 +20,8 @@ import DiscountUser from "./components/page/DiscountUser";
 import Trademark from "./components/layout/Trademark";
 import HistoryDiscount from "./components/page/HistoryDiscount";
 import Review from "./components/page/Review";
+import Oder from "./components/page/Oder";
+import OderHistory from "./components/page/OderHistory";
 
 const AppAdmin = () => {
   const [page, setPage] = useState(null);
@@ -46,6 +48,8 @@ const AppAdmin = () => {
     { path: "title", page: <Trademark />, id: 9 },
     { path: "history-discounts", page: <HistoryDiscount />, id: 10 },
     { path: "review", page: <Review />, id: 11 },
+    { path: "orders-pending", page: <Oder />, id: 13 },
+    { path: "orders-history", page: <OderHistory />, id: 14 },
   ];
 
   useEffect(() => {

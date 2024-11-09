@@ -18,7 +18,7 @@ const ProductManagement = () => {
   const [limit, setLimit] = useState(10);
   const [type, setType] = useState("");
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
   // Sử dụng Redux
@@ -41,6 +41,7 @@ const ProductManagement = () => {
     setIsLoading(true);
     const res = await dispatch(getRenderProduct(searchTerm, limit, page, type));
     setTotalPages(res.data.pagination.total_pages);
+
     setIsLoading(false);
   };
 
