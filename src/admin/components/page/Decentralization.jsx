@@ -18,6 +18,7 @@ const PERMISSIONS = [
   { key: "product", label: "Sản phẩm" },
   { key: "statistics", label: "Thống kê" },
   { key: "user", label: "Người dùng" },
+  { key: "review", label: "Đánh giá" },
 ];
 
 const Decentralization = () => {

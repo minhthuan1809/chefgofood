@@ -55,6 +55,7 @@ export default function LeftSeting() {
                       user: "Người dùng",
                       discount: "Giảm giá",
                       decentralization: "Phân quyền",
+                      review: "Đánh giá",
                     };
                     return (
                       <div

@@ -20,6 +20,7 @@ export const decentralizationCreate = async (data) => {
           discount: data.permissions.discount,
           layout: data.permissions.layout,
           decentralization: data.permissions.decentralization,
+          review: data.permissions.review,
           note: data.note,
         }),
       }

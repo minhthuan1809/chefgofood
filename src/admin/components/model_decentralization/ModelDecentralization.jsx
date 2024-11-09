@@ -32,6 +32,7 @@ const ModelDecentralization = ({ user, onClose, refetch }) => {
       order: user ? user.order : false,
       product: user ? user.product : false,
       statistics: user ? user.statistics : false,
+      review: user ? user.review : false,
       user: user ? user.user : false,
     },
     note: user ? user.note : "",
@@ -306,6 +307,16 @@ const ModelDecentralization = ({ user, onClose, refetch }) => {
                   className="mr-2"
                 />
                 Người dùng
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  name="review"
+                  checked={formData.permissions.review}
+                  onChange={handleChange}
+                  className="mr-2"
+                />
+                Đánh giá
               </label>
             </div>
             <div className="mt-2">
