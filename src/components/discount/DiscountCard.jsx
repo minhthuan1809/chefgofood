@@ -60,13 +60,6 @@ export default function DiscountCard({
             </svg>
             <span>Hiệu lực: {days_remaining} ngày</span>
           </div>
-          <div className="text-sm text-blue-600">
-            Áp dụng cho:{" "}
-            {type
-              .replace("cake", "Bánh")
-              .replace("water", "Nước")
-              .replace("food", "Đồ ăn")}
-          </div>
         </div>
         <button
           className="w-full py-3 bg-blue-600 text-white font-medium hover:bg-blue-700 transition duration-300 flex items-center justify-center"

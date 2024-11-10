@@ -34,7 +34,16 @@ export default function OrderDetailModal({ order, onClose }) {
             <div className="border-b pb-4">
               <h3 className="font-semibold mb-2">Thông tin đơn hàng</h3>
               <p>Ngày đặt: {order.created_at}</p>
-              <p>Trạng thái: {order.status}</p>
+              <p>
+                Trạng thái:{" "}
+                {order.status
+                  .toLocaleLowerCase()
+                  .replace("completed", "Hoàn thành")
+                  .replace("pending", "Chờ xác nhận")
+                  .replace("preparing", "Đang chuẩn bị")
+                  .replace("delivery", "Đang giao")
+                  .replace("cancel", "Đã hủy")}
+              </p>
               <p>Tổng tiền: {parseInt(order.total_price).toLocaleString()}đ</p>
             </div>
 
@@ -47,7 +56,16 @@ export default function OrderDetailModal({ order, onClose }) {
             <div className="border-b pb-4">
               <h3 className="font-semibold mb-2">Thông tin thanh toán</h3>
               <p>Phương thức: {order.payment_method}</p>
-              <p>Trạng thái: {order.payment_status}</p>
+              <p>
+                Trạng thái:{" "}
+                {order.payment_status
+                  .toLocaleLowerCase()
+                  .replace("completed", "Hoàn thành")
+                  .replace("pending", "Chờ xác nhận")
+                  .replace("preparing", "Đang chuẩn bị")
+                  .replace("delivery", "Đang giao")
+                  .replace("cancel", "Đã hủy")}
+              </p>
             </div>
 
             <div>
