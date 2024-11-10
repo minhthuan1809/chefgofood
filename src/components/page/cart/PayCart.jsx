@@ -114,6 +114,7 @@ const PayCart = ({ items }) => {
         ]);
 
         setDiscountSystem(discountResponse.data.discounts);
+        console.log("discountResponse", discountResponse);
 
         if (profileResponse.data.id) {
           const addressResponse = await dispatch(
@@ -164,8 +165,8 @@ const PayCart = ({ items }) => {
       const result = await addCartPay(paymentData);
       console.log("result", result);
       if (result.success) {
-        navigate("/history");
         toast.success("Đặt hàng thành công!");
+        navigate("/history");
         // Xử lý sau khi thanh toán thành công
       } else {
         toast.error(result.message || "Đặt hàng thất bại");
@@ -232,54 +233,57 @@ const PayCart = ({ items }) => {
         title="Mã giảm giá"
       >
         <div className="space-y-2">
-          {discountSystem?.map((code) => (
-            <button
-              key={code.id}
-              onClick={() => {
-                if (subtotal < code.minimum_price) {
-                  toast.dismiss();
-                  toast.error(
-                    `Đơn hàng tối thiểu ${code.minimum_price.toLocaleString()}₫`
-                  );
-                  return;
-                }
+          {discountSystem?.map((code) => {
+            if (code.days_remaining <= 0) {
+              return;
+            }
 
-                if (code.days_remaining < 0) {
-                  toast.dismiss();
-                  toast.error("Mã giảm giá đã hết hạn!");
-                  return;
-                }
+            return (
+              <button
+                key={code.id}
+                onClick={() => {
+                  if (subtotal < code.minimum_price) {
+                    toast.dismiss();
+                    toast.error(
+                      `Đơn hàng tối thiểu ${code.minimum_price.toLocaleString()}₫`
+                    );
+                    return;
+                  }
 
-                if (code.quantity <= 0) {
-                  toast.dismiss();
-                  toast.error("Mã giảm giá đã hết lượt sử dụng!");
-                  return;
-                }
+                  if (code.quantity <= 0) {
+                    toast.dismiss();
+                    toast.error("Mã giảm giá đã hết lượt sử dụng!");
+                    return;
+                  }
 
-                setDiscountCode(code.code);
-                setAppliedDiscount(code.discount_percent / 100);
-                setIsDiscountModalOpen(false);
-                toast.success("Áp dụng mã giảm giá thành công!");
-              }}
-              className="w-full text-left p-3 hover:bg-blue-50 rounded-lg transition-colors"
-            >
-              <div className="flex justify-between items-center">
-                <div>
-                  <span className="font-semibold">{code.code}</span>
-                  <p className="text-sm text-gray-500">{code.name}</p>
-                  <p className="text-xs text-gray-400">
-                    Đơn tối thiểu: {code.minimum_price.toLocaleString()}₫
-                  </p>
-                  {code.days_remaining < 0 && (
-                    <p className="text-xs text-red-500">{code.message}</p>
-                  )}
+                  setDiscountCode(code.code);
+                  setAppliedDiscount(code.discount_percent / 100);
+                  setIsDiscountModalOpen(false);
+                  toast.success("Áp dụng mã giảm giá thành công!");
+                }}
+                className="w-full text-left p-3 hover:bg-blue-50 rounded-lg transition-colors"
+              >
+                <div className="flex justify-between items-center">
+                  <div>
+                    <span className="font-semibold">{code.code}</span>
+                    <p className="text-sm text-gray-500">{code.name}</p>
+                    <p className="text-xs text-gray-400">
+                      Đơn tối thiểu: {code.minimum_price.toLocaleString()}₫
+                    </p>
+                    <p className="text-xs text-gray-400">
+                      Thời gian còn lại: {code.days_remaining} ngày
+                    </p>
+                    {code.days_remaining < 0 && (
+                      <p className="text-xs text-red-500">{code.message}</p>
+                    )}
+                  </div>
+                  <span className="text-blue-600">
+                    Giảm {code.discount_percent}%
+                  </span>
                 </div>
-                <span className="text-blue-600">
-                  Giảm {code.discount_percent}%
-                </span>
-              </div>
-            </button>
-          ))}
+              </button>
+            );
+          })}
         </div>
       </Modal>
 

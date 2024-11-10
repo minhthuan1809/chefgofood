@@ -36,59 +36,49 @@ export default function OrderDetailModal({ order, onClose }) {
               <p>Ngày đặt: {order.created_at}</p>
               <p>
                 Trạng thái:{" "}
-                {order.status
+                {order.order_status
                   .toLocaleLowerCase()
-                  .replace("completed", "Hoàn thành")
                   .replace("pending", "Chờ xác nhận")
                   .replace("preparing", "Đang chuẩn bị")
                   .replace("delivery", "Đang giao")
+                  .replace("completed", "Hoàn thành")
                   .replace("cancel", "Đã hủy")}
               </p>
+              <p>Ghi chú: {order.shipping_info.note || "Không có ghi chú"}</p>
               <p>Tổng tiền: {parseInt(order.total_price).toLocaleString()}đ</p>
             </div>
 
             <div className="border-b pb-4">
               <h3 className="font-semibold mb-2">Thông tin giao hàng</h3>
-              <p>Địa chỉ: {order.address}</p>
-              <p>Số điện thoại: {order.phone}</p>
+              <p>Địa chỉ: {order.shipping_info.address}</p>
+              <p>Số điện thoại: {order.shipping_info.phone}</p>
             </div>
 
             <div className="border-b pb-4">
               <h3 className="font-semibold mb-2">Thông tin thanh toán</h3>
-              <p>Phương thức: {order.payment_method}</p>
               <p>
-                Trạng thái:{" "}
-                {order.payment_status
-                  .toLocaleLowerCase()
-                  .replace("completed", "Hoàn thành")
-                  .replace("pending", "Chờ xác nhận")
-                  .replace("preparing", "Đang chuẩn bị")
-                  .replace("delivery", "Đang giao")
-                  .replace("cancel", "Đã hủy")}
+                Phương thức:{" "}
+                {order.payment.payment_method === "cash"
+                  ? "Tiền mặt"
+                  : "Thẻ tín dụng"}
+              </p>
+              <p>
+                Mã giảm giá:{" "}
+                {order.discount.code ? order.discount.code : "Không có"}
               </p>
             </div>
 
             <div>
-              <h3 className="font-semibold mb-2">Sản phẩm</h3>
+              <h3 className="font-semibold mb-2">
+                Sản phẩm ({order.products.length})
+              </h3>
               {order.products.map((product, index) => (
                 <div key={index} className="flex items-center space-x-4 mb-4">
-                  <img
-                    src={product.image_url}
-                    alt={product.product_name}
-                    className="w-20 h-20 object-cover rounded"
-                  />
                   <div className="flex-1">
                     <p className="font-medium">{product.product_name}</p>
                     <p className="text-sm text-gray-500">
                       Số lượng: {product.quantity} x{" "}
                       {parseInt(product.price).toLocaleString()}đ
-                    </p>
-                    <p className="font-medium">
-                      Tổng:{" "}
-                      {(
-                        product.quantity * parseInt(product.price)
-                      ).toLocaleString()}
-                      đ
                     </p>
                   </div>
                 </div>

@@ -1,29 +1,57 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BiRefresh } from "react-icons/bi";
-import { FaEdit, FaPlus, FaSearch, FaTrash } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import { MdDiscount } from "react-icons/md";
+import { getDiscountHistoryRender } from "../../../service/server/discount/discount_history";
+import { toast } from "react-toastify";
+import PaginationPage from "../util/PaginationPage";
 
 export default function HistoryDiscount() {
-  const [coupons] = useState([
-    {
-      id: 1,
-      code: "FOOD30",
-      discount: "0.3%",
-      minOrder: "2,000₫",
-      duration: "3 ngày",
-      category: "Đồ ăn",
-      status: "Đang hoạt động",
-    },
-    {
-      id: 2,
-      code: "DRINK50",
-      discount: "0.5%",
-      minOrder: "5,000₫",
-      duration: "5 ngày",
-      category: "Đồ uống",
-      status: "Hết hạn",
-    },
-  ]);
+  const [discountHistory, setDiscountHistory] = useState([]);
+  const [limit, setLimit] = useState(30);
+  const [page, setPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [totalPages, setTotalPages] = useState(1);
+  const [filterStatus, setFilterStatus] = useState("all");
+
+  const fetchData = async () => {
+    const result = await getDiscountHistoryRender(limit, page, searchTerm);
+    console.log("result", result);
+    if (result.ok) {
+      let filteredData = result.data.discount_history;
+
+      if (filterStatus !== "all") {
+        filteredData = filteredData.filter((item) => {
+          const status = item.status.toLowerCase();
+          switch (filterStatus) {
+            case "pending":
+              return status === "pending";
+            case "cancel":
+              return status === "cancel";
+          }
+        });
+      }
+
+      setTotalPages(Math.ceil(filteredData.length / limit));
+      setDiscountHistory(filteredData);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [searchTerm, limit, page, filterStatus]);
+
+  const handleDetailOder = (order_id) => {
+    console.log(order_id);
+  };
+
+  const handleRefresh = () => {
+    setSearchTerm("");
+    setPage(1);
+    setLimit(30);
+    setFilterStatus("all");
+    fetchData();
+  };
 
   return (
     <div className="p-6">
@@ -31,12 +59,8 @@ export default function HistoryDiscount() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <MdDiscount className="text-blue-600" />
-          Quản lý mã giảm giá
+          Lịch sử sử dụng mã giảm giá
         </h1>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700">
-          <FaPlus />
-          Thêm mã mới
-        </button>
       </div>
 
       {/* Search and Filter */}
@@ -46,19 +70,41 @@ export default function HistoryDiscount() {
             <FaSearch className="absolute left-3 top-3 text-gray-400" />
             <input
               type="text"
-              placeholder="Tìm kiếm mã giảm giá..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Tìm kiếm theo mã giảm giá hoặc email..."
               className="pl-10 p-2 border rounded-lg w-full focus:outline-none focus:border-blue-500"
             />
           </div>
-          <button className="px-4 py-2 border rounded hover:bg-gray-100">
+          <button
+            className="px-4 py-2 border rounded hover:bg-gray-100"
+            onClick={handleRefresh}
+          >
             <BiRefresh className="text-xl text-gray-500" />
           </button>
-          <select className="p-2 border rounded-lg focus:outline-none focus:border-blue-500">
-            <option value="">Tất cả danh mục</option>
-            <option value="food">Đồ ăn</option>
-            <option value="drink">Đồ uống</option>
-            <option value="drink">Bánh</option>
+          <select
+            className="p-2 border rounded-lg focus:outline-none focus:border-blue-500"
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+          >
+            <option value="all">Tất cả trạng thái</option>
+            <option value="pending">Hoàn thành</option>
+            <option value="cancel">Hủy</option>
           </select>
+          <div className="flex items-center gap-2">
+            <label className="text-gray-500">Số lượng:</label>
+            <select
+              className="border rounded px-3 py-2 outline-none"
+              onChange={(e) => setLimit(e.target.value)}
+              value={limit}
+            >
+              {Array.from({ length: 100 }, (_, index) => (
+                <option key={index} value={index + 1}>
+                  {index + 1}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 
@@ -71,66 +117,72 @@ export default function HistoryDiscount() {
                 Mã giảm giá
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Giảm giá
+                Mã đơn hàng
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Đơn tối thiểu
+                Email
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Thời hạn
+                Phần trăm giảm
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Danh mục
+                Thời gian sử dụng
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Trạng thái
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Thao tác
-              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {coupons.map((coupon) => (
-              <tr key={coupon.id}>
-                <td className="px-6 py-4 whitespace-nowrap">{coupon.code}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {coupon.discount}
+            {discountHistory.map((item, index) => (
+              <tr key={index}>
+                <td
+                  className="px-6 py-4 whitespace-nowrap cursor-pointer hover:text-blue-600 hover:underline"
+                  onClick={() => {
+                    const text = item.discount_code;
+                    navigator.clipboard.writeText(text);
+                    toast.success("Đã copy mã giảm giá");
+                  }}
+                >
+                  {item.discount_code}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {coupon.minOrder}
+                  <button
+                    className="text-blue-600 hover:text-blue-800 hover:underline"
+                    onClick={() => {
+                      handleDetailOder(item.order_id);
+                    }}
+                  >
+                    #{item.order_id}
+                  </button>
                 </td>
+                <td className="px-6 py-4 whitespace-nowrap">{item.email}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {coupon.duration}
+                  {item.discount_percent}%
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {coupon.category}
-                </td>
+                <td className="px-6 py-4 whitespace-nowrap">{item.datetime}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
                     className={`px-2 py-1 rounded-full text-xs ${
-                      coupon.status === "Đang hoạt động"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-red-100 text-red-800"
+                      item?.status?.toLowerCase().replace("cancel", "Hủy") ===
+                      "Hủy"
+                        ? "bg-red-100 text-red-800"
+                        : "bg-green-100 text-green-800"
                     }`}
                   >
-                    {coupon.status}
+                    {item?.status
+                      .toLocaleLowerCase()
+                      .replace("cancel", "Hủy")
+                      .replace("pending", "Hoàn thành") || ""}
                   </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex gap-3">
-                    <button className="text-blue-600 hover:text-blue-800">
-                      <FaEdit />
-                    </button>
-                    <button className="text-red-600 hover:text-red-800">
-                      <FaTrash />
-                    </button>
-                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+        {totalPages > 1 && (
+          <PaginationPage count={totalPages} setPage={setPage} />
+        )}
       </div>
     </div>
   );

@@ -8,7 +8,6 @@ export default function DiscountCard({
   discount_percent,
   minimum_price,
   days_remaining,
-  type,
 }) {
   const navigator = useNavigate();
   const apiKey = useSelector((state) => state.login.apikey);
@@ -20,6 +19,7 @@ export default function DiscountCard({
       navigator("/food");
     }
   };
+  if (days_remaining <= 0) return null;
   return (
     <div>
       <div className="bg-white rounded-lg shadow-md overflow-hidden">

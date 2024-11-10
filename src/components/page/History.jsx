@@ -12,6 +12,7 @@ import Nav from "../header/Nav";
 import { getHistory } from "../../service/HistoryOder";
 import { useSelector } from "react-redux";
 import OrderDetailModal from "../history/Modal_history";
+import { detailOrder } from "../../service/server/oder";
 
 const getStatusColor = (status) => {
   switch (status.toLowerCase()) {
@@ -36,7 +37,13 @@ const OrderCard = ({ order }) => {
   const isActive = ["pending", "preparing", "delivery"].includes(
     order.status.toLowerCase()
   );
-
+  const [data, setData] = useState(null);
+  const handleDetailOder = async (id) => {
+    const result = await detailOrder(id);
+    console.log("result", result);
+    setData(result.data);
+    setShowModal(true);
+  };
   return (
     <>
       <div className="bg-white rounded-lg shadow-lg overflow-hidden my-8">
@@ -52,7 +59,7 @@ const OrderCard = ({ order }) => {
             <div className="flex justify-between items-center mb-4">
               <b
                 className="text-xl font-bold text-gray-800 cursor-pointer"
-                onClick={() => setShowModal(true)}
+                onClick={() => handleDetailOder(order.order_id)}
               >
                 Đơn hàng #{order.order_id}
               </b>
@@ -72,11 +79,24 @@ const OrderCard = ({ order }) => {
                   .replace("cancel", "Đã hủy")}
               </span>
             </div>
-            <div className="text-gray-600 mb-4">
-              <p>Địa chỉ: {order.address}</p>
-              <p>Số điện thoại: {order.phone}</p>
-              <p>Phương thức thanh toán: {order.payment_method}</p>
-              <p>Trạng thái thanh toán: {order.payment_status}</p>
+            <div className="text-gray-600 mb-4 max-w-[500px]">
+              {order.status.toLowerCase() === "completed" ? (
+                <p>
+                  Cảm ơn bạn đã sử dụng dịch vụ của FastFoot. Chúng tôi rất hân
+                  hạnh khi được phục vụ, chúc bạn có 1 bữa ăn thật ngon miệng
+                </p>
+              ) : order.status.toLowerCase() === "cancel" ? (
+                <p>
+                  Đơn hàng của bạn đã được hủy, chúng tôi rất xin lỗi vì sự bất
+                  tiện này , hãy liên hệ ngay với chúng tôi về sự cố của bạn .
+                </p>
+              ) : (
+                <p>
+                  Cảm ơn bạn đã sử dụng dịch vụ của FastFoot. Đừng lo lắng đơn
+                  hàng sẽ sớm đến với bạn thôi, chúc bạn có 1 bữa ăn thật ngon
+                  miệng
+                </p>
+              )}
             </div>
             <div className="flex justify-between items-center text-sm text-gray-600">
               <div className="flex items-center">
@@ -132,7 +152,7 @@ const OrderCard = ({ order }) => {
         </div>
       </div>
       {showModal && (
-        <OrderDetailModal order={order} onClose={() => setShowModal(false)} />
+        <OrderDetailModal order={data} onClose={() => setShowModal(false)} />
       )}
     </>
   );
