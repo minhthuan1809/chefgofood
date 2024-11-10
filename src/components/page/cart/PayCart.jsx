@@ -255,7 +255,7 @@ const PayCart = ({ items }) => {
                     toast.error("Mã giảm giá đã hết lượt sử dụng!");
                     return;
                   }
-
+                  //thuan
                   setDiscountCode(code.code);
                   setAppliedDiscount(code.discount_percent / 100);
                   setIsDiscountModalOpen(false);
