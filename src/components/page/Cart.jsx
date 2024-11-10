@@ -112,7 +112,6 @@ const CartItem = ({
 
 // Main Cart Component
 export default function Cart() {
-  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const DataCart = useSelector((state) => state.cart.cartItems);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -120,13 +119,11 @@ export default function Cart() {
   const apiKey = useSelector((state) => state.login.apikey);
 
   const fetchCart = async () => {
-    setLoading(true);
     try {
       await dispatch(getCartRender(apiKey));
     } catch (error) {
       toast.error("Lỗi khi tải giỏ hàng!");
     } finally {
-      setLoading(false);
     }
   };
 
@@ -178,7 +175,6 @@ export default function Cart() {
     try {
       const updateItem = await addCart(item.product_id, apiKey);
       if (updateItem.ok) {
-        toast.success(updateItem.message);
         await fetchCart();
       } else {
         toast.error(updateItem.message);
@@ -217,7 +213,6 @@ export default function Cart() {
     }
   };
 
-  if (loading) return <Loading />;
   if (!DataCart) return <Loading />;
 
   const availableItems = DataCart.filter((item) => item.warning);

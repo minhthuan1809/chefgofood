@@ -9,8 +9,6 @@ export default function SupportChat() {
   const statusLogin = useSelector((state) => state.login.status);
 
   const toggleChatWindow = () => {
-    console.log("mess", statusLogin);
-
     toast.dismiss();
     statusLogin
       ? setIsOpen(statusLogin)

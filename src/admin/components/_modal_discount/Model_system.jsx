@@ -13,7 +13,6 @@ const DiscountModalSystem = ({ isOpen, onClose, discount, fetchData }) => {
   const [quantity, setQuantity] = useState(0);
   const [validFrom, setValidFrom] = useState("");
   const [validTo, setValidTo] = useState("");
-  const [type, setType] = useState("food");
   const [status, setStatus] = useState(false);
 
   useEffect(() => {
@@ -25,7 +24,6 @@ const DiscountModalSystem = ({ isOpen, onClose, discount, fetchData }) => {
       setQuantity(discount.quantity || 0);
       setValidFrom(discount.valid_from || "");
       setValidTo(discount.valid_to || "");
-      setType(discount.type || "food");
       setStatus(discount.status || false);
     }
   }, [discount]);
@@ -38,7 +36,6 @@ const DiscountModalSystem = ({ isOpen, onClose, discount, fetchData }) => {
     discount_percent: discountPercent,
     quantity: quantity,
     minimum_price: minimumPrice,
-    type: type,
     valid_from: validFrom,
     valid_to: validTo,
     status: status,
@@ -52,7 +49,6 @@ const DiscountModalSystem = ({ isOpen, onClose, discount, fetchData }) => {
     setQuantity(0);
     setValidFrom("");
     setValidTo("");
-    setType("food");
     setStatus(false);
   };
 
@@ -107,22 +103,24 @@ const DiscountModalSystem = ({ isOpen, onClose, discount, fetchData }) => {
         </span>
         <div className="inline-block align-middle bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
           <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 grid grid-cols-2 gap-4">
-            <div>
-              <label
-                htmlFor="code"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Mã giảm giá
-              </label>
-              <input
-                type="text"
-                id="code"
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                required
-              />
-            </div>
+            {discount && (
+              <div>
+                <label
+                  htmlFor="code"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Mã giảm giá
+                </label>
+                <input
+                  type="text"
+                  id="code"
+                  value={code}
+                  onChange={(e) => setCode(e.target.value)}
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  required
+                />
+              </div>
+            )}
             <div>
               <label
                 htmlFor="name"
@@ -218,24 +216,6 @@ const DiscountModalSystem = ({ isOpen, onClose, discount, fetchData }) => {
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 required
               />
-            </div>
-            <div>
-              <label
-                htmlFor="type"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Loại
-              </label>
-              <select
-                id="type"
-                value={type}
-                onChange={(e) => setType(e.target.value)}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              >
-                <option value="food">Đồ ăn</option>
-                <option value="drink">Đồ uống</option>
-                <option value="cake">Bánh</option>
-              </select>
             </div>
             <div className="flex items-center gap-2">
               <input

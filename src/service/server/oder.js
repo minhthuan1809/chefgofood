@@ -29,7 +29,6 @@ export const getHistoryRender = async (page, limit, searchTerm) => {
     );
 
     const result = await response.json();
-    console.log("result", result);
     return result;
   } catch (error) {
     console.error("Error fetching order details:", error);

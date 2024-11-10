@@ -22,7 +22,6 @@ export default function Sale() {
   const fetchData = async () => {
     setIsLoading(true);
     const result = await getDiscountAdmin(page, limit, searchTerm);
-    console.log(result);
     let filteredDiscounts = result.data.discounts;
 
     // Lọc theo danh mục
@@ -102,17 +101,6 @@ export default function Sale() {
             <BiRefresh className="text-xl text-gray-500" />
           </button>
 
-          <select
-            className="p-2 border rounded-lg focus:outline-none focus:border-blue-500"
-            value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
-          >
-            <option value="">Tất cả danh mục</option>
-            <option value="food">Đồ ăn</option>
-            <option value="water">Đồ uống</option>
-            <option value="cake">Bánh</option>
-          </select>
-
           <div className="flex items-center gap-2">
             <label className="text-gray-500">Số lượng:</label>
             <select
@@ -156,9 +144,7 @@ export default function Sale() {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Thời gian
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Loại
-              </th>
+
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Trạng thái
               </th>
@@ -207,12 +193,7 @@ export default function Sale() {
                     ({coupon.days_remaining} ngày còn lại)
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {coupon.type
-                    .replace("cake", "Bánh")
-                    .replace("water", "Đồ uống")
-                    .replace("food", "Đồ ăn")}
-                </td>
+
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
                     className={`px-2 py-1 rounded-full text-xs ${
