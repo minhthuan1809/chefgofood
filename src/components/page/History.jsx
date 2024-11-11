@@ -37,15 +37,18 @@ const OrderCard = ({ order }) => {
     order.status.toLowerCase()
   );
 
+  const handleCancelOrder = async (order_id) => {
+    console.log(order_id);
+  };
   return (
     <>
       <div className="bg-white rounded-lg shadow-lg overflow-hidden my-8">
         <div className="md:flex">
-          <div className="md:w-1/3">
+          <div className="h-[20rem] w-[20rem] overflow-hidden">
             <img
               src={thumbnailImage}
               alt="Order thumbnail"
-              className="w-full h-48 object-cover md:h-full"
+              className="w-full h-full"
             />
           </div>
           <div className="p-6 md:w-2/3">
@@ -122,6 +125,7 @@ const OrderCard = ({ order }) => {
                       ? "bg-gray-800"
                       : "bg-red-500 hover:bg-red-600"
                   }`}
+                  onClick={() => handleCancelOrder(order.order_id)}
                 >
                   <ImCancelCircle className="mr-2" />
                   Hủy đơn hàng

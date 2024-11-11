@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { FaSearch, FaFilter } from "react-icons/fa";
-import { ConfirmOrder, detailOrder } from "../../../service/server/oder";
+import {
+  ConfirmOrder,
+  detailOrder,
+  updateStatusOrder,
+} from "../../../service/server/oder";
 import OrderDetailModal from "../Modal_detail_oder/modal_oder";
 import Loading from "../util/Loading";
 import { BiRefresh } from "react-icons/bi";
@@ -63,6 +67,11 @@ export default function Oder() {
     fetchOrders();
   };
 
+  const handleUpdateStatus = async (order_id, status) => {
+    console.log(order_id, status);
+
+    await updateStatusOrder(order_id, status);
+  };
   const handleCloseModal = () => {
     setShowOrderDetail(false);
   };
@@ -119,7 +128,7 @@ export default function Oder() {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="bg-white rounded-lg shadow ">
         <table className="min-w-full">
           <thead className="bg-gray-50">
             <tr>
@@ -196,15 +205,62 @@ export default function Oder() {
                   >
                     {order.status
                       .toLocaleLowerCase()
-                      .replace("completed", "Hoàn thành")
                       .replace("pending", "Chờ xác nhận")
+                      .replace("completed", "Hoàn thành")
                       .replace("preparing", "Đang chuẩn bị")
                       .replace("delivery", "Đang giao")
                       .replace("cancel", "Đã hủy")}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex gap-2">btn</div>
+                  <div className="flex gap-2">
+                    {/* Xác nhận */}
+                    {order.status.toLocaleLowerCase() === "pending" && (
+                      <button
+                        onClick={() =>
+                          handleUpdateStatus(order.id, "Preparing")
+                        }
+                        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
+                      >
+                        Xác nhận
+                      </button>
+                    )}
+                    {/* Chuẩn bị xong */}
+                    {order.status.toLocaleLowerCase() === "preparing" && (
+                      <button
+                        onClick={() => handleUpdateStatus(order.id, "Delivery")}
+                        className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md"
+                      >
+                        Chuẩn bị xong
+                      </button>
+                    )}
+                    {/* Giao hàng */}
+                    {order.status.toLocaleLowerCase() === "delivery" && (
+                      <button
+                        onClick={() =>
+                          handleUpdateStatus(order.id, "Completed")
+                        }
+                        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
+                      >
+                        Thành công
+                      </button>
+                    )}
+                    {/* Hủy */}
+                    {order.status.toLocaleLowerCase() === "pending" && (
+                      <button
+                        onClick={() => {
+                          if (
+                            confirm("Bạn có chắc chắn muốn hủy đơn hàng này?")
+                          ) {
+                            handleUpdateStatus(order.id, "Cancel");
+                          }
+                        }}
+                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+                      >
+                        Hủy
+                      </button>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}

@@ -35,3 +35,19 @@ export const getHistoryRender = async (page, limit, searchTerm) => {
     console.error("Error fetching order details:", error);
   }
 };
+
+//cập nhật trạng thái đơn hàng
+export const updateStatusOrder = async (order_id, status) => {
+  const response = await fetch(
+    `${import.meta.env.VITE_FASTFOOD_SERVER_API}/order/fix/${order_id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status: status }),
+    }
+  );
+
+  return response.json();
+};
