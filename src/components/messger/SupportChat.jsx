@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { BsChatDots, BsX, BsSend } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -13,6 +13,12 @@ export default function SupportChat() {
   const statusLogin = useSelector((state) => state.login.status);
   const apiKey = useSelector((state) => state.login.apikey);
   const [inputMessage, setInputMessage] = useState("");
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   const toggleChatWindow = () => {
     toast.dismiss();
     statusLogin
@@ -22,17 +28,22 @@ export default function SupportChat() {
 
   const fetchData = async () => {
     const data = await getSupportChat(apiKey);
+    console.log(data);
+
     if (data.ok) {
       // Sắp xếp tin nhắn theo thời gian
       const sortedMessages = data.data.sort((a, b) => {
         return new Date(a.created_at) - new Date(b.created_at);
       });
       setMessages(sortedMessages);
+      setTimeout(scrollToBottom, 100);
     }
   };
+
   const handleSendMessage = async () => {
     if (inputMessage.trim() === "") return;
     const data = await getSupportChatCreates(apiKey, inputMessage);
+
     if (data.ok) {
       fetchData();
       setInputMessage("");
@@ -44,6 +55,10 @@ export default function SupportChat() {
       fetchData();
     }
   }, [statusLogin]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
@@ -90,6 +105,7 @@ export default function SupportChat() {
                 </div>
               </div>
             ))}
+            <div ref={messagesEndRef} />
           </div>
 
           <div className="p-2 border-t border-gray-200">

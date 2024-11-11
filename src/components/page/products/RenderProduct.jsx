@@ -115,7 +115,7 @@ const RenderProduct = ({ product, idProduct }) => {
           <div className="flex items-center text-xs sm:text-sm text-gray-600">
             <div className="flex items-center mr-1 sm:mr-2">
               <FaStar className="text-yellow-400 mr-1" />
-              <span>{product.rating}</span>
+              <span>{Number(product.average_rating).toFixed(1)}</span>
             </div>
             <span>{product.sold} đã bán</span>
           </div>

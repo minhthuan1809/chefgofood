@@ -23,6 +23,8 @@ const Products = () => {
     const fetchData = async () => {
       setLoading(true);
       const data = await dispatch(getProducts("", 1));
+      console.log(data);
+
       setPage(data.data.pagination.total_pages);
       setLoading(false);
     };
