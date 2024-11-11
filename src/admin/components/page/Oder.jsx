@@ -153,117 +153,127 @@ export default function Oder() {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {orders.map((order) => (
-              <tr key={order.id}>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <button
-                    onClick={() => handleViewDetail(order)}
-                    className="text-blue-600 hover:text-blue-800"
-                  >
-                    #{order.id}
-                  </button>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {order.username}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {order.created_at}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {order.total_price.toLocaleString("vi-VN")}đ
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs font-medium
-                    ${
-                      order.status
-                        .toLocaleLowerCase()
-                        .replace("completed", "Hoàn thành")
-                        .replace("pending", "Chờ xác nhận")
-                        .replace("preparing", "Đang chuẩn bị")
-                        .replace("delivery", "Đã giao")
-                        .replace("cancel", "Đã hủy") === "Chờ xác nhận"
-                        ? "bg-yellow-100 text-yellow-800"
-                        : order.status
-                            .toLocaleLowerCase()
-                            .replace("completed", "Hoàn thành")
-                            .replace("pending", "Chờ xác nhận")
-                            .replace("preparing", "Đang chuẩn bị")
-                            .replace("delivery", "Đã giao")
-                            .replace("cancel", "Đã hủy") === "Đã giao"
-                        ? "bg-green-100 text-green-800"
-                        : order.status
-                            .toLocaleLowerCase()
-                            .replace("completed", "Hoàn thành")
-                            .replace("pending", "Chờ xác nhận")
-                            .replace("preparing", "Đang chuẩn bị")
-                            .replace("delivery", "Đã giao")
-                            .replace("cancel", "Đã hủy") === "Hoàn thành"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-red-100 text-red-800"
-                    }`}
-                  >
-                    {order.status
-                      .toLocaleLowerCase()
-                      .replace("pending", "Chờ xác nhận")
-                      .replace("completed", "Hoàn thành")
-                      .replace("preparing", "Đang chuẩn bị")
-                      .replace("delivery", "Đang giao")
-                      .replace("cancel", "Đã hủy")}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex gap-2">
-                    {/* Xác nhận */}
-                    {order.status.toLocaleLowerCase() === "pending" && (
-                      <button
-                        onClick={() =>
-                          handleUpdateStatus(order.id, "Preparing")
-                        }
-                        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
-                      >
-                        Xác nhận
-                      </button>
-                    )}
-                    {/* Chuẩn bị xong */}
-                    {order.status.toLocaleLowerCase() === "preparing" && (
-                      <button
-                        onClick={() => handleUpdateStatus(order.id, "Delivery")}
-                        className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md"
-                      >
-                        Chuẩn bị xong
-                      </button>
-                    )}
-                    {/* Giao hàng */}
-                    {order.status.toLocaleLowerCase() === "delivery" && (
-                      <button
-                        onClick={() =>
-                          handleUpdateStatus(order.id, "Completed")
-                        }
-                        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
-                      >
-                        Thành công
-                      </button>
-                    )}
-                    {/* Hủy */}
-                    {order.status.toLocaleLowerCase() === "pending" && (
-                      <button
-                        onClick={() => {
-                          if (
-                            confirm("Bạn có chắc chắn muốn hủy đơn hàng này?")
-                          ) {
-                            handleUpdateStatus(order.id, "Cancel");
-                          }
-                        }}
-                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
-                      >
-                        Hủy
-                      </button>
-                    )}
-                  </div>
+            {orders.length === 0 ? (
+              <tr>
+                <td colSpan="6" className="px-6 py-4 text-center text-gray-500">
+                  Không có dữ liệu đơn hàng
                 </td>
               </tr>
-            ))}
+            ) : (
+              orders.map((order) => (
+                <tr key={order.id}>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <button
+                      onClick={() => handleViewDetail(order)}
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      #{order.id}
+                    </button>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {order.username}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {order.created_at}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {order.total_price.toLocaleString("vi-VN")}đ
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium
+                      ${
+                        order.status
+                          .toLocaleLowerCase()
+                          .replace("completed", "Hoàn thành")
+                          .replace("pending", "Chờ xác nhận")
+                          .replace("preparing", "Đang chuẩn bị")
+                          .replace("delivery", "Đã giao")
+                          .replace("cancel", "Đã hủy") === "Chờ xác nhận"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : order.status
+                              .toLocaleLowerCase()
+                              .replace("completed", "Hoàn thành")
+                              .replace("pending", "Chờ xác nhận")
+                              .replace("preparing", "Đang chuẩn bị")
+                              .replace("delivery", "Đã giao")
+                              .replace("cancel", "Đã hủy") === "Đã giao"
+                          ? "bg-green-100 text-green-800"
+                          : order.status
+                              .toLocaleLowerCase()
+                              .replace("completed", "Hoàn thành")
+                              .replace("pending", "Chờ xác nhận")
+                              .replace("preparing", "Đang chuẩn bị")
+                              .replace("delivery", "Đã giao")
+                              .replace("cancel", "Đã hủy") === "Hoàn thành"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
+                      }`}
+                    >
+                      {order.status
+                        .toLocaleLowerCase()
+                        .replace("pending", "Chờ xác nhận")
+                        .replace("completed", "Hoàn thành")
+                        .replace("preparing", "Đang chuẩn bị")
+                        .replace("delivery", "Đang giao")
+                        .replace("cancel", "Đã hủy")}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex gap-2">
+                      {/* Xác nhận */}
+                      {order.status.toLocaleLowerCase() === "pending" && (
+                        <button
+                          onClick={() =>
+                            handleUpdateStatus(order.id, "Preparing")
+                          }
+                          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
+                        >
+                          Xác nhận
+                        </button>
+                      )}
+                      {/* Chuẩn bị xong */}
+                      {order.status.toLocaleLowerCase() === "preparing" && (
+                        <button
+                          onClick={() =>
+                            handleUpdateStatus(order.id, "Delivery")
+                          }
+                          className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md"
+                        >
+                          Chuẩn bị xong
+                        </button>
+                      )}
+                      {/* Giao hàng */}
+                      {order.status.toLocaleLowerCase() === "delivery" && (
+                        <button
+                          onClick={() =>
+                            handleUpdateStatus(order.id, "Completed")
+                          }
+                          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
+                        >
+                          Thành công
+                        </button>
+                      )}
+                      {/* Hủy */}
+                      {order.status.toLocaleLowerCase() === "pending" && (
+                        <button
+                          onClick={() => {
+                            if (
+                              confirm("Bạn có chắc chắn muốn hủy đơn hàng này?")
+                            ) {
+                              handleUpdateStatus(order.id, "Cancel");
+                            }
+                          }}
+                          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+                        >
+                          Hủy
+                        </button>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

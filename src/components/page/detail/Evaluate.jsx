@@ -91,9 +91,11 @@ export default function Evaluate({ data, setSelectedImage }) {
             </div>
           ))}
           <div className="w-full flex justify-center p-6">
-            <PaginationReviewDetail
-              page={data.reviews.pagination.total_pages}
-            />
+            {data.reviews.pagination.total_pages > 1 && (
+              <PaginationReviewDetail
+                page={data.reviews.pagination.total_pages}
+              />
+            )}
           </div>
         </div>
       )}

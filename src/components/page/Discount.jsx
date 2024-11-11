@@ -22,6 +22,7 @@ const Discount = () => {
     async function fetchData() {
       try {
         const response = await getUiDiscountSystem();
+        console.log("response", response);
         if (!response.ok) {
           navigator("/error");
         }
@@ -47,6 +48,7 @@ const Discount = () => {
         if (!response.ok) {
           navigator("/error");
         }
+
         setDiscountsUser(response.data.discounts);
       } catch (error) {
         console.error("Error fetching user discounts:", error);

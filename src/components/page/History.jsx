@@ -1,147 +1,13 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import {
-  FaClock,
-  FaDollarSign,
-  FaRedoAlt,
-  FaHistory,
-  FaStar,
-} from "react-icons/fa";
-import { ImCancelCircle } from "react-icons/im";
+
 import Nav from "../header/Nav";
 import { getHistory } from "../../service/HistoryOder";
 import { useSelector } from "react-redux";
-import OrderDetailModal from "../history/Modal_history";
 
-const getStatusColor = (status) => {
-  switch (status.toLowerCase()) {
-    case "pending":
-      return "yellow";
-    case "cancel":
-      return "red";
-    case "completed":
-      return "green";
-    case "delivery":
-      return "blue";
-    case "preparing":
-      return "purple";
-    default:
-      return "gray";
-  }
-};
-
-const OrderCard = ({ order }) => {
-  const [showModal, setShowModal] = useState(false);
-  const thumbnailImage = order.products[0]?.image_url || "";
-  const isActive = ["pending", "preparing", "delivery"].includes(
-    order.status.toLowerCase()
-  );
-
-  const handleCancelOrder = async (order_id) => {
-    console.log(order_id);
-  };
-  return (
-    <>
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden my-8">
-        <div className="md:flex">
-          <div className="h-[20rem] w-[20rem] overflow-hidden">
-            <img
-              src={thumbnailImage}
-              alt="Order thumbnail"
-              className="w-full h-full"
-            />
-          </div>
-          <div className="p-6 md:w-2/3">
-            <div className="flex justify-between items-center mb-4">
-              <b
-                className="text-xl font-bold text-gray-800 cursor-pointer"
-                onClick={() => setShowModal(true)}
-              >
-                Đơn hàng #{order.order_id}
-              </b>
-              <span
-                className={`${
-                  isActive ? "animate-bounce " : ""
-                }bg-${getStatusColor(
-                  order.status
-                )}-500 text-white px-3 py-1 rounded-full text-sm font-medium`}
-              >
-                {order.status
-                  .toLocaleLowerCase()
-                  .replace("completed", "Hoàn thành")
-                  .replace("pending", "Chờ xác nhận")
-                  .replace("preparing", "Đang chuẩn bị")
-                  .replace("delivery", "Đang giao")
-                  .replace("cancel", "Đã hủy")}
-              </span>
-            </div>
-            <div className="text-gray-600 mb-4">
-              <p>Địa chỉ: {order.address}</p>
-              <p>Số điện thoại: {order.phone}</p>
-              <p>Phương thức thanh toán: {order.payment_method}</p>
-              <p>Trạng thái thanh toán: {order.payment_status}</p>
-            </div>
-            <div className="flex justify-between items-center text-sm text-gray-600">
-              <div className="flex items-center">
-                <FaClock
-                  className={`w-4 h-4 mr-2 text-${getStatusColor(
-                    order.status
-                  )}-500`}
-                />
-                <span>{order.created_at}</span>
-              </div>
-              <div className="flex items-center">
-                <FaDollarSign className="w-4 h-4 mr-2 text-green-500" />
-                <span className="font-semibold">
-                  {parseInt(order.total_price).toLocaleString()}đ
-                </span>
-              </div>
-            </div>
-
-            {!isActive && (
-              <div className="mt-4 flex gap-4">
-                <button className="bg-blue-500 mt-12 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300 ease-in-out flex items-center">
-                  <FaRedoAlt className="mr-2" />
-                  Đặt lại
-                </button>
-                {order.status.toLowerCase() === "completed" && (
-                  <button className="bg-yellow-500 mt-12 text-white px-4 py-2 rounded-full hover:bg-yellow-600 transition duration-300 ease-in-out flex items-center">
-                    <FaStar className="mr-2" />
-                    Đánh Giá
-                  </button>
-                )}
-              </div>
-            )}
-            {isActive && (
-              <div className="mt-4">
-                <button
-                  disabled={["preparing", "delivery"].includes(
-                    order.status.toLowerCase()
-                  )}
-                  className={`mt-12 text-white px-4 py-2 rounded-full transition duration-300 ease-in-out flex items-center ${
-                    ["preparing", "delivery"].includes(
-                      order.status.toLowerCase()
-                    )
-                      ? "bg-gray-800"
-                      : "bg-red-500 hover:bg-red-600"
-                  }`}
-                  onClick={() => handleCancelOrder(order.order_id)}
-                >
-                  <ImCancelCircle className="mr-2" />
-                  Hủy đơn hàng
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-      {showModal && (
-        <OrderDetailModal order={order} onClose={() => setShowModal(false)} />
-      )}
-    </>
-  );
-};
-
+import OrderCard from "../history/Oder_cart";
+import { FaHistory } from "react-icons/fa";
+import SupportChat from "../messger/SupportChat";
 export default function History() {
   const [orders, setOrders] = useState([]);
   const apiKey = useSelector((state) => state.login.apikey);
@@ -159,7 +25,7 @@ export default function History() {
     };
 
     fetchOrders();
-  }, [apiKey]);
+  });
 
   const activeOrders = orders.filter((order) =>
     ["pending", "preparing", "delivery"].includes(order.status.toLowerCase())
@@ -174,6 +40,7 @@ export default function History() {
     <>
       <header>
         <Nav />
+        <SupportChat />
       </header>
       <div className="bg-gray-100 min-h-screen py-[6rem]">
         <div className="container mx-auto xl:w-[85%] px-4">

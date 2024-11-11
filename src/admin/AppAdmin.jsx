@@ -70,7 +70,6 @@ const AppAdmin = () => {
     const matchedItem = menuItems.find(
       (item) => item.path.toLowerCase() === url.toLowerCase()
     );
-    console.log(url);
     if (matchedItem) {
       setPage(matchedItem.page);
     } else {
