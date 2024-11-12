@@ -7,7 +7,7 @@ import { deleteUser } from "../../../service/server/user/deleteUser";
 import { toast } from "react-toastify";
 import RenderUser from "../user/RenderUser";
 import ModelAddEditUser from "../_model_user/ModelAddEditUser";
-
+import ExcelUser from "../_model_user/ExcelUser";
 export default function UserAdmin() {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -128,13 +128,17 @@ export default function UserAdmin() {
           <h2 className="text-xl font-semibold text-gray-700">
             Quản lý người dùng
           </h2>
-          <button
-            onClick={() => handleOpenModal()}
-            className="flex items-center px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            <FaPlus className="mr-2" />
-            Thêm Người Dùng
-          </button>
+          <div className="flex items-center gap-2">
+            {" "}
+            <button
+              onClick={() => handleOpenModal()}
+              className="flex items-center px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              <FaPlus className="mr-2" />
+              Thêm Người Dùng
+            </button>
+            <ExcelUser data={users} fileName="Danh sách người dùng" />
+          </div>
         </div>
 
         <div className="p-4">

@@ -45,7 +45,6 @@ export default function TopProducts() {
   useEffect(() => {
     async function fectData() {
       const data = await getUiTopProduct();
-
       if (!data.ok) navigator("/error");
       getDataProduct(data.data.products);
     }
@@ -154,8 +153,8 @@ export default function TopProducts() {
                     <div className="flex justify-between">
                       <div className="flex items-center mt-3 text-gray-600">
                         <FaStar className="text-yellow-500 mr-1" />
-                        <span>{product.average_rating}</span>
-                        <span className="ml-3">{product.quantity} đã bán</span>
+                        <span>{Number(product.average_rating).toFixed(1)}</span>
+                        <span className="ml-3">{product.sold} đã bán</span>
                       </div>
                       <button className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors duration-300 relative group">
                         <span className="absolute right-[3rem] bottom-1 w-max opacity-0 group-hover:opacity-100 bg-red-500 text-white text-xs p-2 rounded transition-opacity duration-300">

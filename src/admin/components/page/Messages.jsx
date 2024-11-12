@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { HiOutlinePaperAirplane } from "react-icons/hi2";
 import {
   getChatAdminDetail,
   getChatAdminRender,
   sendMessageAdmin,
 } from "../../../service/server/messger_admin";
+import Cookies from "js-cookie";
 
 const ChatMessages = () => {
   const [selectedUser, setSelectedUser] = useState(null);
@@ -13,6 +14,7 @@ const ChatMessages = () => {
   const [users, setUsers] = useState([]);
   const intervalRef = useRef(null);
   const messagesEndRef = useRef(null);
+  const apiKey = Cookies.get("admin_apikey");
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -21,10 +23,11 @@ const ChatMessages = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       const { data } = await getChatAdminRender();
+
       setUsers(data.users);
     };
     fetchUsers();
-  }, []);
+  });
 
   useEffect(() => {
     if (selectedUser) {
@@ -37,41 +40,40 @@ const ChatMessages = () => {
 
       intervalRef.current = setInterval(async () => {
         const { data } = await getChatAdminDetail(selectedUser.id);
-        setMessages((prevMessages) => {
-          return data.messages;
-        });
+        setMessages(data.messages);
       }, 2000);
 
       return () => clearInterval(intervalRef.current);
     }
-  }, [selectedUser]);
+  });
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
+  //gửi tin nhắn
   const handleSendMessage = async () => {
     if (!message.trim()) return;
 
     try {
-      const { data } = await sendMessageAdmin(selectedUser.id, message);
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          id: data.id,
-          userId: selectedUser.id,
-          content: data.content,
-          sender_type: "user",
-          status: data.status,
-          created_at: data.created_at,
-        },
-      ]);
+      const data = await sendMessageAdmin(selectedUser, message, apiKey);
+
       setMessage("");
+      console.log(data);
     } catch (error) {
       console.error("Error sending message:", error);
     }
   };
 
+  // thống báo tin nhắn chưa đọc
+  function CheckNotification(user) {
+    if (user.status.unread_count < 1) return null;
+    return (
+      <span className="bg-blue-500 text-white rounded-full px-2 py-1 text-xs">
+        {user.status.unread_count}
+      </span>
+    );
+  }
   return (
     <div className="flex h-full bg-gray-100">
       {/* User list */}
@@ -96,11 +98,7 @@ const ChatMessages = () => {
               <div className="ml-3 flex-1">
                 <div className="flex items-center justify-between">
                   <span className="font-medium">{user.username}</span>
-                  {user.unread_count > 0 && (
-                    <span className="bg-blue-500 text-white rounded-full px-2 py-1 text-xs">
-                      {user.unread_count}
-                    </span>
-                  )}
+                  <CheckNotification status={user} />
                 </div>
               </div>
             </div>
@@ -162,7 +160,7 @@ const ChatMessages = () => {
           </>
         ) : (
           <div className="flex-1 flex items-center justify-center text-gray-500">
-            Select a conversation to get started
+            Chọn một cuộc hội thoại để bắt đầu
           </div>
         )}
       </div>

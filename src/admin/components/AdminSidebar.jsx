@@ -60,7 +60,7 @@ const AdminSidebar = () => {
 
         {
           icon: <FaHistory size={20} />,
-          label: "Lịch sử sử dụng",
+          label: "Lịch sử mua hàng",
           id: "orders-history",
           path: "/orders-history",
         },

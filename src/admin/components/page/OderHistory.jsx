@@ -5,6 +5,7 @@ import OrderDetailModal from "../Modal_detail_oder/modal_oder";
 import { BiRefresh } from "react-icons/bi";
 import PaginationPage from "../util/PaginationPage";
 import Loading from "../util/Loading";
+import ExceHistory from "../_history_oder/ExceHistory";
 
 export default function OderHistory() {
   const [orders, setOrders] = useState(null);
@@ -74,8 +75,10 @@ export default function OderHistory() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Quản lý đơn hàng</h1>
-
+      <div className="flex justify-between">
+        <h1 className="text-2xl font-bold mb-6">Quản lý đơn hàng</h1>
+        <ExceHistory data={orders} />
+      </div>
       <div className="flex gap-4 mb-6">
         <div className="flex-1 relative">
           <input
@@ -126,6 +129,9 @@ export default function OderHistory() {
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                STT
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Mã đơn hàng
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -143,8 +149,9 @@ export default function OderHistory() {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {orders.map((order) => (
+            {orders.map((order, index) => (
               <tr key={order.id}>
+                <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button
                     onClick={() => handleViewDetail(order)}

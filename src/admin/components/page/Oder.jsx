@@ -5,7 +5,7 @@ import {
   detailOrder,
   updateStatusOrder,
 } from "../../../service/server/oder";
-import OrderDetailModal from "../Modal_detail_oder/modal_oder";
+import OrderDetailModal from "../Modal_detail_oder/Modal_oder";
 import Loading from "../util/Loading";
 import { BiRefresh } from "react-icons/bi";
 import PaginationPage from "../util/PaginationPage";

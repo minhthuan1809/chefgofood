@@ -5,8 +5,18 @@ import RevenueChart from "../dashboard/RevenueChart";
 import WeatherChart from "../dashboard/WeatherChart";
 import OrdersChart from "../dashboard/OrdersChart";
 import TopProducts from "../dashboard/TopProducts";
+import { useEffect, useState } from "react";
+import { getDashboard } from "../../../service/dashboard";
 
 const Dashboard = () => {
+  const [dashboardData, setDashboardData] = useState(null);
+  useEffect(() => {
+    const getDashboardData = async () => {
+      const { data } = await getDashboard();
+      setDashboardData(data);
+    };
+    getDashboardData();
+  }, []);
   return (
     <div>
       <main>
@@ -27,23 +37,25 @@ const Dashboard = () => {
             <StatCard
               icon={<FiDollarSign />}
               label="Tổng Doanh Thu"
-              value="54.375.000₫"
+              value={`${dashboardData?.total_revenue.toLocaleString("vi-VN")}${
+                dashboardData?.currency
+              }`}
               color="bg-blue-500"
-              trend={12.5}
+              trend={dashboardData?.growth_rate_revenue}
             />
             <StatCard
               icon={<FiShoppingBag />}
               label="Tổng Đơn Hàng"
-              value="2.340"
+              value={dashboardData?.total_orders}
               color="bg-green-500"
-              trend={8.2}
+              trend={dashboardData?.growth_rate_orders}
             />
             <StatCard
               icon={<FiUsers />}
-              label="Người Dùng Mới"
-              value="732"
+              label="Người Dùng Mới Trên Ngày"
+              value={dashboardData?.new_users}
               color="bg-purple-500"
-              trend={3.9}
+              trend={dashboardData?.growth_rate_users}
             />
           </div>
 

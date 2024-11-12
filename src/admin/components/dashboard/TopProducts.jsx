@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getTopSellingProducts } from "../../../service/dashboard";
 
 const TopProducts = () => {
-  const products = [
-    { name: "Áo thun nam", sales: 245, revenue: "12.250.000₫" },
-    { name: "Quần jean nữ", sales: 189, revenue: "9.450.000₫" },
-    { name: "Giày thể thao", sales: 156, revenue: "7.800.000₫" },
-    { name: "Giày thể thao", sales: 156, revenue: "7.800.000₫" },
-    { name: "Giày thể thao", sales: 156, revenue: "7.800.000₫" },
-  ];
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getTopSellingProducts();
+      if (result?.data) {
+        setProducts(result.data);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <div className="bg-white p-6 rounded-xl shadow-sm">
@@ -20,7 +25,7 @@ const TopProducts = () => {
           >
             <div>
               <p className="font-medium">{product.name}</p>
-              <p className="text-sm text-gray-500">{product.sales} đã bán</p>
+              <p className="text-sm text-gray-500">{product.sold} đã bán</p>
             </div>
             <span className="text-green-500 font-medium">
               {product.revenue}

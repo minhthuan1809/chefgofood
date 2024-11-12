@@ -22,6 +22,7 @@ import HistoryDiscount from "./components/page/HistoryDiscount";
 import Review from "./components/page/Review";
 import Oder from "./components/page/Oder";
 import OderHistory from "./components/page/OderHistory";
+import Statistical from "./components/page/Statistical";
 
 const AppAdmin = () => {
   const [page, setPage] = useState(null);
@@ -50,6 +51,7 @@ const AppAdmin = () => {
     { path: "review", page: <Review />, id: 11 },
     { path: "orders-pending", page: <Oder />, id: 13 },
     { path: "orders-history", page: <OderHistory />, id: 14 },
+    { path: "stats", page: <Statistical />, id: 15 },
   ];
 
   useEffect(() => {
@@ -81,9 +83,6 @@ const AppAdmin = () => {
     <div className="flex h-screen">
       <div className="w-64 bg-white h-full shadow-lg flex flex-col">
         <div className="p-6 border-b">
-          <h2 className="text-2xl font-bold text-blue-600 mb-6">
-            Admin Dashboard
-          </h2>
           <div className="flex items-center space-x-4">
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5aZnsestsA7FsrvvOF-dFwvfNJx1VphgRRISfSQDYV1lzclKTTCu5wnFuUKXDpLq6FUM&usqp=CAU"
@@ -98,19 +97,7 @@ const AppAdmin = () => {
             </div>
           </div>
         </div>
-        <div className="p-4">
-          <div className="relative">
-            <HiMagnifyingGlass
-              className="absolute left-3 top-3 text-gray-400"
-              size={18}
-            />
-            <input
-              type="text"
-              placeholder="Tìm kiếm..."
-              className="w-full pl-10 pr-4 py-2 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-        </div>
+
         <nav className="p-4 flex-1 overflow-y-auto">
           <AdminSidebar />
         </nav>

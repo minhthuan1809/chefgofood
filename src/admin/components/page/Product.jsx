@@ -9,13 +9,14 @@ import { getDeleteProductAdmin } from "../../../service/server/product/delete_pr
 import { toast } from "react-toastify";
 import Modal from "../_model_product/Modal";
 import Loading from "../util/Loading";
+import ExportToExcel from "../_model_product/ExcelProduct";
 
 const ProductManagement = () => {
   // State quản lý form thêm/sửa sản phẩm
   const [showModal, setShowModal] = useState(false);
   const [editData, setEditData] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(100);
   const [type, setType] = useState("");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -97,13 +98,18 @@ const ProductManagement = () => {
       <div className="bg-white rounded-lg shadow">
         <div className="p-4 flex items-center justify-between border-b">
           <h2 className="text-xl font-bold text-gray-500">Quản lý sản phẩm</h2>
-          <button
-            onClick={handleAddProduct}
-            className="flex items-center px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            <FaPlus className="mr-2" />
-            Thêm
-          </button>
+          <div className="flex items-center gap-2">
+            {" "}
+            <button
+              onClick={handleAddProduct}
+              className="flex items-center px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              <FaPlus className="mr-2" />
+              Thêm
+            </button>
+            {/* btn xuất excel */}
+            <ExportToExcel data={products} fileName="DanhSachSanPham" />
+          </div>
         </div>
 
         <div className="p-4">
@@ -171,6 +177,7 @@ const ProductManagement = () => {
                   <th className="p-2 text-left text-gray-500">Hình ảnh</th>
                   <th className="p-2 text-left text-gray-500">Tên</th>
                   <th className="p-2 text-left text-gray-500">Mô tả</th>
+                  <th className="p-2 text-left text-gray-500">Giảm giá</th>
                   <th className="p-2 text-right text-gray-500">Giá</th>
                   <th className="p-2 text-right text-gray-500">Số lượng</th>
                   <th className="p-2 text-center text-gray-500">Loại</th>
@@ -197,6 +204,8 @@ const ProductManagement = () => {
                       </td>
                       <td className="p-2">{product.name}</td>
                       <td className="p-2">{product.description}</td>
+                      <td className="p-2">{product.discount}%</td>
+
                       <td className="p-2 text-right">
                         {parseInt(product.price).toLocaleString()}đ
                       </td>

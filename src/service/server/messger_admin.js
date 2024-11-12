@@ -15,10 +15,19 @@ export const getChatAdminDetail = async (id) => {
   return response.json();
 };
 //gửi tin nhắn
-export const sendMessageAdmin = async (user_id, data) => {
+export const sendMessageAdmin = async (user_id, data, api_key) => {
+  console.log(api_key);
+
   const response = await fetch(
-    `${import.meta.env.VITE_FASTFOOD_SERVER_API}/message_admin/${user_id}`,
-    { method: "POST", body: JSON.stringify({ content: data }) }
+    `${import.meta.env.VITE_FASTFOOD_SERVER_API}/message_admin/${user_id.id}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Api-Key": api_key,
+      },
+      body: JSON.stringify({ content: data, status: false }),
+    }
   );
 
   return response.json();

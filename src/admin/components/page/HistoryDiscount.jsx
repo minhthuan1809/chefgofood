@@ -5,7 +5,9 @@ import { MdDiscount } from "react-icons/md";
 import { getDiscountHistoryRender } from "../../../service/server/discount/discount_history";
 import { toast } from "react-toastify";
 import PaginationPage from "../util/PaginationPage";
-
+import OrderDetailModal from "../Modal_detail_oder/modal_oder";
+import { detailOrder } from "../../../service/server/oder";
+import ExcelHistoryDiscountUser from "../_history_distcount/ExcelHistoryDiscountUser";
 export default function HistoryDiscount() {
   const [discountHistory, setDiscountHistory] = useState([]);
   const [limit, setLimit] = useState(30);
@@ -13,7 +15,8 @@ export default function HistoryDiscount() {
   const [searchTerm, setSearchTerm] = useState("");
   const [totalPages, setTotalPages] = useState(1);
   const [filterStatus, setFilterStatus] = useState("all");
-
+  const [_detailOrder, setDetailOrder] = useState(false);
+  const [dataDetailOrder, setDataDetailOrder] = useState(null);
   const fetchData = async () => {
     const result = await getDiscountHistoryRender(limit, page, searchTerm);
     console.log("result", result);
@@ -41,8 +44,11 @@ export default function HistoryDiscount() {
     fetchData();
   }, [searchTerm, limit, page, filterStatus]);
 
-  const handleDetailOder = (order_id) => {
-    console.log(order_id);
+  const handleDetailOder = async (order_id) => {
+    const data = await detailOrder(order_id);
+
+    setDataDetailOrder(data.data);
+    setDetailOrder((prev) => !prev);
   };
 
   const handleRefresh = () => {
@@ -61,6 +67,7 @@ export default function HistoryDiscount() {
           <MdDiscount className="text-blue-600" />
           Lịch sử sử dụng mã giảm giá
         </h1>
+        <ExcelHistoryDiscountUser data={discountHistory} />
       </div>
 
       {/* Search and Filter */}
@@ -171,15 +178,20 @@ export default function HistoryDiscount() {
                     }`}
                   >
                     {item?.status
-                      .toLocaleLowerCase()
-                      .replace("cancel", "Hủy")
-                      .replace("pending", "Hoàn thành") || ""}
+                      .replace("Cancel", "Hủy")
+                      .replace("Completed", "Hoàn thành") || ""}
                   </span>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+        {_detailOrder && (
+          <OrderDetailModal
+            selectedOrder={dataDetailOrder}
+            onClose={() => setDetailOrder((prev) => !prev)}
+          />
+        )}
         {totalPages > 1 && (
           <PaginationPage count={totalPages} setPage={setPage} />
         )}

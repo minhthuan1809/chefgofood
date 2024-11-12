@@ -1,8 +1,6 @@
 /* eslint-disable react/prop-types */
 
 export default function OrderDetailModal({ selectedOrder, onClose }) {
-  console.log(selectedOrder);
-
   return (
     <div className="fixed inset-0 flex items-center justify-center">
       <span

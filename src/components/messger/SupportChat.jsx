@@ -14,7 +14,7 @@ export default function SupportChat() {
   const apiKey = useSelector((state) => state.login.apikey);
   const [inputMessage, setInputMessage] = useState("");
   const messagesEndRef = useRef(null);
-
+  const [notification, setNotification] = useState(0);
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -28,8 +28,8 @@ export default function SupportChat() {
 
   const fetchData = async () => {
     const data = await getSupportChat(apiKey);
-    console.log(data);
 
+    setNotification(data.unread_count);
     if (data.ok) {
       // Sắp xếp tin nhắn theo thời gian
       const sortedMessages = data.data.sort((a, b) => {
@@ -40,6 +40,7 @@ export default function SupportChat() {
     }
   };
 
+  //gửi tin nhắn
   const handleSendMessage = async () => {
     if (inputMessage.trim() === "") return;
     const data = await getSupportChatCreates(apiKey, inputMessage);
@@ -53,12 +54,10 @@ export default function SupportChat() {
   useEffect(() => {
     if (statusLogin) {
       fetchData();
+      const interval = setInterval(fetchData, 2000);
+      return () => clearInterval(interval);
     }
-  }, [statusLogin]);
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+  });
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
@@ -143,10 +142,11 @@ export default function SupportChat() {
           >
             <BsChatDots size={24} />
           </button>
-
-          <span className="absolute -top-2 -right-2 z-20 items-center justify-center rounded-full text-sm font-bold text-white bg-red-500 w-6 h-6 flex">
-            {messages.filter((msg) => msg.status === 0).length}
-          </span>
+          {notification > 0 && (
+            <span className="absolute -top-2 -right-2 z-20 items-center justify-center rounded-full text-sm font-bold text-white bg-red-500 w-6 h-6 flex">
+              {notification}
+            </span>
+          )}
         </div>
       )}
     </div>
