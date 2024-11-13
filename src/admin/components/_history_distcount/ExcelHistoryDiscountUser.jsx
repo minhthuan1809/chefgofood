@@ -1,4 +1,4 @@
-import React from "react";
+/* eslint-disable react/prop-types */
 import * as XLSX from "xlsx";
 export default function ExcelHistoryDiscountUser({
   data,
@@ -21,7 +21,7 @@ export default function ExcelHistoryDiscountUser({
     // Create worksheet
     const ws = XLSX.utils.json_to_sheet(excelData);
 
-    // Set column widths
+    // Set column width
     const colWidths = [
       { wch: 5 }, // STT
       { wch: 30 }, // Mã giảm giá

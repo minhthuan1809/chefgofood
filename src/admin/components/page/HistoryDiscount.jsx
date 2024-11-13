@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { BiRefresh } from "react-icons/bi";
 import { FaSearch } from "react-icons/fa";
 import { MdDiscount } from "react-icons/md";
