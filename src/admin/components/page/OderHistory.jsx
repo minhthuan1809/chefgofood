@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaSearch, FaFilter } from "react-icons/fa";
 import { detailOrder, getHistoryRender } from "../../../service/server/oder";
-import OrderDetailModal from "../modal_detail_oder/Modal_oder";
+import OrderDetailModal from "../modal_detail_oder/_Modal_oder";
 import { BiRefresh } from "react-icons/bi";
 import PaginationPage from "../util/PaginationPage";
 import Loading from "../util/Loading";

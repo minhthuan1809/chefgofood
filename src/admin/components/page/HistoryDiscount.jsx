@@ -6,7 +6,7 @@ import { MdDiscount } from "react-icons/md";
 import { getDiscountHistoryRender } from "../../../service/server/discount/discount_history";
 import { toast } from "react-toastify";
 import PaginationPage from "../util/PaginationPage";
-import OrderDetailModal from "../modal_detail_oder/Modal_oder";
+import OrderDetailModal from "../modal_detail_oder/_Modal_oder";
 import { detailOrder } from "../../../service/server/oder";
 import ExcelHistoryDiscountUser from "../_history_distcount/ExcelHistoryDiscountUser";
 export default function HistoryDiscount() {

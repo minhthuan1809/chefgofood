@@ -8,7 +8,7 @@ import Loading from "../util/Loading";
 import { StatisticalSearchQuantity } from "../page/Statistical";
 import PaginationPage from "../util/PaginationPage";
 import ExcelStatisticalOder from "./ExcelStatisticalOder";
-import OrderDetailModal from "../modal_detail_oder/Modal_oder";
+import OrderDetailModal from "../modal_detail_oder/_Modal_oder";
 import { detailOrder } from "../../../service/server/oder";
 
 export default function Statistical_oder() {
