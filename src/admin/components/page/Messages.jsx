@@ -45,7 +45,7 @@ const ChatMessages = () => {
 
       return () => clearInterval(intervalRef.current);
     }
-  });
+  }, [selectedUser]);
 
   useEffect(() => {
     scrollToBottom();
