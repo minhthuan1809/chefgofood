@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-
+import PropTypes from "prop-types";
 export default function OrderDetailModal({ selectedOrder, onClose }) {
   return (
     <div className="fixed inset-0 flex items-center justify-center">
@@ -78,3 +78,8 @@ export default function OrderDetailModal({ selectedOrder, onClose }) {
     </div>
   );
 }
+
+OrderDetailModal.propTypes = {
+  selectedOrder: PropTypes.object.isRequired,
+  onClose: PropTypes.func.isRequired,
+};

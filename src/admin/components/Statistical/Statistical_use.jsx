@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
-import { getStatisticalProduct } from "../../../service/server/statistical_api";
+import { useContext, useEffect, useState } from "react";
+import { getStatisticalUser } from "../../../service/server/statistical_api";
 import Loading from "../../components/util/Loading";
-import ExcelStatisticalProduct from "./ExcelStatisticalProduct";
 import { StatisticalSearchQuantity } from "../page/Statistical";
 import PaginationPage from "../util/PaginationPage";
+import ExcelStatisticalUser from "./ExcelStatisticalUser";
 
-export default function StatisticalProduct() {
+export default function StatisticalUse() {
   const [data, setData] = useState([]);
   const [dayStart, setDayStart] = useState(
     new Date().toISOString().split("T")[0]
@@ -20,14 +20,14 @@ export default function StatisticalProduct() {
   // run
   useEffect(() => {
     const fetchData = async () => {
-      const fetchedData = await getStatisticalProduct(
+      const fetchedData = await getStatisticalUser(
         dayStart,
         dayEnd,
         page,
         quantity,
         search
       );
-      setData(fetchedData ? fetchedData.products : []);
+      setData(fetchedData ? fetchedData.users : []);
       setTotalPage(fetchedData.pagination.total_pages);
     };
 
@@ -57,7 +57,7 @@ export default function StatisticalProduct() {
             className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <ExcelStatisticalProduct data={data} />
+        <ExcelStatisticalUser data={data} />
       </div>
       {data.length < 1 ? (
         <span>Không có dữ liệu</span>
@@ -71,14 +71,16 @@ export default function StatisticalProduct() {
                   STT
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Tên sản phẩm
+                  Gmail
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Số lượng
+                  Tên người dùng
                 </th>
-
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Tổng tiền
+                  Tổng đơn hàng
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Tổng chi tiêu
                 </th>
               </tr>
             </thead>
@@ -89,13 +91,15 @@ export default function StatisticalProduct() {
                   className="hover:bg-gray-100 transition-colors duration-200"
                 >
                   <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{item.name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{item?.email}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {item.total_sold}
+                    {item.username}
                   </td>
-
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {item.total_revenue.toLocaleString("vi-VN") + " VNĐ"}
+                    {item.total_orders}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {item.total_spent.toLocaleString("vi-VN") + " VNĐ"}
                   </td>
                 </tr>
               ))}

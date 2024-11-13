@@ -1,46 +1,26 @@
-import React from "react";
-import { FaFileExcel, FaEye, FaChartLine } from "react-icons/fa";
+import { useContext, useEffect, useState } from "react";
+import { FaEye } from "react-icons/fa";
 import { MdPendingActions } from "react-icons/md";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { BsCashCoin } from "react-icons/bs";
+import { getStatisticalOrder } from "../../../service/server/statistical_api";
+import Loading from "../util/Loading";
+import { StatisticalSearchQuantity } from "../page/Statistical";
+import PaginationPage from "../util/PaginationPage";
+import ExcelStatisticalOder from "./ExcelStatisticalOder";
+import OrderDetailModal from "../Modal_detail_oder/Modal_oder";
+import { detailOrder } from "../../../service/server/oder";
 
 export default function Statistical_oder() {
-  // Fake data for orders
-  const orders = [
-    {
-      id: "DH001",
-      customerName: "Nguyễn Văn A",
-      date: "2024-11-13",
-      total: 1500000,
-      status: "Đã thanh toán",
-      items: 3,
-    },
-    {
-      id: "DH002",
-      customerName: "Trần Thị B",
-      date: "2024-11-13",
-      total: 2300000,
-      status: "Chờ xử lý",
-      items: 5,
-    },
-    {
-      id: "DH003",
-      customerName: "Lê Văn C",
-      date: "2024-11-12",
-      total: 800000,
-      status: "Đã thanh toán",
-      items: 2,
-    },
-    {
-      id: "DH004",
-      customerName: "Phạm Thị D",
-      date: "2024-11-12",
-      total: 3100000,
-      status: "Đã hủy",
-      items: 7,
-    },
-  ];
-
+  const [orders, setOrders] = useState([]);
+  const [overview, setOverview] = useState({});
+  const { search, quantity } = useContext(StatisticalSearchQuantity);
+  const [dayStart, setDayStart] = useState(
+    new Date().toISOString().split("T")[0]
+  );
+  const [dayEnd, setDayEnd] = useState(
+    new Date(Date.now() + 86400000).toISOString().split("T")[0]
+  );
   // Function to format currency
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat("vi-VN", {
@@ -48,20 +28,49 @@ export default function Statistical_oder() {
       currency: "VND",
     }).format(amount);
   };
-
+  const [totalPage, setTotalPage] = useState(1);
+  const [page, setPage] = useState(1);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [showOrderDetail, setShowOrderDetail] = useState(false);
   const getStatusColor = (status) => {
     switch (status) {
-      case "Đã thanh toán":
+      case "Completed":
         return "text-green-500";
-      case "Chờ xử lý":
+      case "Pending":
         return "text-yellow-500";
-      case "Đã hủy":
+      case "Cancel":
         return "text-red-500";
       default:
         return "text-gray-500";
     }
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchedData = await getStatisticalOrder(
+        dayStart,
+        dayEnd,
+        page,
+        quantity,
+        search
+      );
+      setOrders(fetchedData.orders);
+      setOverview(fetchedData.overview);
+      setTotalPage(fetchedData.pagination.total_pages);
+      console.log(fetchedData);
+    };
+
+    fetchData();
+  }, [dayStart, dayEnd, quantity, search, page]);
+
+  const handleViewDetail = async (order_id) => {
+    const result = await detailOrder(order_id);
+    if (result.ok) {
+      setSelectedOrder(result.data);
+      setShowOrderDetail(true);
+    }
+  };
+  if (!orders || !overview) return <Loading />;
   return (
     <div className="p-4">
       {/* Header section */}
@@ -69,18 +78,19 @@ export default function Statistical_oder() {
         <div className="flex items-center gap-4">
           <p className="text-gray-500">Thời Gian:</p>
           <input
+            value={dayStart}
+            onChange={(e) => setDayStart(e.target.value)}
             type="date"
             className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
+            value={dayEnd}
+            onChange={(e) => setDayEnd(e.target.value)}
             type="date"
             className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center gap-2">
-          <FaFileExcel className="text-xl" />
-          Xuất Excel
-        </button>
+        <ExcelStatisticalOder data={orders} />
       </div>
 
       {/* Statistics cards */}
@@ -89,7 +99,7 @@ export default function Statistical_oder() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-500">Tổng đơn hàng</p>
-              <p className="text-2xl font-bold">{orders.length}</p>
+              <p className="text-2xl font-bold">{overview.total_orders}</p>
             </div>
             <div className="bg-blue-100 p-3 rounded-full">
               <MdPendingActions className="text-blue-500 text-2xl" />
@@ -101,12 +111,7 @@ export default function Statistical_oder() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-500">Đơn thành công</p>
-              <p className="text-2xl font-bold">
-                {
-                  orders.filter((order) => order.status === "Đã thanh toán")
-                    .length
-                }
-              </p>
+              <p className="text-2xl font-bold">{overview.completed_orders}</p>
             </div>
             <div className="bg-green-100 p-3 rounded-full">
               <AiOutlineCheckCircle className="text-green-500 text-2xl" />
@@ -119,9 +124,7 @@ export default function Statistical_oder() {
             <div>
               <p className="text-gray-500">Tổng doanh thu</p>
               <p className="text-2xl font-bold">
-                {formatCurrency(
-                  orders.reduce((acc, order) => acc + order.total, 0)
-                )}
+                {formatCurrency(overview.total_revenue)}
               </p>
             </div>
             <div className="bg-purple-100 p-3 rounded-full">
@@ -136,6 +139,9 @@ export default function Statistical_oder() {
         <table className="w-full">
           <thead className="bg-gray-50">
             <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                STT
+              </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                 Mã ĐH
               </th>
@@ -160,34 +166,64 @@ export default function Statistical_oder() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {orders.map((order) => (
-              <tr key={order.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap">{order.id}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {order.customerName}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">{order.date}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{order.items}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {formatCurrency(order.total)}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`${getStatusColor(order.status)}`}>
-                    {order.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <button
-                    className="text-blue-500 hover:text-blue-700 focus:outline-none"
-                    title="Xem hóa đơn"
-                  >
-                    <FaEye className="text-xl" />
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {orders === "" || orders === null || orders.length < 1 ? (
+              <div className="w-full h-full p-4">
+                <span className="m-auto">chưa chưa có đơn hàng nào</span>
+              </div>
+            ) : (
+              orders.map((order, index) => (
+                <>
+                  <tr key={order.order_id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
+                    <td
+                      className="px-6 py-4 whitespace-nowrap text-blue-500 hover:text-blue-700 cursor-pointer hover:underline"
+                      onClick={() => handleViewDetail(order.order_id)}
+                    >
+                      #{order.order_id}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {order.customer_name}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {order.order_date}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {order.total_items}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {formatCurrency(order.total_price)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`${getStatusColor(order.status)}`}>
+                        {order.status
+                          .replace("Completed", "Thành công")
+                          .replace("Cancel", "Đã hủy")}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <button
+                        className="text-blue-500 hover:text-blue-700 focus:outline-none"
+                        title="Xem hóa đơn"
+                        onClick={() => handleViewDetail(order.order_id)}
+                      >
+                        <FaEye className="text-xl" />
+                      </button>
+                    </td>
+                  </tr>
+                </>
+              ))
+            )}
           </tbody>
         </table>
+        {showOrderDetail && (
+          <OrderDetailModal
+            selectedOrder={selectedOrder}
+            onClose={() => setShowOrderDetail(false)}
+          />
+        )}
+        {totalPage > 1 && (
+          <PaginationPage count={totalPage} setPage={setPage} />
+        )}
       </div>
     </div>
   );

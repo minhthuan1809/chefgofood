@@ -14,6 +14,7 @@ import {
   addCart,
 } from "../../service/cart_client";
 import PayCart from "./cart/PayCart";
+import { Link } from "react-router-dom";
 
 // Helper functions
 const calculateItemPrice = (item) => {
@@ -221,7 +222,7 @@ export default function Cart() {
   );
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col mt-8">
       <header className="fixed top-0 w-full z-50 bg-white">
         <Nav />
         <SupportChat />
@@ -253,7 +254,18 @@ export default function Cart() {
 
           {DataCart.length === 0 ? (
             <div className="text-center text-gray-500 p-8">
-              Giỏ hàng của bạn trống
+              <h2 className="text-2xl font-bold">Giỏ hàng trống</h2>
+
+              <img
+                className="w-1/3 mx-auto mt-10"
+                src="https://web.nvnstatic.net/tp/T0213/img/tmp/cart-empty.png?v=3"
+                alt="img-cart-empty"
+              />
+              <Link to="/food">
+                <span className="text-blue-500 mt-6 block hover:underline ">
+                  Tiếp tục mua sắm
+                </span>
+              </Link>
             </div>
           ) : (
             <div className="flex flex-col lg:flex-row lg:gap-8">

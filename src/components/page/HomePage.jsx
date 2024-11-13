@@ -37,6 +37,9 @@ export default function Home() {
 
   // tìm kiếm
   const handleSearch = () => {
+    if (searchTerm.trim() === "") {
+      return;
+    }
     navigate(`/food?search=${searchTerm.trim().replace(/\s+/g, "+")}`);
   };
   return (
