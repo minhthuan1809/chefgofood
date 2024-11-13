@@ -14,6 +14,7 @@ import SupportChat from "../messger/SupportChat";
 export default function Home() {
   const [header, setHeader] = useState({});
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
   useEffect(() => {
     async function fetchData() {
       try {
@@ -33,6 +34,11 @@ export default function Home() {
     <Loading />;
     return null;
   }
+
+  // tìm kiếm
+  const handleSearch = () => {
+    navigate(`/food?search=${searchTerm.trim().replace(/\s+/g, "+")}`);
+  };
   return (
     <div className="min-h-screen bg-gray-100">
       <header>
@@ -86,10 +92,16 @@ export default function Home() {
                 <input
                   type="search"
                   placeholder={header.websiteInfo?.search_placeholder}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full sm:w-96 p-3 sm:p-4 rounded-full text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleSearch();
+                    }
+                  }}
                 />
                 <button
-                  type="submit"
+                  onClick={handleSearch}
                   className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 flex items-center justify-center"
                 >
                   <FaSearch className="mr-2" />

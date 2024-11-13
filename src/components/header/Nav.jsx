@@ -13,6 +13,7 @@ import {
   apikeyRedux,
 } from "../../redux/action/client/profile";
 import { getUiNavbar } from "../../service/ui/ui_navbav";
+import { FaShoppingCart } from "react-icons/fa";
 
 const NavLink = ({ to, children, onClick }) => {
   const location = useLocation();
@@ -34,6 +35,7 @@ const NavLink = ({ to, children, onClick }) => {
 };
 
 const UserMenuItem = ({ icon, text, badge, onClick, path }) => {
+  console.log(icon, text, badge, onClick, path);
   const navigate = useNavigate();
 
   const handleClick = useCallback(() => {
@@ -243,12 +245,15 @@ const Nav = () => {
                 DataCart={DataCart}
               />
             ) : (
-              <button
-                onClick={handleLoginClick}
-                className="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition duration-300"
-              >
-                Đăng nhập
-              </button>
+              <div className="flex items-center space-x-4">
+                {" "}
+                <button
+                  onClick={handleLoginClick}
+                  className="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition duration-300"
+                >
+                  Đăng nhập
+                </button>
+              </div>
             )}
           </div>
 
