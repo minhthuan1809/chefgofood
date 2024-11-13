@@ -9,6 +9,7 @@ import Loading from "../util/Loading";
 import SupportChat from "../messger/SupportChat";
 
 const Discount = () => {
+  ///thuan
   const status = useSelector((state) => state.login.status);
   const profile = useSelector((state) => state.profile.profile);
   const [loading, setLoading] = useState(false);
