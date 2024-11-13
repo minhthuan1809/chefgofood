@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { BiRefresh } from "react-icons/bi";
 import { FaSearch } from "react-icons/fa";
@@ -19,7 +20,6 @@ export default function HistoryDiscount() {
   const [dataDetailOrder, setDataDetailOrder] = useState(null);
   const fetchData = async () => {
     const result = await getDiscountHistoryRender(limit, page, searchTerm);
-    console.log("result", result);
     if (result.ok) {
       let filteredData = result.data.discount_history;
 
