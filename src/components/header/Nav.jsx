@@ -35,7 +35,6 @@ const NavLink = ({ to, children, onClick }) => {
 };
 
 const UserMenuItem = ({ icon, text, badge, onClick, path }) => {
-  console.log(icon, text, badge, onClick, path);
   const navigate = useNavigate();
 
   const handleClick = useCallback(() => {
