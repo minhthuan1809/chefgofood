@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { MdClose, MdEmail, MdLock, MdKey, MdInfo } from "react-icons/md";
-import { forgotPassword } from "../../service/forgotPass";
+import { forgotNewPassword, forgotPassword } from "../../service/forgotPass";
 import { toast } from "react-toastify";
 
-export default function ModalForgot({ onClose }) {
+export default function ModalForgot({ onClose, isLoginModalOpen }) {
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -23,16 +23,19 @@ export default function ModalForgot({ onClose }) {
   }, [countDown]);
 
   const handleSubmitEmail = async (e) => {
-    toast.dismiss();
     e.preventDefault();
+
+    toast.dismiss();
     setIsLoading(true);
     const result = await forgotPassword(email);
-    if (result.ok) {
-      setStep(2);
-      setCodeConfirm(result.reset_code);
-      setCountDown(30);
-    } else {
-      toast.error(result.message);
+    try {
+      if (result.ok) {
+        setStep(2);
+        setCodeConfirm(result.reset_code);
+        setCountDown(30);
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
     setIsLoading(false);
   };
@@ -50,15 +53,32 @@ export default function ModalForgot({ onClose }) {
     } else {
       toast.error("Mã xác nhận không đúng");
     }
+    setIsLoading(false);
   };
 
-  const handleResetPassword = (e) => {
+  const handleResetPassword = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setTimeout(() => {
+
+    if (newPassword !== confirmPassword) {
+      toast.error("Mật khẩu không khởp");
       setIsLoading(false);
-      onClose(false);
-    }, 1500);
+      return;
+    } else if (newPassword.length < 6) {
+      toast.error("Mật khẩu phải nhất 6 ký tự");
+      setIsLoading(false);
+      return;
+    } else {
+      const data = await forgotNewPassword(newPassword, email);
+      console.log(data);
+
+      if (data.ok) {
+        onClose(false);
+        isLoginModalOpen(true);
+        toast.success("đã đổi mật khẩu thành công !");
+      }
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -74,6 +94,15 @@ export default function ModalForgot({ onClose }) {
             >
               <MdClose className="w-6 h-6 text-gray-500" />
             </button>
+          </div>
+
+          {/* Line */}
+          <div className="border-b">
+            <span className="border bg-blue-500 px-2 py-2 rounded-full text-white">
+              1
+            </span>
+            <span>2</span>
+            <span>3</span>
           </div>
 
           {/* Content */}

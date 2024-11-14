@@ -295,7 +295,12 @@ const Nav = () => {
           setisLoginOrRegister={setisLoginOrRegister}
         />
       )}
-      {isForgotModalOpen && <ModalForgot onClose={setIsForgotModalOpen} />}
+      {isForgotModalOpen && (
+        <ModalForgot
+          onClose={setIsForgotModalOpen}
+          isLoginModalOpen={setIsLoginModalOpen}
+        />
+      )}
     </div>
   );
 };
