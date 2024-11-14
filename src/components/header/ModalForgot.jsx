@@ -97,12 +97,34 @@ export default function ModalForgot({ onClose, isLoginModalOpen }) {
           </div>
 
           {/* Line */}
-          <div className="border-b">
-            <span className="border bg-blue-500 px-2 py-2 rounded-full text-white">
+          <div className="border-b flex justify-center items-center gap-4 py-3">
+            <div
+              className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${
+                step >= 1
+                  ? "bg-blue-500 border-blue-500 text-white"
+                  : "border-gray-300 text-gray-500"
+              }`}
+            >
               1
-            </span>
-            <span>2</span>
-            <span>3</span>
+            </div>
+            <div
+              className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${
+                step >= 2
+                  ? "bg-blue-500 border-blue-500 text-white"
+                  : "border-gray-300 text-gray-500"
+              }`}
+            >
+              2
+            </div>
+            <div
+              className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${
+                step >= 3
+                  ? "bg-blue-500 border-blue-500 text-white"
+                  : "border-gray-300 text-gray-500"
+              }`}
+            >
+              3
+            </div>
           </div>
 
           {/* Content */}
