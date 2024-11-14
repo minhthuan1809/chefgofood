@@ -13,7 +13,7 @@ import {
   apikeyRedux,
 } from "../../redux/action/client/profile";
 import { getUiNavbar } from "../../service/ui/ui_navbav";
-import { FaShoppingCart } from "react-icons/fa";
+import ModalForgot from "./ModalForgot";
 
 const NavLink = ({ to, children, onClick }) => {
   const location = useLocation();
@@ -136,6 +136,8 @@ const Nav = () => {
   const apiKey = useSelector((state) => state.login.apikey);
   const profile = useSelector((state) => state.profile.profile);
   const DataCart = useSelector((state) => state.cart.cartItems);
+
+  const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
   useEffect(() => {
     async function checkApiKey() {
       if (apiKey) {
@@ -283,6 +285,7 @@ const Nav = () => {
         <Modal_login
           onClose={handleCloseLoginModal}
           setisLoginOrRegister={setisLoginOrRegister}
+          isForgotModalOpen={setIsForgotModalOpen}
         />
       )}
       {!isLoginOrRegister && (
@@ -292,6 +295,7 @@ const Nav = () => {
           setisLoginOrRegister={setisLoginOrRegister}
         />
       )}
+      {isForgotModalOpen && <ModalForgot onClose={setIsForgotModalOpen} />}
     </div>
   );
 };

@@ -6,7 +6,11 @@ import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 
-export default function Modal_login({ onClose, setisLoginOrRegister }) {
+export default function Modal_login({
+  onClose,
+  setisLoginOrRegister,
+  isForgotModalOpen,
+}) {
   const dispatch = useDispatch();
   const [statusLogin, setStatusLogin] = useState("");
   const [formData, setFormData] = useState({
@@ -162,9 +166,16 @@ export default function Modal_login({ onClose, setisLoginOrRegister }) {
                 Ghi nhớ đăng nhập
               </span>
             </label>
-            <a href="#" className="text-sm text-blue-500 hover:text-blue-600">
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                isForgotModalOpen(true);
+              }}
+              className="text-sm text-blue-500 hover:text-blue-600"
+            >
               Quên mật khẩu?
-            </a>
+            </button>
           </div>
           <button
             type="submit"
