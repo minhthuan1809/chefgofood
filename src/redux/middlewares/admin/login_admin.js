@@ -25,7 +25,7 @@ export const getLoginAdmin = (value) => {
       }
 
       // Set the cookie with the correct name
-      Cookies.set("admin_apikey", data.api_key, { expires: 7 });
+      Cookies.set("admin_apikey", data.api_key, { expires: 7, secure: true });
       dispatch(LoginAdminAction(data));
 
       toast.success(data.message);
