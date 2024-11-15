@@ -6,7 +6,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getDecentralization } from "../redux/middlewares/admin/decentralization";
 import AdminSidebar from "./components/AdminSidebar";
-import { HiMagnifyingGlass } from "react-icons/hi2";
 import Error from "../router/Error";
 import { toast } from "react-toastify";
 import Decentralization from "./components/page/Decentralization";
@@ -57,12 +56,13 @@ const AppAdmin = () => {
   useEffect(() => {
     async function fetchData() {
       const data = await dispatch(getDecentralization(apikey_cookies));
+      console.log("data", apikey_cookies);
 
       if (!data.ok) {
         toast.dismiss();
-        Cookies.remove("admin_apikey");
-        toast.info("Bạn cần đăng nhập lại ");
-        navigate("/admin/dashboard/login");
+        // // Cookies.remove("admin_apikey");
+        // toast.info("Bạn cần đăng nhập lại ");
+        // navigate("/admin/dashboard/login");
       }
     }
     fetchData();

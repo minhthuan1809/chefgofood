@@ -14,6 +14,7 @@ const Dashboard = () => {
     const getDashboardData = async () => {
       const { data } = await getDashboard();
       setDashboardData(data);
+      console.log(data);
     };
     getDashboardData();
   }, []);
