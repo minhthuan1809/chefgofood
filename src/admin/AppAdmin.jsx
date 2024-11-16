@@ -60,9 +60,9 @@ const AppAdmin = () => {
 
       if (!data.ok) {
         toast.dismiss();
-        // // Cookies.remove("admin_apikey");
-        // toast.info("Bạn cần đăng nhập lại ");
-        // navigate("/admin/dashboard/login");
+        Cookies.remove("admin_apikey");
+        toast.info("Bạn cần đăng nhập lại ");
+        navigate("/admin/dashboard/login");
       }
     }
     fetchData();

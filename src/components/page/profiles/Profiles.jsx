@@ -42,7 +42,7 @@ export default function Profile() {
         const response = await getDelete(apiKey);
         if (response.success) {
           dispatch(apikeyRedux(null, false));
-          // localStorage.removeItem("apikey");
+          localStorage.removeItem("apikey");
           navigate("/");
           toast.success("Tài khoản của bạn đã bị xóa!");
         } else {

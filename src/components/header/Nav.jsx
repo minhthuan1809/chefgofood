@@ -145,7 +145,7 @@ const Nav = () => {
         console.log(data);
         if (!data?.ok) {
           dispatch(apikeyRedux(null, false));
-          // localStorage.removeItem("apikey");
+          localStorage.removeItem("apikey");
         } else {
           dispatch(apikeyRedux(apiKey, true));
         }
@@ -184,7 +184,7 @@ const Nav = () => {
         if (confirm("Bạn muốn đăng xuất ?")) {
           dispatch(AddProfileRedux(null));
           dispatch(apikeyRedux(null, false));
-          // localStorage.removeItem("apikey");
+          localStorage.removeItem("apikey");
           navigate("/");
           setDropdownOpen(false);
         }
