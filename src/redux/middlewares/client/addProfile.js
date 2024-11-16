@@ -3,21 +3,29 @@ export const getProfile = (apikey) => {
     try {
       const url = `${import.meta.env.VITE_FASTFOOD_SERVER_API}/profile`;
 
+      // Log trước khi gọi API để kiểm tra
+      console.log("Request Headers:", {
+        "X-Api-Key": apikey,
+        "Content-Type": "application/json",
+      });
+
       const response = await fetch(url, {
         method: "GET",
         headers: {
           "X-Api-Key": apikey,
           "Content-Type": "application/json",
         },
-        mode: "cors",
-        credentials: "same-origin",
       });
 
-      const data = await response.json();
+      // Log response để debug
+      console.log("Response Status:", response.status);
+      console.log("Response Headers:", Object.fromEntries(response.headers));
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      const data = await response.json();
       dispatch({
         type: "add/profile",
         payload: data.data,
@@ -25,16 +33,7 @@ export const getProfile = (apikey) => {
 
       return data;
     } catch (error) {
-      console.error("Fetch error:", error.message);
-
-      if (error instanceof TypeError) {
-        console.error(
-          "Network error or CORS issue - Please check if the server is running and CORS is properly configured"
-        );
-      } else {
-        console.error("API error:", error.message);
-      }
-
+      console.error("Error:", error);
       throw error;
     }
   };
