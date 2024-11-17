@@ -57,6 +57,7 @@ export default function UserAdmin() {
   };
 
   const fetchData = useCallback(async () => {
+    toast.dismiss();
     try {
       const response = await getUserAdmin(searchTerm, limit, page);
       setTotalPages(response.data.pagination.total_pages);

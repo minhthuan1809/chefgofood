@@ -21,6 +21,7 @@ export default function DiscountUser() {
   const [loading, setLoading] = useState(false);
 
   async function fetchData() {
+    toast.dismiss();
     setLoading(true);
     const res = await getDiscountUser(page, limit, searchTerm);
     let filteredCoupons = res.data.discounts;

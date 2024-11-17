@@ -7,7 +7,9 @@ export default function Model_Cancel({ isOpen, onClose, order_id }) {
     if (!window.confirm("Bạn có chắc chắn muốn hủy đơn hàng này không?"))
       return;
     const result = await updateStatusOrder(order_id, "Cancel");
-    console.log(result);
+    if (result.ok) {
+      toast.success("Hủy đơn hàng thành công");
+    }
     if (!result.ok) {
       toast.error("Hủy đơn hàng thất bại");
     }

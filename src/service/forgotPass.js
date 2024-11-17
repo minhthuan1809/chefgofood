@@ -35,6 +35,7 @@ export const forgotNewPassword = async (newPassword, email) => {
     );
 
     const result = await response.json();
+    console.log(result);
 
     return result;
   } catch (error) {

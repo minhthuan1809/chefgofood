@@ -17,6 +17,7 @@ export default function ModelAddEditUser({
     email: "",
     password: "",
   });
+  const [btnLoading, setBtnLoading] = useState(false);
 
   const validateForm = () => {
     let tempErrors = {};
@@ -53,7 +54,6 @@ export default function ModelAddEditUser({
       isValid = false;
     }
     setErrors(tempErrors);
-    console.log(tempErrors);
 
     return isValid;
   };
@@ -68,33 +68,48 @@ export default function ModelAddEditUser({
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  const handleEditUser = async (e) => {
-    e.preventDefault();
-    if (!validateForm()) return;
-
+  // sửa
+  const handleEditUser = async () => {
+    setBtnLoading(true);
     toast.dismiss();
-    const data = await updateUser(editUser.id, formData);
-    fetchData();
-    if (data.ok) {
-      handleCloseModal();
-      toast.success(data.message);
-    } else {
-      toast.error(data.message);
+    try {
+      if (!validateForm()) return;
+
+      toast.dismiss();
+      const data = await updateUser(editUser.id, formData);
+      fetchData();
+      if (data.ok) {
+        handleCloseModal();
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.error("error edit", error);
+    } finally {
+      setBtnLoading(false);
     }
   };
 
+  // thêm user
   const handleAddUser = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
-
-    toast.dismiss();
-    const data = await addUser(formData);
-    fetchData();
-    if (data.ok) {
-      handleCloseModal();
-      toast.success(data.message);
-    } else {
-      toast.error(data.message);
+    setBtnLoading(true);
+    try {
+      toast.dismiss();
+      if (!validateForm()) return;
+      const data = await addUser(formData);
+      fetchData();
+      if (data.ok) {
+        handleCloseModal();
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setBtnLoading(false);
     }
   };
 
@@ -224,7 +239,10 @@ export default function ModelAddEditUser({
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                disabled={btnLoading}
+                className={`${
+                  btnLoading && "bg-blue-400"
+                } px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600`}
                 onClick={editUser ? handleEditUser : handleAddUser}
               >
                 {editUser ? "Cập nhật" : "Thêm mới"}
