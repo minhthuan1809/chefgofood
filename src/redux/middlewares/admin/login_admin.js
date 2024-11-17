@@ -17,7 +17,6 @@ export const getLoginAdmin = (value) => {
       });
 
       const data = await response.json();
-      console.log(data);
 
       if (!data.ok) {
         toast.error(data.message);

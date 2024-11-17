@@ -141,7 +141,6 @@ const Nav = () => {
   useEffect(() => {
     async function checkApiKey() {
       const data = await dispatch(getProfile(apiKey));
-      console.log("data", data);
 
       if (!data?.ok) {
         dispatch(apikeyRedux(null, false));

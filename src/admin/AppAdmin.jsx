@@ -56,7 +56,6 @@ const AppAdmin = () => {
   useEffect(() => {
     async function fetchData() {
       const data = await dispatch(getDecentralization(apikey_cookies));
-      console.log("data", apikey_cookies);
 
       if (!data.ok) {
         toast.dismiss();

@@ -42,43 +42,49 @@ export default function ModalForgot({ onClose, isLoginModalOpen }) {
 
   const handleVerifyCode = (e) => {
     e.preventDefault();
+    setIsLoading(true);
+
     if (countDown === 0) {
       toast.error("Mã xác nhận đã hết hạn");
+      setIsLoading(false);
       return;
     }
-    setIsLoading(true);
+
     if (code === codeConfirm) {
-      setIsLoading(false);
       setStep(3);
     } else {
       toast.error("Mã xác nhận không đúng");
     }
+
     setIsLoading(false);
   };
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    toast.dismiss();
+    try {
+      if (newPassword !== confirmPassword) {
+        toast.error("Mật khẩu không khớp");
+        return;
+      } else if (newPassword.length < 6) {
+        toast.error("Mật khẩu phải nhất 6 ký tự");
+        return;
+      } else {
+        const data = await forgotNewPassword(newPassword, email);
+        console.log(data);
 
-    if (newPassword !== confirmPassword) {
-      toast.error("Mật khẩu không khởp");
-      setIsLoading(false);
-      return;
-    } else if (newPassword.length < 6) {
-      toast.error("Mật khẩu phải nhất 6 ký tự");
-      setIsLoading(false);
-      return;
-    } else {
-      const data = await forgotNewPassword(newPassword, email);
-      console.log(data);
-
-      if (data.ok) {
-        onClose(false);
-        isLoginModalOpen(true);
-        toast.success("đã đổi mật khẩu thành công !");
+        if (data.ok) {
+          onClose(false);
+          isLoginModalOpen(true);
+          toast.success("đã đổi mật khẩu thành công !");
+        }
       }
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   return (
