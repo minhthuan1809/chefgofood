@@ -13,6 +13,7 @@ export const getDeleteProductAdmin = async (id) => {
     );
 
     const result = await response.json();
+
     return result;
   } catch (error) {
     console.error("Registration error:", error);

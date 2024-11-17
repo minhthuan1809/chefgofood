@@ -22,11 +22,10 @@ export default function Profile() {
     if (window.confirm("Bạn có muốn thay đổi thông tin này?")) {
       try {
         const newData = { avata: newUrl, username: newName };
-        const data = await getUpdateProfile(newData, apiKey, profile?.id);
+        const data = await getUpdateProfile(newData, profile?.id);
         if (data?.success) {
           toast.success("Sửa Thành Công!");
-          const response = await dispatch(getProfile(apiKey));
-          console.log(response);
+          await dispatch(getProfile(apiKey));
         } else {
           toast.error("Sửa Thất Bại!");
         }

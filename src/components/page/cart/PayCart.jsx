@@ -114,7 +114,6 @@ const PayCart = ({ items }) => {
         ]);
 
         setDiscountSystem(discountResponse.data.discounts);
-        console.log("discountResponse", discountResponse);
 
         if (profileResponse.data.id) {
           const addressResponse = await dispatch(
@@ -163,7 +162,6 @@ const PayCart = ({ items }) => {
       };
 
       const result = await addCartPay(paymentData);
-      console.log("result", result);
       if (result.success) {
         toast.success("Đặt hàng thành công!");
         navigate("/history");

@@ -1,4 +1,4 @@
-export const getUpdateProfile = async (data, apikey, id) => {
+export const getUpdateProfile = async (data, id) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_FASTFOOD_SERVER_API}/profile/${id}`,
@@ -6,18 +6,13 @@ export const getUpdateProfile = async (data, apikey, id) => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "X-Api-Key": apikey,
         },
         body: JSON.stringify(data),
       }
     );
-    console.log(response);
-
-    if (!response.ok) {
-      throw new Error("Sửa thất bại");
-    }
 
     const result = await response.json();
+
     return result;
   } catch (error) {
     console.error("Registration error:", error);

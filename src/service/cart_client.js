@@ -64,6 +64,9 @@ export const addCartPay = async (data, id) => {
     );
 
     const result = await response.json();
+    console.log(data);
+
+    console.log(result);
 
     return result;
   } catch (error) {
