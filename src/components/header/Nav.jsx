@@ -140,15 +140,14 @@ const Nav = () => {
   const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
   useEffect(() => {
     async function checkApiKey() {
-      if (apiKey) {
-        const data = await dispatch(getProfile(apiKey));
-        console.log(data);
-        if (!data?.ok) {
-          dispatch(apikeyRedux(null, false));
-          localStorage.removeItem("apikey");
-        } else {
-          dispatch(apikeyRedux(apiKey, true));
-        }
+      const data = await dispatch(getProfile(apiKey));
+      console.log("data", data);
+
+      if (!data?.ok) {
+        dispatch(apikeyRedux(null, false));
+        localStorage.removeItem("apikey");
+      } else {
+        dispatch(apikeyRedux(apiKey, true));
       }
     }
     checkApiKey();
