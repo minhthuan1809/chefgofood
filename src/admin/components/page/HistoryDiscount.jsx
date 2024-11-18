@@ -9,6 +9,7 @@ import PaginationPage from "../util/PaginationPage";
 import OrderDetailModal from "../modal_detail_oder/_Modal_oder";
 import { detailOrder } from "../../../service/server/oder";
 import ExcelHistoryDiscountUser from "../_history_distcount/ExcelHistoryDiscountUser";
+import Loading from "../util/Loading";
 export default function HistoryDiscount() {
   const [discountHistory, setDiscountHistory] = useState([]);
   const [limit, setLimit] = useState(30);
@@ -41,7 +42,10 @@ export default function HistoryDiscount() {
   };
 
   useEffect(() => {
-    fetchData();
+    const timeout = setTimeout(() => {
+      fetchData();
+    }, 1000);
+    return () => clearTimeout(timeout);
   }, [searchTerm, limit, page, filterStatus]);
 
   const handleDetailOder = async (order_id) => {
@@ -58,7 +62,7 @@ export default function HistoryDiscount() {
     setFilterStatus("all");
     fetchData();
   };
-
+  if (discountHistory.length === 0 || !discountHistory) return <Loading />;
   return (
     <div className="p-6">
       {/* Header */}

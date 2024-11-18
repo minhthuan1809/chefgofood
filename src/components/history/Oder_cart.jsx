@@ -6,6 +6,9 @@ import { ImCancelCircle } from "react-icons/im";
 import OrderDetailModal from "./Modal_history";
 import Model_Cancel from "./Model_Cancel";
 import ReviewModal from "./Review";
+import { addCart } from "../../service/cart_client";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const getStatusColor = (status) => {
   switch (status.toLowerCase()) {
@@ -27,6 +30,7 @@ const getStatusColor = (status) => {
 export default function OrderCard({ order }) {
   const [showModal, setShowModal] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const thumbnailImage = order.products[0]?.image_url || "";
   const isActive = ["pending", "preparing", "delivery"].includes(
     order.status.toLowerCase()
@@ -38,9 +42,22 @@ export default function OrderCard({ order }) {
     setOrderData(result.data);
   };
   const [Id, orderId] = useState("");
+  const apiKey = useSelector((state) => state.login.apikey);
 
-  const hanleAddcart = (order_id) => {
-    console.log(order_id);
+  //đặt lại giỏ hàng
+  const hanleAddcart = async (oder) => {
+    toast.dismiss();
+    setIsLoading(true);
+    let result = {};
+    for (let i = 0; i < oder.length; i++) {
+      result = await addCart(oder[i].product_id, apiKey);
+    }
+    setIsLoading(false);
+    if (result.ok) {
+      toast.success(result.message);
+    } else {
+      toast.error(result.message);
+    }
   };
   return (
     <>
@@ -107,10 +124,34 @@ export default function OrderCard({ order }) {
             {!isActive && (
               <div className="mt-4 flex gap-4">
                 <button
-                  onClick={() => hanleAddcart(order.order_id)}
+                  onClick={() => hanleAddcart(order.products)}
                   className="bg-blue-500 mt-12 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300 ease-in-out flex items-center"
+                  disabled={isLoading}
                 >
-                  <FaRedoAlt className="mr-2" />
+                  {isLoading ? (
+                    <svg
+                      className="animate-spin h-5 w-5 mr-2 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                  ) : (
+                    <FaRedoAlt className="mr-2" />
+                  )}
                   Đặt lại
                 </button>
                 {order.review && (

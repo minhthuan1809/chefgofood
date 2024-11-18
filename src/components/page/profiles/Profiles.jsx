@@ -39,6 +39,11 @@ export default function Profile() {
     if (window.confirm("Bạn có chắc muốn xóa tài khoản này?")) {
       try {
         const response = await getDelete(apiKey);
+        if (!response.ok) {
+          toast.error("Xóa thất bại!");
+          return;
+        }
+
         if (response.success) {
           dispatch(apikeyRedux(null, false));
           localStorage.removeItem("apikey");
