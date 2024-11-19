@@ -11,14 +11,15 @@ import PriceSummary from "./PriceSummary";
 import SelectedItems from "./SelectedItems";
 import PaymentMethodSelector from "./PaymentMethodSelector";
 import { useNavigate } from "react-router";
+import { getUiDiscountUser } from "../../../service/discount/discount_user";
 
 // Tách Modal thành component riêng
 const Modal = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-auto ">
+      <div className="bg-white rounded-lg h-[50rem] overflow-auto overflow-x-hidden scr shadow-xl  max-w-md p-6 ">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold">{title}</h3>
           <button
@@ -94,14 +95,26 @@ const PayCart = ({ items }) => {
   const [addresses, setAddresses] = useState(null);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [discountSystem, setDiscountSystem] = useState(null);
+  const [discountsUser, setDiscountsUser] = useState([]);
   const navigate = useNavigate();
   // Tính toán tổng tiền
-  const subtotal = items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  const subtotal = items.reduce((sum, item) => {
+    const basePrice = item.price * item.quantity;
+    const discountAmount = (basePrice * (item.discount || 0)) / 100;
+    return sum + (basePrice - discountAmount);
+  }, 0);
   const discountAmount = subtotal * appliedDiscount;
   const total = subtotal - discountAmount + shippingCost;
+
+  /// mã giảm giá của user
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await getUiDiscountUser(profile.id);
+      setDiscountsUser(response.data.discounts);
+    }
+    fetchData();
+  }, [profile]);
 
   // Fetch addresses và discount system
   useEffect(() => {
@@ -154,7 +167,7 @@ const PayCart = ({ items }) => {
           quantity: item.quantity,
         })),
         total_price: total,
-        subtotal: subtotal,
+        subtotal: total,
         payment_method: selectedPaymentMethod,
         note: deliveryNote,
         discount_code: discountCode,
@@ -183,9 +196,8 @@ const PayCart = ({ items }) => {
           address={selectedAddress}
           onChangeClick={() => setIsAddressModalOpen(true)}
         />
-
+        {/* //sản phẩm đã chọn mua  */}
         <SelectedItems items={items} />
-
         <div className="space-y-4">
           <h4 className="font-medium">Ghi chú giao hàng</h4>
           <textarea
@@ -196,25 +208,24 @@ const PayCart = ({ items }) => {
             placeholder="Nhập ghi chú cho người giao hàng..."
           />
         </div>
-
         <button
           onClick={() => setIsDiscountModalOpen(true)}
           className="text-blue-600 hover:text-blue-700 text-sm font-medium"
         >
           {discountCode ? `Mã đang dùng: ${discountCode}` : "Chọn mã giảm giá"}
         </button>
-
+        {/* // btn phương thức thanh toán */}
         <PaymentMethodSelector
           selectedMethod={selectedPaymentMethod}
           onSelect={setSelectedPaymentMethod}
         />
 
+        {/* // hiện thị giá tiền */}
         <PriceSummary
           subtotal={subtotal}
           discountAmount={discountAmount}
           shippingCost={shippingCost}
         />
-
         <button
           onClick={handleCheckout}
           className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400"
@@ -231,6 +242,64 @@ const PayCart = ({ items }) => {
         title="Mã giảm giá"
       >
         <div className="space-y-2">
+          {/* // giảm giá của riêng user */}
+          {discountsUser?.map((code) => {
+            if (code.days_remaining <= 0) {
+              return;
+            }
+
+            return (
+              <button
+                key={code.id}
+                onClick={() => {
+                  if (subtotal < code.minimum_price) {
+                    toast.dismiss();
+                    toast.error(
+                      `Đơn hàng tối thiểu ${code.minimum_price.toLocaleString()}₫`
+                    );
+                    return;
+                  }
+
+                  if (code.quantity <= 0) {
+                    toast.dismiss();
+                    toast.error("Mã giảm giá đã hết lượt sử dụng!");
+                    return;
+                  }
+                  //thuan
+                  setDiscountCode(code.code);
+                  setAppliedDiscount(code.discount_percent / 100);
+                  setIsDiscountModalOpen(false);
+                  toast.success("Áp dụng mã giảm giá thành công!");
+                }}
+                className="w-full text-left p-3 hover:bg-blue-50 rounded-lg transition-colors"
+              >
+                <div className="flex justify-between items-center">
+                  <div>
+                    <span className="font-semibold">{code.code}</span>{" "}
+                    <p className="text-sm text-gray-500">{code.name}</p>
+                    <p className="text-xs text-gray-400">
+                      Đơn tối thiểu: {code.minimum_price.toLocaleString()}₫
+                    </p>
+                    <p className="text-xs text-gray-400">
+                      Thời gian còn lại: {code.days_remaining} ngày
+                    </p>
+                    {code.days_remaining < 0 && (
+                      <p className="text-xs text-red-500">{code.message}</p>
+                    )}
+                    <p className="text-xs text-gray-400 text-blue-400">
+                      Giảm giá dành cho riêng bạn
+                    </p>{" "}
+                  </div>
+
+                  <span className="text-blue-600">
+                    Giảm {code.discount_percent}%
+                  </span>
+                </div>
+              </button>
+            );
+          })}
+
+          {/* // giảm giá của hê thống */}
           {discountSystem?.map((code) => {
             if (code.days_remaining <= 0) {
               return;

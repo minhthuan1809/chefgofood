@@ -229,7 +229,7 @@ export default function Cart() {
       </header>
 
       <main className="flex-grow pt-20 px-4 lg:px-8">
-        <div className="max-w-7xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+        <div className="max-w-[150rem] mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
           <div className="px-4 sm:px-6 py-4 bg-gray-100">
             <div className="flex items-center justify-between">
               <h2 className="text-xl sm:text-2xl font-bold flex items-center text-gray-800">
@@ -287,6 +287,7 @@ export default function Cart() {
                 </div>
               </div>
 
+              {/* // tính hóa đơn //  */}
               <div className="w-full lg:w-1/3 p-4 bg-gray-50">
                 {selectedItemsData.length > 0 && (
                   <PayCart items={selectedItemsData} totalPrice={totalPrice} />

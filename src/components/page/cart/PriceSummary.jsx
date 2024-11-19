@@ -7,6 +7,7 @@ export default function PriceSummary({
   shippingCost,
 }) {
   const finalTotal = subtotal - discountAmount + shippingCost;
+  console.log(subtotal);
 
   return (
     <div className="bg-gray-50 p-4 rounded-lg space-y-3">
