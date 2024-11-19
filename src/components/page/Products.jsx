@@ -1,56 +1,64 @@
 /* eslint-disable react/prop-types */
-import Nav from "../header/Nav";
-
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { getProducts } from "../../redux/middlewares/client/addProduct";
+import Nav from "../header/Nav";
 import Loading from "../util/Loading";
 import RenderProduct from "./products/RenderProduct";
 import PaginationPage from "./products/PaginationPage";
 import SearchProduct from "./products/SearchProduct";
 import SupportChat from "../messger/SupportChat";
+import ModelPayCart from "./cart/ModelPayCart";
+import { getProducts } from "../../redux/middlewares/client/addProduct";
+
+const CATEGORIES = [
+  { label: "All", value: "All" },
+  { label: "Đồ Ăn", value: "food" },
+  { label: "Đồ Uống", value: "water" },
+  { label: "Bánh", value: "cake" },
+];
 
 const Products = () => {
   const dispatch = useDispatch();
   const dataProduct = useSelector((state) => state.product.products);
 
-  // Trạng thái để quản lý loại sản phẩm hiện tại
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [loading, setLoading] = useState(true); // Trạng thái loading
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [isOpen, setIsOpen] = useState(false);
+  const [productPay, setProductPay] = useState([]);
+
+  const fetchProducts = useCallback(async () => {
+    setLoading(true);
+    try {
+      const data = await dispatch(getProducts("", page));
+      setPage(data.data.pagination.total_pages);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [dispatch, page]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const data = await dispatch(getProducts("", 1));
-      console.log(data);
+    fetchProducts();
+  }, [fetchProducts]);
 
-      setPage(data.data.pagination.total_pages);
-      setLoading(false);
+  const filterProductsByCategory = React.useMemo(() => {
+    return (products, category) => {
+      if (category === "All") return products;
+      return products.filter((product) => product.type === category);
     };
-    fetchData();
-  }, [page, selectedCategory]);
+  }, []);
 
-  // Hàm để lọc sản phẩm theo loại
-  const filterProductsByCategory = (products, category) => {
-    if (category === "All") return products;
+  const filteredProducts = React.useMemo(
+    () => filterProductsByCategory(dataProduct, selectedCategory),
+    [dataProduct, selectedCategory, filterProductsByCategory]
+  );
 
-    // Đối tượng ánh xạ để chuyển đổi tên loại sản phẩm
-    const categoryMapping = {
-      "Đồ Ăn": "food",
-      "Đồ Uống": "water",
-      Bánh: "cake",
-    };
-
-    // Lấy loại sản phẩm tương ứng từ ánh xạ
-    const categoryType = categoryMapping[category] || category;
-    return products.filter((product) => product.type === categoryType);
+  const handleCloseModal = () => {
+    setIsOpen(false);
   };
 
-  const filteredProducts = filterProductsByCategory(
-    dataProduct,
-    selectedCategory
-  );
   return (
     <div className="bg-gray-100">
       <header>
@@ -64,17 +72,17 @@ const Products = () => {
           <main className="container m-auto px-2 sm:px-4 xl:w-[85%] sm:py-8">
             <div className="flex flex-col pt-[6rem] sm:flex-row justify-between items-center mb-4 sm:mb-8">
               <ul className="flex flex-wrap justify-center sm:justify-start space-x-2 mb-4 sm:mb-0">
-                {["All", "Đồ Ăn", "Đồ Uống", "Bánh"].map((category, index) => (
-                  <li key={index} className="mb-2 sm:mb-0">
+                {CATEGORIES.map(({ label, value }) => (
+                  <li key={value} className="mb-2 sm:mb-0">
                     <button
-                      onClick={() => setSelectedCategory(category)}
+                      onClick={() => setSelectedCategory(value)}
                       className={`px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base rounded-full transition-colors duration-300 ${
-                        category === selectedCategory
+                        value === selectedCategory
                           ? "bg-blue-600 text-white"
                           : "bg-white text-gray-700 hover:bg-gray-200"
                       }`}
                     >
-                      {category}
+                      {label}
                     </button>
                   </li>
                 ))}
@@ -92,13 +100,22 @@ const Products = () => {
                     key={product.id}
                     product={product}
                     idProduct={product.id}
+                    data={setProductPay}
+                    isOpen={setIsOpen}
                   />
                 ))
               ) : (
-                <p className="text-center">Chưa có sản phẩm nào...</p>
+                <p className="text-center col-span-full">
+                  Chưa có sản phẩm nào...
+                </p>
               )}
             </div>
           </main>
+          <ModelPayCart
+            isOpen={isOpen}
+            onClose={handleCloseModal}
+            items={productPay}
+          />
           <footer className="flex justify-center pb-4 sm:pb-6">
             {page > 1 && <PaginationPage page={page} />}
           </footer>

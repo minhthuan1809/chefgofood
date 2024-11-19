@@ -1,7 +1,7 @@
-/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 import { getProfileAddress } from "../../../redux/middlewares/client/addAddress";
 import { getProfile } from "../../../redux/middlewares/client/addProfile";
 import { addCartPay } from "../../../service/cart_client";
@@ -10,115 +10,62 @@ import ShippingAddress from "./ShippingAddress";
 import PriceSummary from "./PriceSummary";
 import SelectedItems from "./SelectedItems";
 import PaymentMethodSelector from "./PaymentMethodSelector";
-import { useNavigate } from "react-router";
-import { getUiDiscountUser } from "../../../service/discount/discount_user";
+import AddressModal from "./AddressModal";
+import ModalDiscount from "./ModalDiscount";
 
-// Tách Modal thành component riêng
-const Modal = ({ isOpen, onClose, title, children }) => {
-  if (!isOpen) return null;
+const SHIPPING_COST = 30000;
 
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-auto ">
-      <div className="bg-white rounded-lg h-[50rem] overflow-auto overflow-x-hidden scr shadow-xl  max-w-md p-6 ">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold">{title}</h3>
-          <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-700"
-          >
-            ✕
-          </button>
-        </div>
-        {children}
-      </div>
-    </div>
-  );
-};
-
-// Tách AddressModal thành component riêng
-const AddressModal = ({
-  isOpen,
-  onClose,
-  addresses,
-  selectedAddress,
-  onSelect,
-}) => {
-  const handleSelectAddress = (address) => {
-    onSelect(address);
-    onClose();
-  };
-
-  return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Chọn địa chỉ giao hàng">
-      <div className="space-y-3 max-h-96 overflow-y-auto">
-        {addresses?.map((address) => (
-          <button
-            key={address.id}
-            onClick={() => handleSelectAddress(address)}
-            className={`w-full text-left p-4 rounded-lg border transition-colors ${
-              selectedAddress?.id === address.id
-                ? "border-blue-500 bg-blue-50"
-                : "border-gray-200 hover:bg-gray-50"
-            }`}
-          >
-            <div className="flex justify-between items-start">
-              <div>
-                <p className="font-medium">{address.note}</p>
-                <p className="text-gray-600">{address.phone}</p>
-                <p className="text-gray-600">{address.address}</p>
-              </div>
-              {selectedAddress?.id === address.id && (
-                <span className="text-blue-600">✓</span>
-              )}
-            </div>
-          </button>
-        ))}
-      </div>
-    </Modal>
-  );
-};
-
-// Component PayCart chính
 const PayCart = ({ items }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const apiKey = useSelector((state) => state.login.apikey);
   const profile = useSelector((state) => state.profile.profile);
 
-  // State
-  const [isDiscountModalOpen, setIsDiscountModalOpen] = useState(false);
-  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
-  const [discountCode, setDiscountCode] = useState("");
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
-  const [appliedDiscount, setAppliedDiscount] = useState(0);
-  const [shippingCost] = useState(30000);
-  const [deliveryNote, setDeliveryNote] = useState("");
-  const [addresses, setAddresses] = useState(null);
-  const [selectedAddress, setSelectedAddress] = useState(null);
+  // State management
+  const [modals, setModals] = useState({
+    discount: false,
+    address: false,
+  });
+  const [checkout, setCheckout] = useState({
+    discountCode: "",
+    appliedDiscount: 0,
+    paymentMethod: "",
+    deliveryNote: "",
+    minimumOrderValue: 0, // Add this to track minimum order value
+  });
+  const [addresses, setAddresses] = useState({
+    list: null,
+    selected: null,
+  });
   const [discountSystem, setDiscountSystem] = useState(null);
-  const [discountsUser, setDiscountsUser] = useState([]);
-  const navigate = useNavigate();
-  // Tính toán tổng tiền
-  const subtotal = items.reduce((sum, item) => {
-    const basePrice = item.price * item.quantity;
-    const discountAmount = (basePrice * (item.discount || 0)) / 100;
-    return sum + (basePrice - discountAmount);
-  }, 0);
-  const discountAmount = subtotal * appliedDiscount;
-  const total = subtotal - discountAmount + shippingCost;
 
-  /// mã giảm giá của user
+  // Calculations
+  const calculateSubtotal = () => {
+    return items.reduce((sum, item) => {
+      const basePrice = item.price * item.quantity;
+      const discountAmount = (basePrice * (item.discount || 0)) / 100;
+      return sum + (basePrice - discountAmount);
+    }, 0);
+  };
 
+  const subtotal = calculateSubtotal();
+
+  // Validate discount applicability
+  const validateDiscount = () => {
+    // If no discount is applied, return true
+    if (!checkout.discountCode) return true;
+
+    // Check if subtotal meets the minimum order value for the applied discount
+    return subtotal >= checkout.minimumOrderValue;
+  };
+
+  const discountAmount = validateDiscount()
+    ? subtotal * checkout.appliedDiscount
+    : 0;
+  const total = subtotal - discountAmount + SHIPPING_COST;
+
+  // Fetch initial data
   useEffect(() => {
-    async function fetchData() {
-      const response = await getUiDiscountUser(profile.id);
-      setDiscountsUser(response.data.discounts);
-    }
-    fetchData();
-  }, [profile]);
-
-  // Fetch addresses và discount system
-  useEffect(() => {
-    toast.dismiss();
     const fetchData = async () => {
       try {
         const [discountResponse, profileResponse] = await Promise.all([
@@ -132,10 +79,11 @@ const PayCart = ({ items }) => {
           const addressResponse = await dispatch(
             getProfileAddress(profileResponse.data.id)
           );
-          setAddresses(addressResponse.addresses);
-          if (addressResponse.addresses?.length > 0) {
-            setSelectedAddress(addressResponse.addresses[0]);
-          }
+
+          setAddresses((prev) => ({
+            list: addressResponse.addresses,
+            selected: addressResponse.addresses?.[0] || null,
+          }));
         }
       } catch (error) {
         toast.error("Lỗi khi tải dữ liệu");
@@ -145,15 +93,36 @@ const PayCart = ({ items }) => {
     fetchData();
   }, [dispatch, apiKey]);
 
-  // Xử lý thanh toán
+  // Handlers
+  const handleApplyDiscount = ({ code, discountPercent, minOrderValue }) => {
+    setCheckout((prev) => ({
+      ...prev,
+      discountCode: code,
+      appliedDiscount: discountPercent,
+      minimumOrderValue: minOrderValue, // Store minimum order value
+    }));
+  };
+
+  // Reset discount if items change and no longer meet minimum
+  useEffect(() => {
+    if (checkout.discountCode && !validateDiscount()) {
+      toast.warning("Mã giảm giá không còn hiệu lực do tổng đơn hàng thay đổi");
+      setCheckout((prev) => ({
+        ...prev,
+        discountCode: "",
+        appliedDiscount: 0,
+        minimumOrderValue: 0,
+      }));
+    }
+  }, [items]);
+
   const handleCheckout = async () => {
-    toast.dismiss();
-    if (!selectedAddress) {
+    if (!addresses.selected) {
       toast.error("Vui lòng chọn địa chỉ giao hàng");
       return;
     }
 
-    if (!selectedPaymentMethod) {
+    if (!checkout.paymentMethod) {
       toast.error("Vui lòng chọn phương thức thanh toán");
       return;
     }
@@ -161,24 +130,24 @@ const PayCart = ({ items }) => {
     try {
       const paymentData = {
         user_id: profile.id,
-        address_id: selectedAddress.id,
+        address_id: addresses.selected.id,
         products: items.map((item) => ({
           product_id: item.product_id,
           quantity: item.quantity,
         })),
         total_price: total,
         subtotal: total,
-        payment_method: selectedPaymentMethod,
-        note: deliveryNote,
-        discount_code: discountCode,
-        delivery_note: deliveryNote,
+        payment_method: checkout.paymentMethod,
+        discount_code: checkout.discountCode,
+        delivery_note: checkout.deliveryNote,
+        note: checkout.deliveryNote,
       };
 
       const result = await addCartPay(paymentData);
+
       if (result.success) {
         toast.success("Đặt hàng thành công!");
         navigate("/history");
-        // Xử lý sau khi thanh toán thành công
       } else {
         toast.error(result.message || "Đặt hàng thất bại");
       }
@@ -193,174 +162,74 @@ const PayCart = ({ items }) => {
 
       <div className="space-y-6">
         <ShippingAddress
-          address={selectedAddress}
-          onChangeClick={() => setIsAddressModalOpen(true)}
+          address={addresses.selected}
+          onChangeClick={() =>
+            setModals((prev) => ({ ...prev, address: true }))
+          }
         />
-        {/* //sản phẩm đã chọn mua  */}
+
         <SelectedItems items={items} />
+
         <div className="space-y-4">
           <h4 className="font-medium">Ghi chú giao hàng</h4>
           <textarea
-            value={deliveryNote}
-            onChange={(e) => setDeliveryNote(e.target.value)}
+            value={checkout.deliveryNote}
+            onChange={(e) =>
+              setCheckout((prev) => ({ ...prev, deliveryNote: e.target.value }))
+            }
             className="w-full px-3 py-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
             rows="3"
             placeholder="Nhập ghi chú cho người giao hàng..."
           />
         </div>
+
         <button
-          onClick={() => setIsDiscountModalOpen(true)}
+          onClick={() => setModals((prev) => ({ ...prev, discount: true }))}
           className="text-blue-600 hover:text-blue-700 text-sm font-medium"
         >
-          {discountCode ? `Mã đang dùng: ${discountCode}` : "Chọn mã giảm giá"}
+          {checkout.discountCode
+            ? `Mã đang dùng: ${checkout.discountCode}`
+            : "Chọn mã giảm giá"}
         </button>
-        {/* // btn phương thức thanh toán */}
+
         <PaymentMethodSelector
-          selectedMethod={selectedPaymentMethod}
-          onSelect={setSelectedPaymentMethod}
+          selectedMethod={checkout.paymentMethod}
+          onSelect={(method) =>
+            setCheckout((prev) => ({ ...prev, paymentMethod: method }))
+          }
         />
 
-        {/* // hiện thị giá tiền */}
         <PriceSummary
           subtotal={subtotal}
           discountAmount={discountAmount}
-          shippingCost={shippingCost}
+          shippingCost={SHIPPING_COST}
         />
+
         <button
           onClick={handleCheckout}
           className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400"
-          disabled={!selectedPaymentMethod || !selectedAddress}
+          disabled={!checkout.paymentMethod || !addresses.selected}
         >
           Thanh toán
         </button>
       </div>
 
-      {/* Discount Modal */}
-      <Modal
-        isOpen={isDiscountModalOpen}
-        onClose={() => setIsDiscountModalOpen(false)}
-        title="Mã giảm giá"
-      >
-        <div className="space-y-2">
-          {/* // giảm giá của riêng user */}
-          {discountsUser?.map((code) => {
-            if (code.days_remaining <= 0) {
-              return;
-            }
+      <ModalDiscount
+        isOpen={modals.discount}
+        onClose={() => setModals((prev) => ({ ...prev, discount: false }))}
+        discountSystem={discountSystem}
+        subtotal={subtotal}
+        onApplyDiscount={handleApplyDiscount}
+      />
 
-            return (
-              <button
-                key={code.id}
-                onClick={() => {
-                  if (subtotal < code.minimum_price) {
-                    toast.dismiss();
-                    toast.error(
-                      `Đơn hàng tối thiểu ${code.minimum_price.toLocaleString()}₫`
-                    );
-                    return;
-                  }
-
-                  if (code.quantity <= 0) {
-                    toast.dismiss();
-                    toast.error("Mã giảm giá đã hết lượt sử dụng!");
-                    return;
-                  }
-                  //thuan
-                  setDiscountCode(code.code);
-                  setAppliedDiscount(code.discount_percent / 100);
-                  setIsDiscountModalOpen(false);
-                  toast.success("Áp dụng mã giảm giá thành công!");
-                }}
-                className="w-full text-left p-3 hover:bg-blue-50 rounded-lg transition-colors"
-              >
-                <div className="flex justify-between items-center">
-                  <div>
-                    <span className="font-semibold">{code.code}</span>{" "}
-                    <p className="text-sm text-gray-500">{code.name}</p>
-                    <p className="text-xs text-gray-400">
-                      Đơn tối thiểu: {code.minimum_price.toLocaleString()}₫
-                    </p>
-                    <p className="text-xs text-gray-400">
-                      Thời gian còn lại: {code.days_remaining} ngày
-                    </p>
-                    {code.days_remaining < 0 && (
-                      <p className="text-xs text-red-500">{code.message}</p>
-                    )}
-                    <p className="text-xs text-gray-400 text-blue-400">
-                      Giảm giá dành cho riêng bạn
-                    </p>{" "}
-                  </div>
-
-                  <span className="text-blue-600">
-                    Giảm {code.discount_percent}%
-                  </span>
-                </div>
-              </button>
-            );
-          })}
-
-          {/* // giảm giá của hê thống */}
-          {discountSystem?.map((code) => {
-            if (code.days_remaining <= 0) {
-              return;
-            }
-
-            return (
-              <button
-                key={code.id}
-                onClick={() => {
-                  if (subtotal < code.minimum_price) {
-                    toast.dismiss();
-                    toast.error(
-                      `Đơn hàng tối thiểu ${code.minimum_price.toLocaleString()}₫`
-                    );
-                    return;
-                  }
-
-                  if (code.quantity <= 0) {
-                    toast.dismiss();
-                    toast.error("Mã giảm giá đã hết lượt sử dụng!");
-                    return;
-                  }
-                  //thuan
-                  setDiscountCode(code.code);
-                  setAppliedDiscount(code.discount_percent / 100);
-                  setIsDiscountModalOpen(false);
-                  toast.success("Áp dụng mã giảm giá thành công!");
-                }}
-                className="w-full text-left p-3 hover:bg-blue-50 rounded-lg transition-colors"
-              >
-                <div className="flex justify-between items-center">
-                  <div>
-                    <span className="font-semibold">{code.code}</span>
-                    <p className="text-sm text-gray-500">{code.name}</p>
-                    <p className="text-xs text-gray-400">
-                      Đơn tối thiểu: {code.minimum_price.toLocaleString()}₫
-                    </p>
-                    <p className="text-xs text-gray-400">
-                      Thời gian còn lại: {code.days_remaining} ngày
-                    </p>
-                    {code.days_remaining < 0 && (
-                      <p className="text-xs text-red-500">{code.message}</p>
-                    )}
-                  </div>
-                  <span className="text-blue-600">
-                    Giảm {code.discount_percent}%
-                  </span>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-      </Modal>
-
-      {/* Address Modal */}
       <AddressModal
-        isOpen={isAddressModalOpen}
-        onClose={() => setIsAddressModalOpen(false)}
-        addresses={addresses}
-        selectedAddress={selectedAddress}
-        onSelect={setSelectedAddress}
+        isOpen={modals.address}
+        onClose={() => setModals((prev) => ({ ...prev, address: false }))}
+        addresses={addresses.list}
+        selectedAddress={addresses.selected}
+        onSelect={(address) =>
+          setAddresses((prev) => ({ ...prev, selected: address }))
+        }
       />
     </div>
   );
