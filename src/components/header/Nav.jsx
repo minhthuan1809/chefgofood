@@ -3,7 +3,7 @@ import { useState, useCallback, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaCartShopping } from "react-icons/fa6";
 import { IoIosSettings, IoMdLogOut } from "react-icons/io";
-import { MdMenu, MdOutlineCancel } from "react-icons/md";
+import { MdHistory, MdMenu, MdOutlineCancel } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import Modal_login from "./Modal_login";
 import { getProfile } from "../../redux/middlewares/client/addProfile";
@@ -14,6 +14,7 @@ import {
 } from "../../redux/action/client/profile";
 import { getUiNavbar } from "../../service/ui/ui_navbav";
 import ModalForgot from "./ModalForgot";
+import { FaHistory } from "react-icons/fa";
 
 const NavLink = ({ to, children, onClick }) => {
   const location = useLocation();
@@ -63,9 +64,63 @@ const UserMenuItem = ({ icon, text, badge, onClick, path }) => {
   );
 };
 
+const MobileUserMenu = ({ user, onItemClick, DataCart, onClose }) => {
+  const USER_MENU_ITEMS = [
+    {
+      icon: <FaCartShopping className="text-blue-500" />,
+      text: "Giỏ hàng",
+      badge: DataCart?.length,
+      path: "/carts",
+    },
+    {
+      icon: <FaHistory className="text-blue-500" />,
+      text: "Lịch sử đơn hàng",
+      path: "/history",
+    },
+    {
+      icon: <IoIosSettings className="text-blue-500" />,
+      text: "Cập nhật tài khoản",
+      path: "/account",
+    },
+    {
+      icon: <IoMdLogOut className="text-red-500" />,
+      text: "Đăng xuất",
+      action: "logout",
+    },
+  ];
+
+  return (
+    <div className="bg-white px-4 py-2 border-t border-gray-200">
+      <div className="flex items-center space-x-3 mb-4 p-2 bg-gray-50 rounded-lg">
+        <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-blue-500">
+          <img
+            src={user?.avata || "/default-avatar.png"}
+            alt={user?.username || "User avatar"}
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <span className="font-medium text-gray-700">
+          {user?.username || "User"}
+        </span>
+      </div>
+      <ul className="space-y-1">
+        {USER_MENU_ITEMS.map((item, index) => (
+          <UserMenuItem
+            key={index}
+            {...item}
+            onClick={() => {
+              onItemClick(item.path, item.action);
+              onClose();
+            }}
+          />
+        ))}
+      </ul>
+    </div>
+  );
+};
+
 const UserDropdown = ({ isOpen, onItemClick, DataCart }) => {
   if (!isOpen) return null;
-
   const USER_MENU_ITEMS = [
     {
       icon: <FaCartShopping />,
@@ -73,7 +128,7 @@ const UserDropdown = ({ isOpen, onItemClick, DataCart }) => {
       badge: DataCart?.length,
       path: "/carts",
     },
-    { icon: <FaCartShopping />, text: "Lịch sử đơn hàng", path: "/history" },
+    { icon: <FaHistory />, text: "Lịch sử đơn hàng", path: "/history" },
     { icon: <IoIosSettings />, text: "Cập nhật tài khoản", path: "/account" },
     { icon: <IoMdLogOut />, text: "Đăng xuất", action: "logout" },
   ];
@@ -130,6 +185,8 @@ const Nav = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isLoginOrRegister, setisLoginOrRegister] = useState(true);
   const [dataRender, setDataRender] = useState({});
+  const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const status = useSelector((state) => state.login.status);
@@ -137,11 +194,9 @@ const Nav = () => {
   const profile = useSelector((state) => state.profile.profile);
   const DataCart = useSelector((state) => state.cart.cartItems);
 
-  const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
   useEffect(() => {
     async function checkApiKey() {
       const data = await dispatch(getProfile(apiKey));
-
       if (!data?.ok) {
         dispatch(apikeyRedux(null, false));
         localStorage.removeItem("apikey");
@@ -174,7 +229,8 @@ const Nav = () => {
 
   const toggleMenu = useCallback(() => {
     setIsMenuOpen((prev) => !prev);
-  }, []);
+    if (dropdownOpen) setDropdownOpen(false);
+  }, [dropdownOpen]);
 
   const handleItemClick = useCallback(
     (path, action) => {
@@ -196,6 +252,7 @@ const Nav = () => {
 
   const handleLoginClick = useCallback(() => {
     setIsLoginModalOpen(true);
+    setIsMenuOpen(false);
   }, []);
 
   const handleCloseLoginModal = useCallback(() => {
@@ -203,7 +260,7 @@ const Nav = () => {
     setisLoginOrRegister(true);
   }, []);
 
-  const Logo = dataRender.menu?.find((item) => item.id === "5"); // Fetch the logo item
+  const Logo = dataRender.menu?.find((item) => item.id === "5");
 
   return (
     <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
@@ -214,7 +271,7 @@ const Nav = () => {
               <div className="w-12 h-12 rounded-full overflow-hidden">
                 <img
                   className="h-full w-full object-cover"
-                  src={Logo.image || "https://example.com/default-logo.png"} // Use a default logo image if needed
+                  src={Logo.image || "https://example.com/default-logo.png"}
                   alt={Logo.title || "FastFood Logo"}
                 />
               </div>
@@ -245,7 +302,6 @@ const Nav = () => {
               />
             ) : (
               <div className="flex items-center space-x-4">
-                {" "}
                 <button
                   onClick={handleLoginClick}
                   className="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition duration-300"
@@ -258,27 +314,58 @@ const Nav = () => {
 
           <button
             onClick={toggleMenu}
-            className="text-3xl md:hidden focus:outline-none"
+            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition duration-300 focus:outline-none"
+            aria-label="Toggle menu"
           >
-            {isMenuOpen ? <MdOutlineCancel /> : <MdMenu />}
+            {isMenuOpen ? (
+              <MdOutlineCancel className="text-2xl text-gray-600" />
+            ) : (
+              <MdMenu className="text-2xl text-gray-600" />
+            )}
           </button>
         </div>
+
+        {/* Enhanced Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden">
-            <ul className="py-2 px-4 space-y-1">
+          <div className="md:hidden fixed inset-0 top-[76px] bg-white z-50 overflow-y-auto">
+            <div className="px-4 py-2 space-y-2">
               {dataRender.menu
                 ?.filter((item) => item.id !== "5")
                 .map(({ id, title, url, className }) => (
-                  <li key={id} className="border-b border-gray-200">
-                    <NavLink to={url || "/"} onClick={toggleMenu}>
-                      <span className={className}>{title}</span>
+                  <div key={id} className="border-b border-gray-100">
+                    <NavLink
+                      to={url || "/"}
+                      onClick={toggleMenu}
+                      className="block py-3"
+                    >
+                      <span className={`text-lg ${className}`}>{title}</span>
                     </NavLink>
-                  </li>
+                  </div>
                 ))}
-            </ul>
+
+              {status ? (
+                <MobileUserMenu
+                  user={profile}
+                  onItemClick={handleItemClick}
+                  DataCart={DataCart}
+                  onClose={toggleMenu}
+                />
+              ) : (
+                <div className="mt-4 px-4">
+                  <button
+                    onClick={handleLoginClick}
+                    className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition duration-300"
+                  >
+                    Đăng nhập
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </nav>
+
+      {/* Modals */}
       {isLoginModalOpen && (
         <Modal_login
           onClose={handleCloseLoginModal}
