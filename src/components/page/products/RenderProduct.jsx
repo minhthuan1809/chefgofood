@@ -69,13 +69,15 @@ const RenderProduct = ({ product, idProduct, data, isOpen }) => {
     <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
       <Link to={`/detail/${seoUrl}`}>
         <div className="relative">
-          <img
-            src={product.image_url}
-            alt={product.name}
-            className={`w-full h-36 sm:h-48 object-cover ${
-              !product.status ? "opacity-60 grayscale" : ""
-            }`}
-          />
+          <div className="w-full h-[8rem] sm:h-[18rem]">
+            <img
+              src={product.image_url}
+              alt={product.name}
+              className={`w-full h-full object-cover ${
+                !product.status ? "opacity-60 grayscale" : ""
+              }`}
+            />
+          </div>
           {!product.status && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/30 backdrop-blur-[2px]">
               <div className="bg-white/90 px-4 py-2 rounded-lg shadow-xl text-center">

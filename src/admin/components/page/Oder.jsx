@@ -68,8 +68,6 @@ export default function Oder() {
   };
 
   const handleUpdateStatus = async (order_id, status) => {
-    console.log(order_id, status);
-
     await updateStatusOrder(order_id, status);
   };
   const handleCloseModal = () => {
