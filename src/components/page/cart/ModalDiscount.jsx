@@ -63,8 +63,6 @@ const ModalDiscount = ({
   subtotal,
   onApplyDiscount,
 }) => {
-  console.log(discountSystem);
-
   const [discountsUser, setDiscountsUser] = useState([]);
   const profile = useSelector((state) => state.profile.profile);
 

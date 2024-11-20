@@ -30,7 +30,7 @@ const ModelPayCart = ({ isOpen, onClose, items }) => {
   const navigate = useNavigate();
   const apiKey = useSelector((state) => state.login.apikey);
   const profile = useSelector((state) => state.profile.profile);
-
+  const [isAddAddress, setIsAddAddress] = useState(false);
   const [modals, setModals] = useState({
     discount: false,
     address: false,
@@ -42,7 +42,10 @@ const ModelPayCart = ({ isOpen, onClose, items }) => {
     selected: null,
   });
   const [discountSystem, setDiscountSystem] = useState(null);
+  // state để lưu trữ địa chỉ mới
+  const [newAddress, setNewAddress] = useState(null);
 
+  //  function
   // Memoized calculations to prevent unnecessary re-renders
   const calculatedValues = useMemo(() => {
     const subtotal = items.price * productQuantity;
@@ -58,9 +61,7 @@ const ModelPayCart = ({ isOpen, onClose, items }) => {
     if (!checkout.discountCode) return true;
     return subtotal >= checkout.minimumOrderValue;
   };
-  const discountAmount = items.discount
-    ? (items.price * productQuantity * items.discount) / 100
-    : 0;
+
   const calculateTotal = () => {
     const { subtotal, discountAmount } = calculatedValues;
     const discountApplicable = validateDiscount(subtotal);
@@ -75,26 +76,22 @@ const ModelPayCart = ({ isOpen, onClose, items }) => {
     const fetchInitialData = async () => {
       if (!isOpen) return;
 
-      try {
-        const [discountResponse, profileResponse] = await Promise.all([
-          getUiDiscountSystem(),
-          dispatch(getProfile(apiKey)),
-        ]);
+      const [discountResponse, profileResponse] = await Promise.all([
+        getUiDiscountSystem(),
+        dispatch(getProfile(apiKey)),
+      ]);
 
-        setDiscountSystem(discountResponse.data.discounts);
+      setDiscountSystem(discountResponse.data.discounts);
 
-        if (profileResponse.data.id) {
-          const addressResponse = await dispatch(
-            getProfileAddress(profileResponse.data.id)
-          );
+      if (profileResponse.data.id && apiKey !== null) {
+        const addressResponse = await dispatch(
+          getProfileAddress(profileResponse.data.id)
+        );
 
-          setAddresses((prev) => ({
-            list: addressResponse.addresses,
-            selected: addressResponse.addresses?.[0] || null,
-          }));
-        }
-      } catch (error) {
-        toast.error("Lỗi khi tải dữ liệu");
+        setAddresses((prev) => ({
+          list: addressResponse.addresses,
+          selected: addressResponse.addresses?.[0] || null,
+        }));
       }
     };
 
@@ -117,34 +114,28 @@ const ModelPayCart = ({ isOpen, onClose, items }) => {
       minimumOrderValue: minOrderValue,
     }));
   };
-
+  // thanh toán
   const handleCheckout = async () => {
-    if (!addresses.selected) {
-      toast.error("Vui lòng chọn địa chỉ giao hàng");
-      return;
-    }
-
-    if (!checkout.paymentMethod) {
-      toast.error("Vui lòng chọn phương thức thanh toán");
-      return;
-    }
-
     try {
       const paymentData = {
         user_id: profile.id,
         address_id: addresses.selected.id,
         products: [
           {
-            product_id: items.product_id,
+            product_id: items.id,
             quantity: productQuantity,
           },
         ],
-        total_price: calculateTotal(),
+
+        // Start of Selection
+        total_price:
+          calculatedValues.totalPrice -
+          calculatedValues.totalPrice * checkout.appliedDiscount * 100 +
+          SHIPPING_COST,
         subtotal: calculatedValues.subtotal,
         payment_method: checkout.paymentMethod,
-        discount_code: checkout.discountCode,
-        delivery_note: checkout.deliveryNote,
         note: checkout.deliveryNote,
+        discount_code: checkout.discountCode,
       };
 
       const result = await addCartPay(paymentData);
@@ -161,7 +152,103 @@ const ModelPayCart = ({ isOpen, onClose, items }) => {
     }
   };
 
+  const handleDataAddAddress = (e) => {
+    e.preventDefault();
+    toast.dismiss();
+    const form = new FormData(e.target);
+    const name = form.get("name");
+    const phone = form.get("phone");
+    const address = form.get("address");
+    const email = form.get("email");
+
+    if (!name || !phone || !address) {
+      toast.error("Vui lòng điền đầy đủ thông tin");
+      return;
+    }
+
+    const phoneRegex = /^[0-9]{10,11}$/;
+    if (!phoneRegex.test(phone)) {
+      toast.error("Số điện thoại không hợp lệ");
+      return;
+    }
+
+    const newAddressData = {
+      name,
+      phone,
+      address,
+      email,
+    };
+
+    setNewAddress(newAddressData);
+    setIsAddAddress(false);
+  };
+
   if (!isOpen) return null;
+
+  function ModalAddAddAddress() {
+    if (!isAddAddress) return;
+    return (
+      <div className=" flex items-center justify-center ">
+        <span
+          className="fixed inset-0 z-40 bg-black bg-opacity-50"
+          onClick={() => setIsAddAddress(false)}
+        ></span>
+        <div className=" w-full max-w-lg mx-auto bg-white rounded-lg shadow-lg p-6 max-h-[90vh] overflow-y-auto z-50 ">
+          <button
+            onClick={() => setIsAddAddress(false)}
+            className="text-gray-500 hover:text-gray-700 float-right hover:bg-gray-200 rounded-full px-2 py-1"
+          >
+            ✕
+          </button>
+          <form onSubmit={handleDataAddAddress}>
+            <div className="space-y-2 mt-2">
+              <label className="text-gray-600">Tên người nhận</label>
+              <input
+                name="name"
+                type="text"
+                value={newAddress?.name}
+                placeholder="Tên người nhận"
+                className="border border-gray-200 rounded-lg p-2 w-full focus:outline-none"
+              />
+            </div>
+            <div className="space-y-2 mt-2">
+              <label className="text-gray-600">Số điện thoại</label>
+              <input
+                name="phone"
+                type="text"
+                value={newAddress?.phone}
+                placeholder="Số điện thoại"
+                className="border border-gray-200 rounded-lg p-2 w-full focus:outline-none"
+              />
+            </div>
+            <div className="space-y-2 mt-2">
+              <label className="text-gray-600">Địa chỉ</label>
+              <input
+                name="address"
+                type="text"
+                value={newAddress?.address}
+                placeholder="Địa chỉ"
+                className="border border-gray-200 rounded-lg p-2 w-full focus:outline-none"
+              />
+            </div>
+            <div className="space-y-2 mt-2">
+              <label className=" text-gray-600">Gmail</label>
+              <input
+                name="email"
+                type="email"
+                value={newAddress?.email}
+                placeholder="(Không bắt buộc)"
+                className="border border-gray-200 rounded-lg p-2 w-full focus:outline-none"
+              />
+            </div>
+            <button className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 mt-4">
+              Thêm địa chỉ
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -179,12 +266,40 @@ const ModelPayCart = ({ isOpen, onClose, items }) => {
 
         <div className="space-y-6">
           {/* Shipping Address */}
-          <ShippingAddress
-            address={addresses.selected}
-            onChangeClick={() =>
-              setModals((prev) => ({ ...prev, address: true }))
-            }
-          />
+          {apiKey !== null ? (
+            <ShippingAddress
+              address={addresses.selected}
+              onChangeClick={() =>
+                setModals((prev) => ({ ...prev, address: true }))
+              }
+            />
+          ) : (
+            <div className="border border-gray-200 rounded-lg p-4">
+              <div className="flex items-center justify-between">
+                <p className=" text-lg font-bold text-gray-800">
+                  Địa chỉ giao hàng
+                </p>
+                <button
+                  className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                  onClick={() => setIsAddAddress(true)}
+                >
+                  {newAddress ? "Thay đổi" : "Thêm địa chỉ"}
+                </button>
+              </div>
+              {!newAddress ? (
+                <p className="text-gray-600 my-2 ">Bạn cần nhập địa chỉ</p>
+              ) : (
+                <>
+                  <h1 className="text-lg font-bold text-gray-800">
+                    {newAddress.name}
+                  </h1>
+                  <p className="text-gray-600">{newAddress.email}</p>
+                  <p className="text-gray-600">{newAddress.phone}</p>
+                  <p className="text-gray-600">{newAddress.address}</p>
+                </>
+              )}
+            </div>
+          )}
 
           {/* Product Details */}
           <div className="bg-white shadow-lg rounded-xl p-5">
@@ -244,6 +359,7 @@ const ModelPayCart = ({ isOpen, onClose, items }) => {
             </div>
           </div>
 
+          <ModalAddAddAddress />
           {/* Delivery Note */}
           <div className="space-y-4">
             <h4 className="font-medium">Ghi chú giao hàng</h4>
@@ -279,10 +395,12 @@ const ModelPayCart = ({ isOpen, onClose, items }) => {
             }
           />
 
-          {/* Price Summary */}
+          {/* Hiện th��� giá và mã giảm giá*/}
           <PriceSummary
             subtotal={calculatedValues.totalPrice}
-            discountAmount={discountAmount}
+            discountAmount={
+              calculatedValues.totalPrice * checkout.appliedDiscount * 100
+            }
             shippingCost={SHIPPING_COST}
           />
 
@@ -290,7 +408,9 @@ const ModelPayCart = ({ isOpen, onClose, items }) => {
           <button
             onClick={handleCheckout}
             className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400"
-            disabled={!checkout.paymentMethod || !addresses.selected}
+            disabled={
+              !checkout.paymentMethod || (!addresses.selected && !newAddress)
+            }
           >
             Thanh toán
           </button>
@@ -314,6 +434,7 @@ const ModelPayCart = ({ isOpen, onClose, items }) => {
             setAddresses((prev) => ({ ...prev, selected: address }))
           }
         />
+        {/* modal thêm địa chỉ cho người mới */}
       </div>
     </div>
   );
