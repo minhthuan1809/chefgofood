@@ -38,21 +38,71 @@ const AppAdmin = () => {
       page: <Dashboard />,
       id: 1,
     },
-    { path: "decentralization", page: <Decentralization />, id: 2 },
-    { path: "messages", page: <Messages />, id: 3 },
+    {
+      path: dataDecentralization?.decentralization
+        ? "decentralization"
+        : undefined,
+      page: <Decentralization />,
+      id: 2,
+    },
+    {
+      path: dataDecentralization?.mess ? "messages" : undefined,
+      page: <Messages />,
+      id: 3,
+    },
     { path: "settings", page: <Setting />, id: 4 },
-    { path: "discounts-main", page: <Sale />, id: 5 },
-    { path: "discounts-user", page: <DiscountUser />, id: 6 },
-    { path: "products", page: <Product />, id: 7 },
-    { path: "users", page: <UserAdmin />, id: 8 },
-    { path: "title", page: <Trademark />, id: 9 },
-    { path: "history-discounts", page: <HistoryDiscount />, id: 10 },
-    { path: "review", page: <Review />, id: 11 },
-    { path: "orders-pending", page: <Oder />, id: 13 },
-    { path: "orders-history", page: <OderHistory />, id: 14 },
-    { path: "stats", page: <Statistical />, id: 15 },
+    {
+      path: dataDecentralization?.discount ? "discounts-main" : undefined,
+      page: <Sale />,
+      id: 5,
+    },
+    {
+      path: dataDecentralization?.discount ? "discounts-user" : undefined,
+      page: <DiscountUser />,
+      id: 6,
+    },
+    {
+      path: dataDecentralization?.product ? "products" : undefined,
+      page: <Product />,
+      id: 7,
+    },
+    {
+      path: dataDecentralization?.user ? "users" : undefined,
+      page: <UserAdmin />,
+      id: 8,
+    },
+    {
+      path: dataDecentralization?.layout ? "title" : undefined,
+      page: <Trademark />,
+      id: 9,
+    },
+    {
+      path: dataDecentralization?.discount ? "history-discounts" : undefined,
+      page: <HistoryDiscount />,
+      id: 10,
+    },
+    {
+      path: dataDecentralization?.review ? "review" : undefined,
+      page: <Review />,
+      id: 11,
+    },
+    {
+      path: dataDecentralization?.order ? "orders-pending" : undefined,
+      page: <Oder />,
+      id: 13,
+    },
+    {
+      path: dataDecentralization?.order ? "orders-history" : undefined,
+      page: <OderHistory />,
+      id: 14,
+    },
+    {
+      path: dataDecentralization?.statistics ? "stats" : undefined,
+      page: <Statistical />,
+      id: 15,
+    },
   ];
-
+  console.log(dataDecentralization);
   useEffect(() => {
     async function fetchData() {
       const data = await dispatch(getDecentralization(apikey_cookies));
@@ -69,14 +119,14 @@ const AppAdmin = () => {
 
   useEffect(() => {
     const matchedItem = menuItems.find(
-      (item) => item.path.toLowerCase() === url.toLowerCase()
+      (item) => item?.path?.toLowerCase() === url.toLowerCase()
     );
     if (matchedItem) {
       setPage(matchedItem.page);
     } else {
       setPage(<Error />);
     }
-  }, [url]);
+  }, [url, dataDecentralization]);
 
   return (
     <div className="flex h-screen">

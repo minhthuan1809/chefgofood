@@ -46,7 +46,7 @@ const AdminSidebar = () => {
       icon: <HiQueueList size={20} />,
       label: "Đơn Hàng",
       id: "orders",
-      path: "/orders",
+
       hasSubmenu: true,
 
       dataDecentralization: dataDecentralization?.order,
