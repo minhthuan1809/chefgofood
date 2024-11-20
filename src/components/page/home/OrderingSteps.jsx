@@ -10,11 +10,9 @@ const OrderingSteps = () => {
     async function getStep() {
       try {
         const response = await getUiStep();
-        // Find the title step (step_number 0)
         const titleStep = response.steps.find((s) => s.step_number === "0");
         setTitle(titleStep?.title || "Các bước đặt món tại FASTFOOT");
 
-        // Filter out step 0 and sort remaining steps
         const contentSteps = response.steps
           .filter((s) => s.step_number !== "0")
           .sort((a, b) => parseInt(a.order_number) - parseInt(b.order_number));
@@ -28,25 +26,31 @@ const OrderingSteps = () => {
   }, []);
 
   return (
-    <section className="py-12 bg-gray-50">
+    <section className="py-8 md:py-12 bg-gray-50">
       <div className="max-w-[95rem] w-[95%] mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
+        <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-8 md:mb-12">
           {title}
         </h2>
 
-        <div className="relative grid grid-cols-2 gap-y-12 gap-x-20">
+        <div className="relative grid grid-cols-1 md:grid-cols-2 gap-y-8 md:gap-y-12 gap-x-6 lg:gap-x-20">
           {steps.map((step, index) => (
             <div key={step.id} className="relative group">
+              {/* Connecting lines - visible only on medium and larger screens */}
               {index % 2 === 0 && index !== steps.length - 1 && (
-                <div className="absolute top-1/2 -right-20 w-20 h-0.5 bg-blue-200" />
+                <div className="hidden md:block absolute top-1/2 -right-10 lg:-right-20 w-10 lg:w-20 h-0.5 bg-blue-200" />
               )}
 
               {index < steps.length - 2 && (
-                <div className="absolute left-1/2 top-full w-0.5 h-12 bg-blue-200" />
+                <div className="hidden md:block absolute left-1/2 top-full w-0.5 h-12 bg-blue-200" />
               )}
 
-              <div className="bg-white p-6 rounded-lg border-2 border-blue-200 hover:border-blue-400 transition-all duration-300 h-full">
-                <div className="flex items-start space-x-4 gap-3">
+              {/* Mobile connecting line */}
+              {index !== steps.length - 1 && (
+                <div className="md:hidden absolute left-1/2 top-full w-0.5 h-8 bg-blue-200" />
+              )}
+
+              <div className="bg-white p-4 md:p-6 rounded-lg border-2 border-blue-200 hover:border-blue-400 transition-all duration-300 h-full shadow-sm hover:shadow-md">
+                <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4">
                   {/* Icon container */}
                   <div className="relative flex-shrink-0">
                     <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white">
@@ -62,7 +66,7 @@ const OrderingSteps = () => {
                   </div>
 
                   {/* Content */}
-                  <div className="flex-1">
+                  <div className="flex-1 text-center sm:text-left">
                     <h3 className="text-lg font-semibold text-gray-800 mb-2">
                       {step.title}
                     </h3>
