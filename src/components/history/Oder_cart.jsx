@@ -59,6 +59,7 @@ export default function OrderCard({ order }) {
       toast.error(result.message);
     }
   };
+
   return (
     <>
       <div className="bg-white rounded-lg shadow-lg overflow-hidden my-8">
@@ -98,10 +99,21 @@ export default function OrderCard({ order }) {
               </span>
             </div>
             <div className="text-gray-600 mb-4">
-              <p>Địa chỉ: {order.address}</p>
-              <p>Số điện thoại: {order.phone}</p>
-              <p>Phương thức thanh toán: {order.payment_method}</p>
-              <p>Trạng thái thanh toán: {order.payment_status}</p>
+              {order.status.toLocaleLowerCase() !== "cancel" ? (
+                <p>
+                  Cảm ơn quý khách đã tin tưởng và sử dụng dịch vụ của FastFood.
+                  Chúng tôi rất vinh dự được phục vụ quý khách và cam kết mang
+                  đến những trải nghiệm ẩm thực tuyệt vời nhất.
+                </p>
+              ) : (
+                <p className="text-gray-600">
+                  Chúng tôi thành thật xin lỗi vì sự bất tiện này. FastFood rất
+                  tiếc phải thông báo đơn hàng của quý khách đã bị hủy. Chúng
+                  tôi luôn cố gắng cải thiện dịch vụ và mong rằng quý khách sẽ
+                  tiếp tục ủng hộ FastFood trong những lần tiếp theo. Xin chân
+                  thành cảm ơn sự thông cảm của quý khách.
+                </p>
+              )}
             </div>
             <div className="flex justify-between items-center text-sm text-gray-600">
               <div className="flex items-center">

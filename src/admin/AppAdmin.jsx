@@ -102,7 +102,6 @@ const AppAdmin = () => {
       id: 15,
     },
   ];
-  console.log(dataDecentralization);
   useEffect(() => {
     async function fetchData() {
       const data = await dispatch(getDecentralization(apikey_cookies));
