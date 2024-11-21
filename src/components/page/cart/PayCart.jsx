@@ -11,29 +11,50 @@ import PriceSummary from "./PriceSummary";
 import SelectedItems from "./SelectedItems";
 import PaymentMethodSelector from "./PaymentMethodSelector";
 import { useNavigate } from "react-router";
+import ModalDiscount from "./ModalDiscount";
 
 // Tách Modal thành component riêng
 const Modal = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50  ">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6 ">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold">{title}</h3>
+          <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700"
+            className="text-gray-500 hover:text-gray-700 transition-colors duration-200"
           >
-            ✕
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
           </button>
         </div>
-        {children}
+        <div className="overflow-y-auto max-h-[80vh]">{children}</div>
       </div>
     </div>
   );
 };
 
+const handleApplyDiscount = ({ code, discountPercent, minOrderValue }) => {
+  setCheckout((prev) => ({
+    ...prev,
+    discountCode: code,
+    appliedDiscount: discountPercent / 100,
+    minimumOrderValue: minOrderValue,
+  }));
+};
 // Tách AddressModal thành component riêng
 const AddressModal = ({
   isOpen,
@@ -49,28 +70,76 @@ const AddressModal = ({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Chọn địa chỉ giao hàng">
-      <div className="space-y-3 max-h-96 overflow-y-auto">
+      <div className="space-y-4">
         {addresses?.map((address) => (
-          <button
+          <div
             key={address.id}
-            onClick={() => handleSelectAddress(address)}
-            className={`w-full text-left p-4 rounded-lg border transition-colors ${
+            className={`p-4 rounded-lg border transition-all duration-200 cursor-pointer hover:shadow-md ${
               selectedAddress?.id === address.id
                 ? "border-blue-500 bg-blue-50"
-                : "border-gray-200 hover:bg-gray-50"
+                : "border-gray-200 hover:border-blue-300"
             }`}
+            onClick={() => handleSelectAddress(address)}
           >
             <div className="flex justify-between items-start">
-              <div>
-                <p className="font-medium">{address.note}</p>
-                <p className="text-gray-600">{address.phone}</p>
-                <p className="text-gray-600">{address.address}</p>
+              <div className="space-y-2">
+                <p className="font-medium text-gray-900">{address.note}</p>
+                <p className="text-gray-600 flex items-center">
+                  <svg
+                    className="w-4 h-4 mr-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                    />
+                  </svg>
+                  {address.phone}
+                </p>
+                <p className="text-gray-600 flex items-center">
+                  <svg
+                    className="w-4 h-4 mr-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                  </svg>
+                  {address.address}
+                </p>
               </div>
               {selectedAddress?.id === address.id && (
-                <span className="text-blue-600">✓</span>
+                <svg
+                  className="w-6 h-6 text-blue-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
               )}
             </div>
-          </button>
+          </div>
         ))}
       </div>
     </Modal>
@@ -224,65 +293,13 @@ const PayCart = ({ items }) => {
       </div>
 
       {/* Discount Modal */}
-      <Modal
+      <ModalDiscount
         isOpen={isDiscountModalOpen}
         onClose={() => setIsDiscountModalOpen(false)}
-        title="Mã giảm giá"
-      >
-        <div className="space-y-2">
-          {discountSystem?.map((code) => {
-            if (code.days_remaining <= 0) {
-              return;
-            }
-
-            return (
-              <button
-                key={code.id}
-                onClick={() => {
-                  if (subtotal < code.minimum_price) {
-                    toast.dismiss();
-                    toast.error(
-                      `Đơn hàng tối thiểu ${code.minimum_price.toLocaleString()}₫`
-                    );
-                    return;
-                  }
-
-                  if (code.quantity <= 0) {
-                    toast.dismiss();
-                    toast.error("Mã giảm giá đã hết lượt sử dụng!");
-                    return;
-                  }
-                  //thuan
-                  setDiscountCode(code.code);
-                  setAppliedDiscount(code.discount_percent / 100);
-                  setIsDiscountModalOpen(false);
-                  toast.success("Áp dụng mã giảm giá thành công!");
-                }}
-                className="w-full text-left p-3 hover:bg-blue-50 rounded-lg transition-colors"
-              >
-                <div className="flex justify-between items-center">
-                  <div>
-                    <span className="font-semibold">{code.code}</span>
-                    <p className="text-sm text-gray-500">{code.name}</p>
-                    <p className="text-xs text-gray-400">
-                      Đơn tối thiểu: {code.minimum_price.toLocaleString()}₫
-                    </p>
-                    <p className="text-xs text-gray-400">
-                      Thời gian còn lại: {code.days_remaining} ngày
-                    </p>
-                    {code.days_remaining < 0 && (
-                      <p className="text-xs text-red-500">{code.message}</p>
-                    )}
-                  </div>
-                  <span className="text-blue-600">
-                    Giảm {code.discount_percent}%
-                  </span>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-      </Modal>
+        discountSystem={discountSystem}
+        subtotal={subtotal}
+        onApplyDiscount={handleApplyDiscount}
+      />
 
       {/* Address Modal */}
       <AddressModal
