@@ -17,6 +17,7 @@ import Loading from "../util/Loading";
 import PageFooter from "../footer/PageFooter";
 import { toast } from "react-toastify";
 import { addCart } from "../../service/cart_client";
+import ModelPayCart from "./cart/ModelPayCart";
 
 const DetailProduct = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -25,17 +26,19 @@ const DetailProduct = () => {
   const dispatch = useDispatch();
   const product = useSelector((state) => state.detail.detailProduct);
   const apiKey = useSelector((state) => state.login.apikey);
+
+  const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
     const fetchDetailProduct = async () => {
       const data = await dispatch(getDetailProduct(params.id, 1));
       toast.dismiss();
-      console.log("thuan", data);
       if (!data.ok) {
         toast.error("Đã có lỗi xảy ra !");
       }
     };
     fetchDetailProduct();
   }, [params.id]);
+
   const addProductToCart = async () => {
     toast.dismiss();
     const addItem = await addCart(product.id, apiKey);
@@ -45,6 +48,7 @@ const DetailProduct = () => {
       toast.error(addItem.message);
     }
   };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Nav />
@@ -187,6 +191,7 @@ const DetailProduct = () => {
                               : "bg-gray-300 cursor-not-allowed text-gray-500"
                           }`}
                           disabled={!product.status}
+                          onClick={() => setIsOpen(true)}
                         >
                           <AiOutlineShoppingCart className="mr-2" />
                           Mua ngay
@@ -207,6 +212,11 @@ const DetailProduct = () => {
                     </div>
                   </div>
                 </div>
+                <ModelPayCart
+                  isOpen={isOpen}
+                  onClose={() => setIsOpen(false)}
+                  items={product}
+                />
               </div>
               <Evaluate data={product} setSelectedImage={setSelectedImage} />
             </div>

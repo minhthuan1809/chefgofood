@@ -14,13 +14,15 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { addCart } from "../../../service/cart_client";
 import { useSelector } from "react-redux";
+import ModelPayCart from "../cart/ModelPayCart";
 export default function TopProducts() {
   const [dataproduct, getDataProduct] = useState([]);
   const navigator = useNavigate();
   const scrollRef = useRef(null);
   const [isAtStart, setIsAtStart] = useState(true);
   const apiKey = useSelector((state) => state.login.apikey);
-
+  const [isOpen, setIsOpen] = useState(false);
+  const [productPay, setProductPay] = useState([]);
   const scroll = (scrollOffset) => {
     scrollRef.current.scrollLeft += scrollOffset;
     setTimeout(checkScrollPosition, 100);
@@ -58,6 +60,13 @@ export default function TopProducts() {
     } else {
       toast.error(addItem.message);
     }
+  };
+
+  // xử lý mua ngay
+  const handleBuyNow = (product) => {
+    console.log("thuan", product);
+    setProductPay(product);
+    setIsOpen(true);
   };
   return (
     <div>
@@ -156,7 +165,10 @@ export default function TopProducts() {
                         <span>{Number(product.average_rating).toFixed(1)}</span>
                         <span className="ml-3">{product.sold} đã bán</span>
                       </div>
-                      <button className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors duration-300 relative group">
+                      <button
+                        onClick={() => handleBuyNow(product)}
+                        className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors duration-300 relative group"
+                      >
                         <span className="absolute right-[3rem] bottom-1 w-max opacity-0 group-hover:opacity-100 bg-red-500 text-white text-xs p-2 rounded transition-opacity duration-300">
                           Mua Ngay
                         </span>
@@ -177,6 +189,13 @@ export default function TopProducts() {
                   <FaChevronRight className="text-gray-600" />
                 </button>
               )}
+
+            {/* // MUA NGAY  */}
+            <ModelPayCart
+              isOpen={isOpen}
+              onClose={() => setIsOpen(false)}
+              items={productPay}
+            />
           </div>
         </div>
       </section>
