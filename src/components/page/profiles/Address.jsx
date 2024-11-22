@@ -204,7 +204,7 @@ export default function Address() {
         )}
       </div>
 
-      <EditModal
+      <EditModal  
         isOpen={isEditing || isAdding}
         onClose={handleClose}
         editInfo={editInfo}
