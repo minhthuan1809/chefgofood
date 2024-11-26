@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 import DiscountCard from "../discount/DiscountCard";
 import Loading from "../util/Loading";
 import SupportChat from "../messger/SupportChat";
+import PageFooter from "../footer/PageFooter";
 
 const Discount = () => {
   ///thuan
@@ -123,6 +124,7 @@ const Discount = () => {
               </div>
             </div>
           </div>
+          <PageFooter />
         </>
       )}
     </>

@@ -9,6 +9,7 @@ import SearchProduct from "./products/SearchProduct";
 import SupportChat from "../messger/SupportChat";
 import ModelPayCart from "./cart/ModelPayCart";
 import { getProducts } from "../../redux/middlewares/client/addProduct";
+import PageFooter from "../footer/PageFooter";
 
 const CATEGORIES = [
   { label: "All", value: "All" },
@@ -119,6 +120,7 @@ const Products = () => {
           <footer className="flex justify-center pb-4 sm:pb-6">
             {page > 1 && <PaginationPage page={page} />}
           </footer>
+          <PageFooter />
         </>
       )}
     </div>
