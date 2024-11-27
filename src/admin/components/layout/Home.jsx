@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { setHomeHeader } from "../../../service/server/layout/Trademark";
 import { toast } from "react-toastify";
 import { getUiHeader } from "../../../service/ui/ui_header";
+import FixStep from "./FixStep";
 
 export default function Home() {
   const [siteName, setSiteName] = useState("");
@@ -118,6 +119,7 @@ export default function Home() {
           </button>
         </div>
       </div>
+      <FixStep />
     </div>
   );
 }
