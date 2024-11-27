@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import OrderCard from "../history/Oder_cart";
 import { FaHistory } from "react-icons/fa";
 import SupportChat from "../messger/SupportChat";
+import PageFooter from "../footer/PageFooter";
 export default function History() {
   const [orders, setOrders] = useState([]);
   const apiKey = useSelector((state) => state.login.apikey);
@@ -97,6 +98,7 @@ export default function History() {
           )}
         </div>
       </div>
+      <PageFooter />
     </>
   );
 }

@@ -10,6 +10,7 @@ import Loading from "../util/Loading";
 import Password from "./profiles/Password";
 import { TbPasswordUser } from "react-icons/tb";
 import SupportChat from "../messger/SupportChat";
+import PageFooter from "../footer/PageFooter";
 
 export default function Account() {
   const navigate = useNavigate();
@@ -138,12 +139,16 @@ export default function Account() {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen">
-      <header className="bg-white shadow-sm fixed top-0 w-full z-10">
-        <Nav />
-        <SupportChat />
-      </header>
-      {loading ? <Loading /> : <Render />}
-    </div>
+    <>
+      {" "}
+      <div className="bg-gray-100 min-h-screen">
+        <header className="bg-white shadow-sm fixed top-0 w-full z-10">
+          <Nav />
+          <SupportChat />
+        </header>
+        {loading ? <Loading /> : <Render />}
+      </div>
+      <PageFooter />
+    </>
   );
 }
