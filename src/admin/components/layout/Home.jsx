@@ -3,6 +3,7 @@ import { setHomeHeader } from "../../../service/server/layout/Trademark";
 import { toast } from "react-toastify";
 import { getUiHeader } from "../../../service/ui/ui_header";
 import FixStep from "./FixStep";
+import ModalEditStep from "./ModalEditStep";
 
 export default function Home() {
   const [siteName, setSiteName] = useState("");
@@ -10,6 +11,11 @@ export default function Home() {
   const [siteSlogan, setSiteSlogan] = useState("");
   const [openingHours, setOpeningHours] = useState("");
   const [loadingBtnHeader, setLoadingBtnHeader] = useState(false);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingStep, setEditingStep] = useState(null);
+  const [fcSteps, setFcSteps] = useState(true);
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -119,7 +125,17 @@ export default function Home() {
           </button>
         </div>
       </div>
-      <FixStep />
+      <FixStep
+        setCloseModal={setIsModalOpen}
+        setEditingStep={setEditingStep}
+        fcSteps={fcSteps}
+      />
+      <ModalEditStep
+        isModalOpen={isModalOpen}
+        setCloseModal={setIsModalOpen}
+        editingStep={editingStep}
+        setFcSteps={setFcSteps}
+      />
     </div>
   );
 }
