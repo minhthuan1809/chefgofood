@@ -22,6 +22,9 @@ import Review from "./components/page/Review";
 import Oder from "./components/page/Oder";
 import OderHistory from "./components/page/OderHistory";
 import Statistical from "./components/page/Statistical";
+import Home from "./components/layout/Home";
+import About from "./components/layout/About";
+import FixFooter from "./components/layout/FixFooter";
 
 const AppAdmin = () => {
   const [page, setPage] = useState(null);
@@ -101,6 +104,21 @@ const AppAdmin = () => {
       page: <Statistical />,
       id: 15,
     },
+    {
+      path: dataDecentralization?.layout ? "home" : undefined,
+      page: <Home />,
+      id: 16,
+    },
+    {
+      path: dataDecentralization?.layout ? "about" : undefined,
+      page: <About />,
+      id: 17,
+    },
+    {
+      path: dataDecentralization?.layout ? "footer" : undefined,
+      page: <FixFooter />,
+      id: 18,
+    },
   ];
   useEffect(() => {
     async function fetchData() {
@@ -150,7 +168,7 @@ const AppAdmin = () => {
           <AdminSidebar />
         </nav>
       </div>
-      <div className="flex-1 p-6 overflow-y-auto">{page}</div>
+      <div className="flex-1 p-6 overflow-y-auto min-h-screen">{page}</div>
     </div>
   );
 };

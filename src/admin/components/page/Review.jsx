@@ -132,7 +132,7 @@ export default function Review() {
                       <img
                         src={review.avata}
                         alt={review.username}
-                        className="w-10 h-10 rounded-full mr-3"
+                        className="w-20 h15 rounded-full mr-3"
                       />
                       <span className="text-gray-700">{review.username}</span>
                     </div>

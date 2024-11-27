@@ -24,6 +24,7 @@ export default function Home() {
           throw new Error(data.message);
         }
         setHeader(data);
+        console.log(data);
       } catch (error) {
         console.log(error);
       }
@@ -66,7 +67,7 @@ export default function Home() {
                 {header.websiteInfo?.site_name}
               </motion.h1>
               <motion.p
-                className="text-base sm:text-xl md:text-2xl mb-6 sm:mb-12 max-w-3xl mx-auto"
+                className="text-base sm:text-xl md:text-2xl mb-6 sm:mb-8 max-w-3xl mx-auto"
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
@@ -79,11 +80,12 @@ export default function Home() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
               >
-                <p className="text-xl sm:text-2xl font-semibold mb-2">
+                <p className="text-xl sm:text-2xl font-semibold mb-1">
                   {header.delivery?.title}
                 </p>
-                <p className="text-base sm:text-lg">
-                  {header.delivery?.openingHours}
+                <p className="text-base  sm:text-2xl flex justify-center gap-2">
+                  <span className="font-semibold">Thời gian mở cửa:</span>
+                  {header.websiteInfo?.opening_hours}
                 </p>
               </motion.div>
               <motion.form
