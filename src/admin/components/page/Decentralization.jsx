@@ -174,21 +174,6 @@ const Decentralization = () => {
       <td className="px-4 py-3 whitespace-nowrap text-sm">{index + 1}</td>
       <td className="px-4 py-3 whitespace-nowrap text-sm">{admin.username}</td>
       <td className="px-4 py-3 whitespace-nowrap text-sm">{admin.email}</td>
-      <td className="px-4 py-3 whitespace-nowrap text-sm">
-        <div className="flex items-center">
-          <span>{showPassword === admin.id ? admin.password : "••••••••"}</span>
-          <button
-            onClick={() => togglePasswordVisibility(admin.id)}
-            className="ml-2 hover:text-blue-900"
-          >
-            {showPassword === admin.id ? (
-              <BiSolidHide size={20} />
-            ) : (
-              <BiSolidShow size={20} />
-            )}
-          </button>
-        </div>
-      </td>
       <td className="px-4 py-3 whitespace-nowrap text-sm">{admin.time}</td>
       <td className="px-4 py-3 text-sm">{renderPermissions(admin)}</td>
       <td className="px-4 py-3 whitespace-nowrap text-sm">{admin.note}</td>
@@ -220,7 +205,6 @@ const Decentralization = () => {
               "ID",
               "Tên",
               "Email",
-              "Mật khẩu",
               "Thời gian",
               "Quyền hạn",
               "Note",

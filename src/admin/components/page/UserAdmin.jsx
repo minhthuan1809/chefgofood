@@ -203,7 +203,6 @@ export default function UserAdmin() {
                   <th className="p-3">Hình ảnh</th>
                   <th className="p-3">Tên người dùng</th>
                   <th className="p-3">Email</th>
-                  <th className="p-3">Mật khẩu</th>
                   <th className="p-3 text-center">Trạng thái</th>
                   <th className="p-3 text-center">Ngày tạo</th>
                   <th className="p-3 text-center">Hành động</th>
