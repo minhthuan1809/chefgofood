@@ -18,12 +18,6 @@ const FeatureCard = ({ iconName, title, description }) => (
   </div>
 );
 
-FeatureCard.propTypes = {
-  iconName: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-};
-
 const StandardItem = ({ text, iconName = "TiTick" }) => (
   <li className="flex items-center mb-2">
     <DynamicIcon
@@ -48,6 +42,7 @@ export default function About() {
     const fetchData = async () => {
       try {
         const response = await getUiAbout();
+
         setSession(response.session);
         setInfo(response.Info);
       } catch (error) {

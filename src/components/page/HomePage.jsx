@@ -24,7 +24,6 @@ export default function Home() {
           throw new Error(data.message);
         }
         setHeader(data);
-        console.log(data);
       } catch (error) {
         console.log(error);
       }

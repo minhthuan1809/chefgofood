@@ -24,7 +24,6 @@ const Discount = () => {
     async function fetchData() {
       try {
         const response = await getUiDiscountSystem();
-        console.log("response", response);
         if (!response.ok) {
           navigator("/error");
         }

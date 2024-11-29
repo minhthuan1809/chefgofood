@@ -2,7 +2,6 @@
 import React from "react";
 
 export default function OrderDetailModal({ order, onClose }) {
-  console.log(order);
   if (!order) return null;
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
