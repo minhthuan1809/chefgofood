@@ -3,12 +3,15 @@ import { getUiAbout } from "../../../service/ui/ui_about";
 import {
   addBodyUiAbout,
   DeleBodyUiAbout,
+  editStandards,
   fixFirstUiAbout,
 } from "../../../service/server/layout/api_about_admin";
 import { toast } from "react-toastify";
 import { DynamicIcon } from "../../../components/util/iconLibraries";
 import { MdDelete, MdEdit, MdModeEditOutline } from "react-icons/md";
 import ModalEditAbout from "./ModalEditAbout";
+import { TiTick } from "react-icons/ti";
+import { GiCancel } from "react-icons/gi";
 
 export default function About() {
   const [nameFirst, setNameFirst] = useState("");
@@ -23,6 +26,10 @@ export default function About() {
   const [dataEdit, setDataEdit] = useState(null);
   const [standards, setStandards] = useState([]);
   const [addInput, setAddInput] = useState("");
+
+  const [inputEdit, setInputEdit] = useState("");
+  const [inputEditData, setInputEditData] = useState("");
+  const [btnEdit, setBtnEdit] = useState(false);
   // chung
   const [refetch, setRefetch] = useState(false);
   useEffect(() => {
@@ -114,15 +121,38 @@ export default function About() {
     }
     setAddInput("");
   };
+
+  // xóa
   const handleDeleteData = async (id) => {
-    if (confirm("Bạn có chắc chắn muốn xóa không?")) return;
+    if (!confirm("Bạn có chắc chắn muốn xóa không?")) return;
     const response = await DeleBodyUiAbout(id);
+
     if (response.ok) {
       toast.success("Xóa thành công");
       setRefetch((prev) => !prev);
     } else {
       toast.error("Xóa thất bại");
     }
+  };
+  // sửa
+  const handleFixStandards = async () => {
+    toast.dismiss();
+    setBtnEdit(true);
+    const data = {
+      name: inputEditData,
+      description: "",
+      icon: "TiTick",
+    };
+    const response = await editStandards(data, inputEdit);
+    console.log(response);
+
+    if (response.ok) {
+      toast.success("Cập nhật thành công");
+      setRefetch((prev) => !prev);
+    } else {
+      toast.error("Cập nhật thất bại");
+    }
+    setBtnEdit(false);
   };
   return (
     <div className="space-y-6 p-4 md:p-8 bg-gradient-to-br from-gray-50 to-gray-100">
@@ -221,6 +251,9 @@ export default function About() {
       </div>
       <div className="bg-white/80 backdrop-blur-lg p-6 md:p-10 rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-300 space-y-4">
         <section className="space-y-4">
+          <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-6">
+            Đa dạng món ăn
+          </h1>
           <div className="flex items-center gap-4">
             {" "}
             <input
@@ -241,20 +274,62 @@ export default function About() {
             {standards.map((standard, index) => {
               return (
                 <div className="flex items-center justify-between">
-                  <li key={standard.id} className="flex items-center gap-2 ">
+                  <li
+                    key={standard.id}
+                    className="flex items-center gap-2  flex-1 "
+                  >
                     <span className="text-lg font-bold">{index + 1}.</span>
-                    {standard.name}
+                    {inputEdit === standard.id ? (
+                      <input
+                        type="text"
+                        className="border outline-none w-full rounded-lg p-2 mr-2"
+                        onChange={(e) => setInputEditData(e.target.value)}
+                        value={inputEditData}
+                      />
+                    ) : (
+                      standard.name
+                    )}
                   </li>
                   <div className="flex items-center gap-2">
-                    <button className="text-blue-600 px-4 py-2 rounded-lg">
-                      <MdModeEditOutline size={24} />
-                    </button>
-                    <button
-                      className="text-red-600 px-4 py-2 rounded-lg"
-                      onClick={() => handleDeleteData(standard.id)}
-                    >
-                      <MdDelete size={24} />
-                    </button>
+                    {inputEdit === standard.id ? (
+                      <>
+                        {" "}
+                        <button
+                          className=" text-green-600 px-4 py-2 rounded-lg"
+                          onClick={handleFixStandards}
+                          disabled={btnEdit}
+                        >
+                          {btnEdit ? "..." : <TiTick size={24} />}
+                        </button>
+                        <button
+                          className=" text-red-600 px-4 py-2 rounded-lg"
+                          onClick={() => {
+                            setInputEdit("");
+                            setInputEditData("");
+                          }}
+                        >
+                          <GiCancel size={24} />
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          className="text-blue-600 px-4 py-2 rounded-lg"
+                          onClick={() => {
+                            setInputEdit(standard.id);
+                            setInputEditData(standard.name);
+                          }}
+                        >
+                          <MdModeEditOutline size={24} />
+                        </button>
+                        <button
+                          className="text-red-600 px-4 py-2 rounded-lg"
+                          onClick={() => handleDeleteData(standard.id)}
+                        >
+                          <MdDelete size={24} />
+                        </button>
+                      </>
+                    )}
                   </div>
                 </div>
               );

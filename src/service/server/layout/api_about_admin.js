@@ -38,14 +38,27 @@ export const addBodyUiAbout = async (data) => {
   );
   return response.json();
 };
+// xóa
 export const DeleBodyUiAbout = async (id) => {
   const response = await fetch(
     `${import.meta.env.VITE_FASTFOOD_RENDER_API}/about/body/extra/${id}`,
     {
       method: "DELETE",
+    }
+  );
+  return response.json();
+};
+
+//edit
+export const editStandards = async (data, id) => {
+  const response = await fetch(
+    `${import.meta.env.VITE_FASTFOOD_RENDER_API}/about/body/extra/${id}`,
+    {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
+      body: JSON.stringify(data),
     }
   );
   return response.json();

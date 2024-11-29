@@ -78,7 +78,7 @@ export default function ModalEditAbout({
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="name"
+            htmlFor="icon"
           >
             Icon{" "}
             <Link
@@ -94,7 +94,7 @@ export default function ModalEditAbout({
             type="text"
             value={icon}
             onChange={(e) => setIcon(e.target.value)}
-            placeholder="Nhập tên món ăn"
+            placeholder="Nhập tên icon"
             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
