@@ -3,7 +3,7 @@ import { useState, useCallback, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaCartShopping } from "react-icons/fa6";
 import { IoIosSettings, IoMdLogOut } from "react-icons/io";
-import { MdHistory, MdMenu, MdOutlineCancel } from "react-icons/md";
+import { MdMenu, MdOutlineCancel } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import Modal_login from "./Modal_login";
 import { getProfile } from "../../redux/middlewares/client/addProfile";
@@ -14,7 +14,8 @@ import {
 } from "../../redux/action/client/profile";
 import { getUiNavbar } from "../../service/ui/ui_navbav";
 import ModalForgot from "./ModalForgot";
-import { FaHistory } from "react-icons/fa";
+import { FaHeart, FaHistory } from "react-icons/fa";
+import { CiHeart } from "react-icons/ci";
 
 const NavLink = ({ to, children, onClick }) => {
   const location = useLocation();
@@ -83,6 +84,11 @@ const MobileUserMenu = ({ user, onItemClick, DataCart, onClose }) => {
       path: "/account",
     },
     {
+      icon: <CiHeart className="text-blue-500" />,
+      text: "Yêu thích",
+      path: "/favorite",
+    },
+    {
       icon: <IoMdLogOut className="text-red-500" />,
       text: "Đăng xuất",
       action: "logout",
@@ -130,6 +136,11 @@ const UserDropdown = ({ isOpen, onItemClick, DataCart }) => {
     },
     { icon: <FaHistory />, text: "Lịch sử đơn hàng", path: "/history" },
     { icon: <IoIosSettings />, text: "Cập nhật tài khoản", path: "/account" },
+    {
+      icon: <FaHeart />,
+      text: "Yêu thích",
+      path: "/favorite",
+    },
     { icon: <IoMdLogOut />, text: "Đăng xuất", action: "logout" },
   ];
 

@@ -12,6 +12,7 @@ import DetailProduct from "../components/page/DetailProduct";
 import ErrorSyteam from "./ErrorSyteam";
 import Login from "../admin/components/Login";
 import AppAdmin from "../admin/AppAdmin";
+import Favorite from "../components/page/Favorite";
 export default function RouterDom() {
   return (
     <div>
@@ -30,7 +31,7 @@ export default function RouterDom() {
         <Route path="/food" element={<Products />} />
         <Route path="*" element={<Error />} />
         <Route path="/error" element={<ErrorSyteam />} />
-
+        <Route path="/favorite" element={<Favorite />} />
         {/* // admin  */}
         <Route path="/admin/dashboard/login" element={<Login />} />
         <Route path="/admin">

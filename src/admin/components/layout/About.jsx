@@ -149,6 +149,7 @@ export default function About() {
     if (response.ok) {
       toast.success("Cập nhật thành công");
       setRefetch((prev) => !prev);
+      setInputEdit("");
     } else {
       toast.error("Cập nhật thất bại");
     }

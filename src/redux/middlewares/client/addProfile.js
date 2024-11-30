@@ -4,7 +4,7 @@ export const getProfile = (apikey) => {
       const url = `${import.meta.env.VITE_FASTFOOD_SERVER_API}/profile`;
 
       const response = await fetch(url, {
-        method: "GET",
+        method: "POST",
         headers: {
           "X-Api-Key": apikey,
           "Content-Type": "application/json",
@@ -14,7 +14,6 @@ export const getProfile = (apikey) => {
       });
 
       const data = await response.json();
-
       dispatch({
         type: "add/profile",
         payload: data.data,
