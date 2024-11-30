@@ -8,10 +8,14 @@ import {
 } from "../../../service/server/layout/api_about_admin";
 import { toast } from "react-toastify";
 import { DynamicIcon } from "../../../components/util/iconLibraries";
-import { MdDelete, MdEdit, MdModeEditOutline } from "react-icons/md";
+import {
+  MdCancel,
+  MdDelete,
+  MdEdit,
+  MdModeEditOutline,
+  MdSave,
+} from "react-icons/md";
 import ModalEditAbout from "./ModalEditAbout";
-import { TiTick } from "react-icons/ti";
-import { GiCancel } from "react-icons/gi";
 
 export default function About() {
   const [nameFirst, setNameFirst] = useState("");
@@ -296,20 +300,20 @@ export default function About() {
                       <>
                         {" "}
                         <button
-                          className=" text-green-600 px-4 py-2 rounded-lg"
-                          onClick={handleFixStandards}
-                          disabled={btnEdit}
-                        >
-                          {btnEdit ? "..." : <TiTick size={24} />}
-                        </button>
-                        <button
                           className=" text-red-600 px-4 py-2 rounded-lg"
                           onClick={() => {
                             setInputEdit("");
                             setInputEditData("");
                           }}
                         >
-                          <GiCancel size={24} />
+                          <MdCancel size={24} />
+                        </button>
+                        <button
+                          className=" text-green-600 px-4 py-2 rounded-lg"
+                          onClick={handleFixStandards}
+                          disabled={btnEdit}
+                        >
+                          {btnEdit ? "..." : <MdSave size={24} />}
                         </button>
                       </>
                     ) : (
