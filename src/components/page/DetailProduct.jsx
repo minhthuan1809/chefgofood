@@ -18,6 +18,7 @@ import PageFooter from "../footer/PageFooter";
 import { toast } from "react-toastify";
 import { addCart } from "../../service/cart_client";
 import ModelPayCart from "./cart/ModelPayCart";
+import { addFavorite } from "../../service/favorite_api";
 
 const DetailProduct = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -26,7 +27,7 @@ const DetailProduct = () => {
   const dispatch = useDispatch();
   const product = useSelector((state) => state.detail.detailProduct);
   const apiKey = useSelector((state) => state.login.apikey);
-
+  const profile = useSelector((state) => state.profile.profile);
   const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
     const fetchDetailProduct = async () => {
@@ -46,6 +47,16 @@ const DetailProduct = () => {
       toast.success(addItem.message);
     } else {
       toast.error(addItem.message);
+    }
+  };
+
+  const handleAddFavorite = async () => {
+    const data = await addFavorite(profile?.id, { product_id: product.id });
+    console.log(data);
+    if (data.ok) {
+      toast.success(data.message);
+    } else {
+      toast.error(data.message);
     }
   };
 
@@ -126,7 +137,10 @@ const DetailProduct = () => {
                             {isFavorite ? (
                               <AiFillHeart className="w-6 h-6 text-red-500" />
                             ) : (
-                              <AiOutlineHeart className="w-6 h-6" />
+                              <AiOutlineHeart
+                                className="w-6 h-6"
+                                onClick={handleAddFavorite}
+                              />
                             )}
                           </button>
                         </div>
