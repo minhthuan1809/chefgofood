@@ -266,7 +266,7 @@ export default function FixFooter() {
               <button
                 onClick={handleAddSocial}
                 type="button"
-                className="bg-green-600 text-white py-2 px-6 rounded-lg font-semibold hover:bg-green-700 transition duration-200 outline-none "
+                className="bg-blue-600 text-white py-2 px-6 rounded-lg font-semibold hover:bg-green-700 transition duration-200 outline-none "
               >
                 Thêm mới
               </button>
@@ -409,7 +409,7 @@ export default function FixFooter() {
               <button
                 onClick={handleAddContact}
                 type="button"
-                className="bg-green-600 text-white py-2 px-6 rounded-lg font-semibold hover:bg-green-700 transition duration-200 outline-none "
+                className="bg-blue-600 text-white py-2 px-6 rounded-lg font-semibold hover:bg-blue-700 transition duration-200 outline-none "
               >
                 Thêm mới
               </button>
