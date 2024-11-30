@@ -68,6 +68,10 @@ export default function FixFooter() {
   const handleAddSocial = async (e) => {
     toast.dismiss();
     e.preventDefault();
+    if (!icon || !link) {
+      toast.error("Vui lòng nhập đẩy đủ thông tin");
+      return;
+    }
     const res = await addSocialMedia({
       platform: "",
       icon,
@@ -98,7 +102,12 @@ export default function FixFooter() {
 
   // thêm liên hệ
   const handleAddContact = async (e) => {
+    toast.dismiss();
     e.preventDefault();
+    if (!iconContact || !contentContact) {
+      toast.error("Vui lòng nhập đẩy đủ thông tin");
+      return;
+    }
     const res = await addContact({
       title: "",
       icon: iconContact,
@@ -119,6 +128,7 @@ export default function FixFooter() {
   const handleDelContact = async (id) => {
     if (!confirm("Bạn có chắc chắn muốn xóa liên hệ này không?")) return;
     toast.dismiss();
+
     const res = await deleteContact(id);
     if (res.ok) {
       toast.success("Xóa liên hệ thành công");
@@ -132,6 +142,10 @@ export default function FixFooter() {
   const handleEditContact = async (id) => {
     toast.dismiss();
     setBtnEditContact(true);
+    if (!editContactIcon || !editContactContent) {
+      toast.error("Vui lòng nhập đẩy đủ thông tin");
+      return;
+    }
     const res = await editContact(id, {
       title: "",
       icon: editContactIcon,
@@ -154,6 +168,10 @@ export default function FixFooter() {
   const handleEditSocial = async (id) => {
     toast.dismiss();
     setBtnEditSocial(true);
+    if (!editSocialIcon || !editSocialLink) {
+      toast.error("Vui lòng nhập đẩy đủ thông tin");
+      return;
+    }
     const res = await editSocialMedia(id, {
       icon: editSocialIcon,
       url: editSocialLink,
@@ -254,6 +272,7 @@ export default function FixFooter() {
                 value={icon}
                 onChange={(e) => setIcon(e.target.value)}
                 className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent  outline-none"
+                required
               />
               <input
                 type="text"
@@ -299,6 +318,7 @@ export default function FixFooter() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <input
+                            required
                             type="text"
                             value={editSocialIcon}
                             onChange={(e) => setEditSocialIcon(e.target.value)}
@@ -307,6 +327,7 @@ export default function FixFooter() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <input
+                            required
                             type="text"
                             value={editSocialLink}
                             onChange={(e) => setEditSocialLink(e.target.value)}
@@ -392,6 +413,7 @@ export default function FixFooter() {
           <div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
               <input
+                required
                 type="text"
                 placeholder="Nhập tên icon..."
                 value={iconContact}
@@ -399,6 +421,7 @@ export default function FixFooter() {
                 className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent  outline-none"
               />
               <input
+                required
                 type="text"
                 name="content"
                 placeholder="Nhập đường dẫn..."
@@ -443,6 +466,7 @@ export default function FixFooter() {
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <input
+                              required
                               type="text"
                               value={editContactIcon}
                               onChange={(e) =>
@@ -453,6 +477,7 @@ export default function FixFooter() {
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <input
+                              required
                               type="text"
                               value={editContactContent}
                               onChange={(e) =>
