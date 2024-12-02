@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
+import Cookies from "js-cookie";
 // Redux Actions
 import { getProfileAddress } from "../../../redux/middlewares/client/addAddress";
 import { getProfile } from "../../../redux/middlewares/client/addProfile";
@@ -108,16 +108,9 @@ const PayCart = ({ items }) => {
       minimumOrderValue: discountData.minOrderValue,
     });
   };
-// xử lý thanh toán chuyển khoản
-const handlePaySePay = () => {
-    window.open(`/paysepay/ThanhToanDienTu?total=${total}&subtotal=${subtotal}`, '_blank');
-  };
 
   const handleCheckout = async () => {
-    if(deliveryDetails.selectedPaymentMethod === 'credit'){
-      handlePaySePay();
-      return;
-    }
+    Cookies.remove('timeSePay');
     const { selectedAddress, selectedPaymentMethod, deliveryNote } =
       deliveryDetails;
 
@@ -145,6 +138,15 @@ const handlePaySePay = () => {
         note: deliveryNote,
         discount_code: checkout.discountCode,
       };
+
+
+      if(deliveryDetails.selectedPaymentMethod === 'credit'){
+        navigate(`/paysepay/ThanhToanDienTu?total=${total}`);
+      dispatch({type: "add/money", payload: total});
+      dispatch({type: "add/sepay/data", payload: paymentData});
+        return;
+      }
+
 
       const result = await addCartPay(paymentData);
 

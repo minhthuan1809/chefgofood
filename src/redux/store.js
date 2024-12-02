@@ -11,7 +11,7 @@ import { LoginAdminReducer } from "./reducer/admin/reducer_login";
 import { DecentralizationReducer } from "./reducer/admin/DecentralizationAdmin";
 import { ProductAdminReducer } from "./reducer/admin/productReducer";
 import { CartReducer } from "./reducer/client/cart";
-
+import { PayQrReducer } from "./reducer/client/payqr";
 const rootReducer = combineReducers({
   login: getApiKey,
   profile: ProfileReducer,
@@ -22,6 +22,7 @@ const rootReducer = combineReducers({
   decentralization: DecentralizationReducer,
   productsAdmin: ProductAdminReducer,
   cart: CartReducer,
+  payqr: PayQrReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));

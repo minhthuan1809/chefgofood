@@ -3,8 +3,14 @@ import { FaCopy, FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { SePay } from "../../service/sePay";
 import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
+import Loading from "../util/Loading";
+import { addCartPay } from "../../service/cart_client";
 
 const PaySePay = () => {
+    const  money  = useSelector((state) => state.payqr.money);
+    const  dataPay  = useSelector((state) => state.payqr.data);
+
     // Utility function to generate unique payment content
     const generateRandomContent = useCallback(() => {
         const prefix = "HD";
@@ -12,12 +18,11 @@ const PaySePay = () => {
         const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
         return `${prefix}${timestamp}${random}`;
     }, []);
-
+   
     // Initialize payment data with persistent storage
     const [paymentData, setPaymentData] = useState(() => {
         
 
-        const money = 5000;
         const initialData = {
             SO_TAI_KHOAN: "9018092003",
             NGAN_HANG: "MB",
@@ -48,8 +53,11 @@ const PaySePay = () => {
         toast.success(`Đã sao chép ${label}`);
     }, []);
 
+
+  
+
     // Check payment status against received transactions
-    const checkPaymentStatus = useCallback(() => {
+    const checkPaymentStatus = useCallback(async () => {
         if (!sePaysData || !paymentData) return false;
         
         const matchingPayment = sePaysData.find(payment => 
@@ -62,11 +70,18 @@ const PaySePay = () => {
                 status: 'success',
                 message: 'Thanh toán thành công'
             });
+
+            const result = await addCartPay(dataPay);
+            if(result.ok){
+                toast.success("Thanh toán thành công");
+            }else{
+                toast.error("đã có lỗi xảy ra, liên hệ ngay với chúng tôi");
+            }
+            console.log(result);
             // Dừng timer khi thanh toán thành công
             setIsTimerActive(false);
             return true;
         }
-
         return false;
     }, [sePaysData, paymentData]);
 
@@ -87,6 +102,7 @@ const PaySePay = () => {
 
     // Timer and periodic checks
     useEffect(() => {
+
         // Nếu timer không còn active thì không chạy
         if (!isTimerActive) return;
 
@@ -111,6 +127,7 @@ const PaySePay = () => {
                 const newTime = `${newMinutes}:${newSeconds < 10 ? '0' : ''}${newSeconds}`;
                 
                 Cookies.set("timeSePay", newTime);
+                console.log(dataPay);
                 return newTime;
             });
 
@@ -141,7 +158,8 @@ const PaySePay = () => {
             </div>
         );
     };
-
+    console.log(money);
+    if(!money) return <Loading />
     return (
         <div className="container mx-auto p-4 max-w-4xl">
             <div className="bg-white shadow-2xl rounded-xl overflow-hidden">
