@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
 import Loading from "../util/Loading";
 import { addCartPay } from "../../service/cart_client";
+import { Link } from "react-router-dom";
 
 const PaySePay = () => {
     const  dataPay  = useSelector((state) => state.payqr.data);
@@ -82,7 +83,7 @@ const PaySePay = () => {
             return true;
         }
         return false;
-    }, [sePaysData, paymentData]);
+    }, [sePaysData]);
 
     // Fetch SeePay data
     const fetchSePaysData = useCallback(async () => {
@@ -243,6 +244,10 @@ const PaySePay = () => {
                                 >
                                     {paymentStatus.status === 'success' ? 'Quay Lại' : 'Hủy Thanh Toán'}
                                 </button>
+                                {paymentStatus.status === 'success' && <Link to="/history" className="text-blue-500 hover:text-blue-700 transition underline mt-2">
+                                    Theo dõi đơn hàng
+                                </Link>}
+                                
                             </div>
                         </div>
                     </div>

@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { TfiMinus } from "react-icons/tfi";
 import { FiPlus } from "react-icons/fi";
-
+import Cookies from "js-cookie";
 import { getProfileAddress } from "../../../redux/middlewares/client/addAddress";
 import { getProfile } from "../../../redux/middlewares/client/addProfile";
 import { addCartPay } from "../../../service/cart_client";
@@ -116,6 +116,20 @@ const ModelPayCart = ({ isOpen, onClose, items }) => {
   };
   // thanh toán
   const handleCheckout = async () => {
+    Cookies.remove('timeSePay');
+      const { paymentMethod
+      } =
+      checkout;
+    console.log(checkout);
+    if (!addresses.selected.id) {
+      toast.error("Vui lòng chọn địa chỉ giao hàng");
+      return;
+    }
+
+    if (!paymentMethod) {
+      toast.error("Vui lòng chọn phương thức thanh toán");
+      return;
+    }
     try {
       const paymentData = {
         user_id: profile.id,
@@ -138,6 +152,13 @@ const ModelPayCart = ({ isOpen, onClose, items }) => {
         discount_code: checkout.discountCode,
       };
 
+      if(checkout.paymentMethod === 'credit'){
+        navigate(`/paysepay/ThanhToanDienTu?total=${calculatedValues.totalPrice -
+          calculatedValues.totalPrice * checkout.appliedDiscount * 100 +
+          SHIPPING_COST}`);
+      dispatch({type: "add/sepay/data", payload: paymentData});
+        return;
+      }
       const result = await addCartPay(paymentData);
 
       if (result.success) {

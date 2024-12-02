@@ -142,7 +142,6 @@ const PayCart = ({ items }) => {
 
       if(deliveryDetails.selectedPaymentMethod === 'credit'){
         navigate(`/paysepay/ThanhToanDienTu?total=${total}`);
-      dispatch({type: "add/money", payload: total});
       dispatch({type: "add/sepay/data", payload: paymentData});
         return;
       }
