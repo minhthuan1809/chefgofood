@@ -117,7 +117,7 @@ const PaySePay = () => {
                     setPaymentStatus({
                         status: 'failed',
                         message: 'Hết thời gian thanh toán'
-                    });
+                    }); 
                     setIsTimerActive(false);
                     return "00:00";
                 }
@@ -127,7 +127,6 @@ const PaySePay = () => {
                 const newTime = `${newMinutes}:${newSeconds < 10 ? '0' : ''}${newSeconds}`;
                 
                 Cookies.set("timeSePay", newTime);
-                console.log(dataPay);
                 return newTime;
             });
 

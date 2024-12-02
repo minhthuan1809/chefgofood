@@ -54,10 +54,10 @@ export default function SupportChat() {
   useEffect(() => {
     if (statusLogin) {
       fetchData();
-      const interval = setInterval(fetchData, 2000);
+      const interval = setInterval(fetchData, 3000);
       return () => clearInterval(interval);
     }
-  });
+  },[messages]);
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
