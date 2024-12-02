@@ -8,7 +8,6 @@ import Loading from "../util/Loading";
 import { addCartPay } from "../../service/cart_client";
 
 const PaySePay = () => {
-    const  money  = useSelector((state) => state.payqr.money);
     const  dataPay  = useSelector((state) => state.payqr.data);
 
     // Utility function to generate unique payment content
@@ -26,7 +25,7 @@ const PaySePay = () => {
         const initialData = {
             SO_TAI_KHOAN: "9018092003",
             NGAN_HANG: "MB",
-            SO_TIEN: money,
+            SO_TIEN: dataPay.total_price,
             NOI_DUNG:  generateRandomContent(),
         };
 
@@ -58,6 +57,7 @@ const PaySePay = () => {
 
     // Check payment status against received transactions
     const checkPaymentStatus = useCallback(async () => {
+        toast.dismiss();
         if (!sePaysData || !paymentData) return false;
         
         const matchingPayment = sePaysData.find(payment => 
@@ -77,7 +77,6 @@ const PaySePay = () => {
             }else{
                 toast.error("đã có lỗi xảy ra, liên hệ ngay với chúng tôi");
             }
-            console.log(result);
             // Dừng timer khi thanh toán thành công
             setIsTimerActive(false);
             return true;
@@ -158,8 +157,7 @@ const PaySePay = () => {
             </div>
         );
     };
-    console.log(money);
-    if(!money) return <Loading />
+    if(!dataPay) return <Loading />
     return (
         <div className="container mx-auto p-4 max-w-4xl">
             <div className="bg-white shadow-2xl rounded-xl overflow-hidden">
@@ -223,7 +221,7 @@ const PaySePay = () => {
                             
                             <div className="text-center">
                                 <p className="text-yellow-600 text-sm mb-4">
-                                    Lưu ý: Nội dung chuyển khoản phải đúng như nội dung đã nhập
+                                    Lưu ý: Nội dung chuyển khoản phải đúng như nội dung đã nhập, thoát trang , load lại sẽ hủy thanh toán
                                 </p>
                                 
                                 {paymentStatus.status !== 'success' && (
