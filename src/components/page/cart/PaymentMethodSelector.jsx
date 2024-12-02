@@ -1,10 +1,10 @@
 import React from "react";
-import { FaCreditCard, FaMoneyBillWave, FaPaypal } from "react-icons/fa";
-
+import { FaMoneyBillWave } from "react-icons/fa";
+import { BsQrCode } from "react-icons/bs";
 export default function PaymentMethodSelector({ selectedMethod, onSelect }) {
   const PAYMENT_METHODS = [
     { id: "cash", name: "Tiền mặt", icon: FaMoneyBillWave },
-    { id: "credit", name: "Thẻ tín dụng", icon: FaCreditCard },
+    { id: "credit", name: "Chuyển khoản", icon: BsQrCode  },
   ];
   return (
     <div>

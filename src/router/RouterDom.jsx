@@ -13,6 +13,7 @@ import ErrorSyteam from "./ErrorSyteam";
 import Login from "../admin/components/Login";
 import AppAdmin from "../admin/AppAdmin";
 import Favorite from "../components/page/Favorite";
+import PaySePay from "../components/page/PaySePay";
 export default function RouterDom() {
   return (
     <div>
@@ -24,6 +25,7 @@ export default function RouterDom() {
         </Route>
 
         <Route path="/history" element={<History />} />
+        <Route path="/paysepay/ThanhToanDienTu" element={<PaySePay />} />
         <Route path="/detail/:name/:id" element={<DetailProduct />} />
         <Route path="/abouts" element={<About />} />
         <Route path="/carts" element={<Cart />} />

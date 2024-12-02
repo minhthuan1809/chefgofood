@@ -108,8 +108,16 @@ const PayCart = ({ items }) => {
       minimumOrderValue: discountData.minOrderValue,
     });
   };
+// xử lý thanh toán chuyển khoản
+const handlePaySePay = () => {
+    window.open(`/paysepay/ThanhToanDienTu?total=${total}&subtotal=${subtotal}`, '_blank');
+  };
 
   const handleCheckout = async () => {
+    if(deliveryDetails.selectedPaymentMethod === 'credit'){
+      handlePaySePay();
+      return;
+    }
     const { selectedAddress, selectedPaymentMethod, deliveryNote } =
       deliveryDetails;
 
