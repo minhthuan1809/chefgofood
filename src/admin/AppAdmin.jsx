@@ -25,6 +25,7 @@ import Statistical from "./components/page/Statistical";
 import Home from "./components/layout/Home";
 import About from "./components/layout/About";
 import FixFooter from "./components/layout/FixFooter";
+import HistorySePay from "./components/page/HistorySePay";
 
 const AppAdmin = () => {
   const [page, setPage] = useState(null);
@@ -118,6 +119,11 @@ const AppAdmin = () => {
       path: dataDecentralization?.layout ? "footer" : undefined,
       page: <FixFooter />,
       id: 18,
+    },
+    {
+      path: dataDecentralization?.order ? "orders-sepay" : undefined,
+      page: <HistorySePay />,
+      id: 19,
     },
   ];
   useEffect(() => {

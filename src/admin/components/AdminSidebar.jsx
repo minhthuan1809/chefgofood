@@ -15,6 +15,7 @@ import {
 } from "react-icons/hi2";
 import { PiVectorThreeFill } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
+import { ImQrcode } from "react-icons/im";
 import { useNavigate, useLocation } from "react-router";
 import { LoginAdminAction } from "../../redux/action/admin/loginAdmin";
 import { toast } from "react-toastify";
@@ -56,6 +57,12 @@ const AdminSidebar = () => {
           label: "Đơn hàng chờ xử lý",
           id: "orders-pending",
           path: "/orders-pending",
+        },
+        {
+          icon: <ImQrcode size={20} />,
+          label: "Lịch sử SePay",
+          id: "orders-sepay",
+          path: "/orders-sepay",
         },
 
         {
