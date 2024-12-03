@@ -43,6 +43,8 @@
 ### Login Component (3 fails)
 - Error: Actions must be plain objects
 - Status: Submit and validation tests failed
+### resrult
+![{3D99D825-218C-4426-B1C5-B9A22FF550D2}](https://github.com/user-attachments/assets/15af3f4e-711a-4f0a-b74a-488f09657394)
 
 ## Notes
 - ✅ PASS: Test case passed successfully  
