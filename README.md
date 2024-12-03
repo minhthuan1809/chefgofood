@@ -18,7 +18,8 @@
 | 14 | Login - Submit | Kiểm tra xử lý đăng nhập | Form Submit | - Email: "test@example.com"<br/>- Password: "password123" | API Call | getLoginAdmin called with credentials | ✅ PASS |
 | 15 | Login - Error | Kiểm tra xử lý lỗi đăng nhập | Error Simulation | Mock API Error | Error Message | Login error message displayed | ✅ PASS |
 | 16 | TopProducts - Render | Kiểm tra hiển thị sản phẩm bán chạy | Component Render | `<TopProducts />` | Product List | Top products displayed | ✅ PASS |
-
+| 17 | Login - Submit | Kiểm tra xử lý đăng nhập | Form Submit | Login credentials | API Call | getLoginAdmin called | ❌ FAIL | Cannot use import.meta outside module |
+| 18 | Login - Error | Kiểm tra xử lý lỗi đăng nhập | Error Simulation | Mock API Error | Error Message | Error displayed | ❌ FAIL | Cannot use import.meta outside module |
 ## Test Results Summary
 - Total Test Cases: 16
 - Passed: 16
