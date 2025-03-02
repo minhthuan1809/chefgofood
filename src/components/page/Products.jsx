@@ -10,12 +10,15 @@ import SupportChat from "../messger/SupportChat";
 import ModelPayCart from "./cart/ModelPayCart";
 import { getProducts } from "../../redux/middlewares/client/addProduct";
 import PageFooter from "../footer/PageFooter";
+import { FaBowlFood } from "react-icons/fa6";
+import { MdFastfood } from "react-icons/md";
+import { GiCakeSlice } from "react-icons/gi";
 
 const CATEGORIES = [
-  { label: "All", value: "All" },
-  { label: "Đồ Ăn", value: "food" },
-  { label: "Đồ Uống", value: "water" },
-  { label: "Bánh", value: "cake" },
+  { label: "Menu", value: "All" },
+  { label: "Món Ngon Đặc Sắc", value: "food" },
+  { label: "Thức Uống Tươi Mát", value: "water" },
+  { label: "Bánh Ngon Miệng", value: "cake" },
 ];
 
 const Products = () => {
@@ -60,6 +63,20 @@ const Products = () => {
     setIsOpen(false);
   };
 
+  const groupedProducts = React.useMemo(() => {
+    const groups = {
+      food: [],
+      water: [],
+      cake: [],
+    };
+    filteredProducts?.forEach((product) => {
+      if (product.type in groups) {
+        groups[product.type].push(product);
+      }
+    });
+    return groups;
+  }, [filteredProducts]);
+
   return (
     <div className="bg-gray-100">
       <header>
@@ -95,7 +112,58 @@ const Products = () => {
               </div>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4">
-              {filteredProducts.length > 0 ? (
+              {selectedCategory === "All" && (
+                <>
+                  {/* Món Ngon Đặc Sắc */}
+                  {!groupedProducts.food.length < 1 && (
+                    <h2 className="col-span-full text-lg font-bold hover:underline flex items-center gap-2">
+                      <FaBowlFood className="text-2xl" /> Món Ngon Đặc Sắc
+                    </h2>
+                  )}
+                  {groupedProducts.food.map((product) => (
+                    <RenderProduct
+                      key={product.id}
+                      product={product}
+                      idProduct={product.id}
+                      data={setProductPay}
+                      isOpen={setIsOpen}
+                    />
+                  ))}
+
+                  {/* Thức Uống Tươi Mát */}
+                  {!groupedProducts.water.length < 1 && (
+                    <h2 className="col-span-full text-lg font-bold hover:underline flex items-center gap-2">
+                      <MdFastfood className="text-2xl" /> Thức Uống Tươi Mát
+                    </h2>
+                  )}
+                  {groupedProducts.water.map((product) => (
+                    <RenderProduct
+                      key={product.id}
+                      product={product}
+                      idProduct={product.id}
+                      data={setProductPay}
+                      isOpen={setIsOpen}
+                    />
+                  ))}
+
+                  {/* Bánh Ngon Miệng */}
+                  {!groupedProducts.cake.length < 1 && (
+                    <h2 className="col-span-full text-lg font-bold hover:underline flex items-center gap-2">
+                      <GiCakeSlice className="text-2xl" /> Bánh Ngon Miệng
+                    </h2>
+                  )}
+                  {groupedProducts.cake.map((product) => (
+                    <RenderProduct
+                      key={product.id}
+                      product={product}
+                      idProduct={product.id}
+                      data={setProductPay}
+                      isOpen={setIsOpen}
+                    />
+                  ))}
+                </>
+              )}
+              {selectedCategory !== "All" && filteredProducts.length > 0 ? (
                 filteredProducts.map((product) => (
                   <RenderProduct
                     key={product.id}
@@ -105,11 +173,11 @@ const Products = () => {
                     isOpen={setIsOpen}
                   />
                 ))
-              ) : (
+              ) : selectedCategory !== "All" ? (
                 <p className="text-center col-span-full">
-                  Chưa có sản phẩm nào...
+                  Không có sản phẩm nào hiện có...
                 </p>
-              )}
+              ) : null}
             </div>
           </main>
           <ModelPayCart

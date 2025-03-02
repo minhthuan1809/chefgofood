@@ -81,7 +81,6 @@ export default function Modal_login({
     }
 
     const response = await dispatch(getLogin(formData));
-    console.log(response);
 
     toast.dismiss();
     if (!response.ok) {

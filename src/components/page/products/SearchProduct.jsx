@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import { getProducts } from "../../../redux/middlewares/client/addProduct";
 import { useState, useCallback, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { FaSearch } from "react-icons/fa"; // Thêm icon tìm kiếm
 
 export default function SearchProduct() {
   const dispatch = useDispatch();
@@ -42,12 +43,12 @@ export default function SearchProduct() {
   }, [searchTerm, dispatch]);
 
   return (
-    <div>
+    <div className="flex items-center">
       <input
         type="search"
         id="searchInput"
         placeholder="Nhập món ăn ..."
-        className="flex-grow m-0 p-2 text-sm sm:text-base border border-gray-300 rounded-lg outline-none"
+        className="flex-grow m-0 p-3 text-sm sm:text-base border border-gray-300 rounded-lg outline-none shadow-md focus:ring-2 focus:ring-blue-500 transition duration-300"
         value={searchTerm}
         onChange={handleSearch}
       />

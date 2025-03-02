@@ -57,7 +57,7 @@ export default function SupportChat() {
       const interval = setInterval(fetchData, 3000);
       return () => clearInterval(interval);
     }
-  },[messages]);
+  }, [messages]);
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
@@ -142,6 +142,7 @@ export default function SupportChat() {
           >
             <BsChatDots size={24} />
           </button>
+          <p className="text-xs text-gray-500 pt-3">Chat hỗ trợ</p>
           {notification > 0 && (
             <span className="absolute -top-2 -right-2 z-20 items-center justify-center rounded-full text-sm font-bold text-white bg-red-500 w-6 h-6 flex">
               {notification}

@@ -25,7 +25,7 @@ const PaySePay = () => {
   // Initialize payment data with persistent storage
   const [paymentData, setPaymentData] = useState(() => {
     const initialData = {
-      SO_TAI_KHOAN: "9018092003",
+      SO_TAI_KHOAN: "0862189003",
       NGAN_HANG: "MB",
       SO_TIEN: dataPay.total_price,
       NOI_DUNG: generateRandomContent(),

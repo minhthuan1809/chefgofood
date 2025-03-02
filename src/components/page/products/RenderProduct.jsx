@@ -27,6 +27,8 @@ const RenderProduct = ({ product, idProduct, data, isOpen }) => {
 
   const calculateDiscountedPrice = React.useCallback((price, discount) => {
     const discountRate = discount > 1 ? discount / 100 : discount;
+    // Kiểm tra nếu discount dưới 1% thì không tính toán
+    if (discount <= 1) return price;
     return price * (1 - discountRate);
   }, []);
 
