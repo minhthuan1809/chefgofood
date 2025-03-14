@@ -72,7 +72,7 @@ export default function ModalEditAbout({
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Nhập tên món ăn"
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#b17741]"
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
         </div>
         <div className="mb-4">
@@ -95,7 +95,7 @@ export default function ModalEditAbout({
             value={icon}
             onChange={(e) => setIcon(e.target.value)}
             placeholder="Nhập tên icon"
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#b17741]"
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
         </div>
 
@@ -112,7 +112,7 @@ export default function ModalEditAbout({
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Nhập mô tả chi tiết"
             rows="4"
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#b17741]"
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
         </div>
 
@@ -126,7 +126,7 @@ export default function ModalEditAbout({
           <button
             disabled={loadingBtn}
             onClick={handleSave}
-            className="bg-[#b17741] text-white px-4 py-2 rounded-md hover:bg-[#b17741] transition flex items-center"
+            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition flex items-center"
           >
             <FaCheck className="mr-2" />{" "}
             {loadingBtn ? "Đang cập nhật..." : "Lưu"}

@@ -163,7 +163,7 @@ export default function Oder() {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <button
                       onClick={() => handleViewDetail(order)}
-                      className="text-[#b17741] hover:text-[#b17741]"
+                      className="text-blue-600 hover:text-blue-600"
                     >
                       #{order.id}
                     </button>
@@ -225,7 +225,7 @@ export default function Oder() {
                           onClick={() =>
                             handleUpdateStatus(order.id, "Preparing")
                           }
-                          className="bg-[#b17741] hover:bg-[#b17741] text-white px-4 py-2 rounded-md"
+                          className="bg-blue-600 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
                         >
                           Xác nhận
                         </button>
@@ -247,7 +247,7 @@ export default function Oder() {
                           onClick={() =>
                             handleUpdateStatus(order.id, "Completed")
                           }
-                          className="bg-[#b17741] hover:bg-[#b17741] text-white px-4 py-2 rounded-md"
+                          className="bg-blue-600 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
                         >
                           Thành công
                         </button>

@@ -133,7 +133,7 @@ export default function UserAdmin() {
             {" "}
             <button
               onClick={() => handleOpenModal()}
-              className="flex items-center px-4 py-2 bg-[#b17741] text-white rounded hover:bg-[#b17741]"
+              className="flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-600"
             >
               <FaPlus className="mr-2" />
               Thêm Người Dùng
@@ -149,7 +149,7 @@ export default function UserAdmin() {
               <input
                 type="text"
                 placeholder="Tìm kiếm người dùng..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded outline-none focus:border-[#b17741]"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded outline-none focus:border-blue-600"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />

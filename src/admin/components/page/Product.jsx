@@ -105,7 +105,7 @@ const ProductManagement = () => {
               <div className="flex items-center gap-2">
                 <button
                   onClick={handleAddProduct}
-                  className="flex items-center px-4 py-2 bg-[#b17741] text-white rounded hover:bg-[#b17741]"
+                  className="flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-600"
                 >
                   <FaPlus className="mr-2" />
                   Thêm
@@ -241,7 +241,7 @@ const ProductManagement = () => {
                           <td className="p-2 text-center">
                             <div className="flex justify-center gap-2">
                               <button
-                                className="p-2 text-[#b17741] hover:bg-[#b17741] rounded"
+                                className="p-2 text-blue-600 hover:bg-blue-600 rounded"
                                 onClick={() => handleEditProduct(product)}
                               >
                                 <FaEdit />

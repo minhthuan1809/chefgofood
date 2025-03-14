@@ -155,7 +155,7 @@ export default function OderHistory() {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button
                     onClick={() => handleViewDetail(order)}
-                    className="text-[#b17741] hover:text-[#b17741]"
+                    className="text-blue-600 hover:text-blue-600"
                   >
                     #{order.id}
                   </button>

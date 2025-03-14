@@ -159,7 +159,7 @@ const AppAdmin = () => {
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5aZnsestsA7FsrvvOF-dFwvfNJx1VphgRRISfSQDYV1lzclKTTCu5wnFuUKXDpLq6FUM&usqp=CAU"
               alt="Ảnh đại diện"
-              className="w-10 h-10 rounded-full ring-2 ring-[#b17741]"
+              className="w-10 h-10 rounded-full ring-2 ring-blue-600"
             />
             <div>
               <h3 className="font-medium">{dataDecentralization?.username}</h3>

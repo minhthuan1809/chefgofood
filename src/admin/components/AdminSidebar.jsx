@@ -213,16 +213,16 @@ const AdminSidebar = () => {
           return (
             <div key={item.id} className="menu-item">
               <div
-                className={`flex items-center justify-between p-3 rounded-lg hover:bg-[#b17741] transition-all duration-300 cursor-pointer ${
+                className={` flex gap-5 items-center justify-between p-3 rounded-lg hover:bg-blue-100 transition-all duration-300 cursor-pointer ${
                   currentPath === item.id.toLowerCase()
-                    ? "bg-[#b17741] text-[#b17741]"
+                    ? "bg-blue-100 text-black"
                     : "text-gray-700"
                 }`}
                 onClick={() =>
                   handleMenuItemClick(item.id, item.path, item.hasSubmenu)
                 }
               >
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-5">
                   <span
                     className={`text-xl transition-transform duration-300 ${
                       openMenus[item.id] ? "transform rotate-12" : ""
@@ -254,9 +254,9 @@ const AdminSidebar = () => {
                     {item.submenu.map((subItem) => (
                       <div
                         key={subItem.id}
-                        className={`flex items-center space-x-3 p-2 py-2 rounded-lg hover:bg-[#b17741] transition-all duration-300 cursor-pointer transform hover:translate-x-2 ${
+                        className={`flex items-center space-x-3 p-2 py-2 rounded-lg hover:bg-blue-100 transition-all duration-300 cursor-pointer transform hover:translate-x-2 ${
                           currentPath === subItem.id.toLowerCase()
-                            ? "bg-[#b17741] text-[#b17741]"
+                            ? "bg-blue-100 text-black"
                             : "text-gray-700"
                         }`}
                         onClick={() =>
@@ -275,7 +275,7 @@ const AdminSidebar = () => {
         })}
       </div>
       <button
-        className="flex w-full items-center space-x-3 p-3 rounded-lg hover:bg-[#b17741] transition-all duration-300 cursor-pointer hover:translate-x-2"
+        className="flex w-full items-center space-x-3 p-3 rounded-lg hover:bg-red-600 hover:text-white text-red-600 text-center border-2 border-red-600 transition-all duration-300 cursor-pointer hover:translate-x-2"
         onClick={handleLogout}
       >
         <CiLogout size={20} /> <span>Đăng xuất</span>

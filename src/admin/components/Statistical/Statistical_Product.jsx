@@ -47,14 +47,14 @@ export default function StatisticalProduct() {
             value={dayStart}
             onChange={(e) => setDayStart(e.target.value)}
             type="date"
-            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#b17741]"
+            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
           <p className="text-gray-500">Ngày kết thúc:</p>
           <input
             value={dayEnd}
             onChange={(e) => setDayEnd(e.target.value)}
             type="date"
-            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#b17741]"
+            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
         </div>
         <ExcelStatisticalProduct data={data} />

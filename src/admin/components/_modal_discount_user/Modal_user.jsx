@@ -227,7 +227,7 @@ const Modal_user = ({ isOpen, onClose, editData, fetchData }) => {
               <div className="flex items-center">
                 <input
                   type="checkbox"
-                  className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-600"
                   checked={status}
                   onChange={(e) => setStatus(e.target.checked)}
                 />
@@ -261,7 +261,7 @@ const Modal_user = ({ isOpen, onClose, editData, fetchData }) => {
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 flex items-center justify-center"
+              className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 flex items-center justify-center"
               disabled={isLoading}
             >
               {isLoading ? (

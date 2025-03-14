@@ -60,7 +60,7 @@ export default function Home() {
   return (
     <div className="space-y-6 p-4 md:p-8 bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="bg-white/80 backdrop-blur-lg p-6 md:p-10 rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-300">
-        <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-[#b17741] to-purple-600 bg-clip-text text-transparent mb-6">
+        <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-6">
           Giao diện Trang Chủ
         </h3>
 
@@ -73,7 +73,7 @@ export default function Home() {
               type="text"
               value={siteName}
               onChange={(e) => setSiteName(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-[#b17741] focus:border-[#b17741]"
+              className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-600 focus:border-blue-600"
               placeholder="Nhập tiêu đề..."
             />
           </div>
@@ -86,7 +86,7 @@ export default function Home() {
               type="text"
               value={logoUrl}
               onChange={(e) => setLogoUrl(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-[#b17741] focus:border-[#b17741]"
+              className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-600 focus:border-blue-600"
               placeholder="Nhập URL hình ảnh..."
             />
           </div>
@@ -99,7 +99,7 @@ export default function Home() {
               type="text"
               value={siteSlogan}
               onChange={(e) => setSiteSlogan(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-[#b17741] focus:border-[#b17741]"
+              className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-600 focus:border-blue-600"
               placeholder="Nhập khẩu hiệu..."
             />
           </div>
@@ -112,14 +112,14 @@ export default function Home() {
               type="text"
               value={openingHours}
               onChange={(e) => setOpeningHours(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-[#b17741] focus:border-[#b17741]"
+              className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-600 focus:border-blue-600"
               placeholder="Nhập giờ mở cửa..."
             />
           </div>
           <button
             onClick={handleSubmit}
             disabled={loadingBtnHeader}
-            className="bg-[#b17741] text-white px-4 py-2 rounded-lg"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg"
           >
             {loadingBtnHeader ? "Đang cập nhật..." : "Lưu Thay Đổi"}
           </button>

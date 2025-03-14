@@ -69,7 +69,7 @@ const ChatMessages = () => {
   function CheckNotification(user) {
     if (user.status.unread_count < 1) return null;
     return (
-      <span className="bg-[#b17741] text-white rounded-full px-2 py-1 text-xs">
+      <span className="bg-blue-600 text-white rounded-full px-2 py-1 text-xs">
         {user.status.unread_count}
       </span>
     );
@@ -87,7 +87,7 @@ const ChatMessages = () => {
               key={user.id}
               onClick={() => setSelectedUser(user)}
               className={`flex items-center p-4 cursor-pointer hover:bg-gray-50 ${
-                selectedUser?.id === user.id ? "bg-[#b17741]" : ""
+                selectedUser?.id === user.id ? "bg-blue-600" : ""
               }`}
             >
               <img
@@ -126,7 +126,7 @@ const ChatMessages = () => {
                   <div
                     className={`max-w-[70%] rounded-lg p-3 ${
                       message.sender_type === "admin"
-                        ? "bg-[#b17741] text-white"
+                        ? "bg-blue-600 text-white"
                         : "bg-gray-200"
                     }`}
                   >
@@ -146,12 +146,12 @@ const ChatMessages = () => {
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Enter message..."
-                  className="flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:border-[#b17741]"
+                  className="flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:border-blue-600"
                   onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
                 />
                 <button
                   onClick={handleSendMessage}
-                  className="bg-[#b17741] text-white p-2 rounded-lg hover:bg-[#b17741]"
+                  className="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-600"
                 >
                   <HiOutlinePaperAirplane className="w-5 h-5" />
                 </button>

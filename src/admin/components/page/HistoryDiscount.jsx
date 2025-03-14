@@ -68,7 +68,7 @@ export default function HistoryDiscount() {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold flex items-center gap-2">
-          <MdDiscount className="text-[#b17741]" />
+          <MdDiscount className="text-blue-600" />
           Lịch sử sử dụng mã giảm giá
         </h1>
         <ExcelHistoryDiscountUser data={discountHistory} />
@@ -84,7 +84,7 @@ export default function HistoryDiscount() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Tìm kiếm theo mã giảm giá hoặc email..."
-              className="pl-10 p-2 border rounded-lg w-full focus:outline-none focus:border-[#b17741]"
+              className="pl-10 p-2 border rounded-lg w-full focus:outline-none focus:border-blue-600"
             />
           </div>
           <button
@@ -94,7 +94,7 @@ export default function HistoryDiscount() {
             <BiRefresh className="text-xl text-gray-500" />
           </button>
           <select
-            className="p-2 border rounded-lg focus:outline-none focus:border-[#b17741]"
+            className="p-2 border rounded-lg focus:outline-none focus:border-blue-600"
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
           >
@@ -148,7 +148,7 @@ export default function HistoryDiscount() {
             {discountHistory.map((item, index) => (
               <tr key={index}>
                 <td
-                  className="px-6 py-4 whitespace-nowrap cursor-pointer hover:text-[#b17741] hover:underline"
+                  className="px-6 py-4 whitespace-nowrap cursor-pointer hover:text-blue-600 hover:underline"
                   onClick={() => {
                     const text = item.discount_code;
                     navigator.clipboard.writeText(text);
@@ -159,7 +159,7 @@ export default function HistoryDiscount() {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button
-                    className="text-[#b17741] hover:text-[#b17741] hover:underline"
+                    className="text-blue-600 hover:text-blue-600 hover:underline"
                     onClick={() => {
                       handleDetailOder(item.order_id);
                     }}

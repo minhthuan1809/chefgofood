@@ -27,7 +27,7 @@ const Dashboard = () => {
               <button className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200">
                 <FiBell className="text-xl" />
               </button>
-              <button className="flex items-center gap-2 px-4 py-2 bg-[#b17741] text-white rounded-lg hover:bg-[#b17741]">
+              <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-600">
                 Web client <FaEye />
               </button>
             </div>
@@ -40,7 +40,7 @@ const Dashboard = () => {
               value={`${dashboardData?.total_revenue.toLocaleString("vi-VN")}${
                 dashboardData?.currency
               }`}
-              color="bg-[#b17741]"
+              color="bg-blue-600"
               trend={dashboardData?.growth_rate_revenue}
             />
             <StatCard

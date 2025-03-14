@@ -78,11 +78,11 @@ export default function DiscountUser() {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold flex items-center gap-2">
-          <MdDiscount className="text-[#b17741]" />
+          <MdDiscount className="text-blue-600" />
           Quản lý mã giảm giá
         </h1>
         <button
-          className="bg-[#b17741] text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-[#b17741]"
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-600"
           onClick={() => setIsOpen(true)}
         >
           <FaPlus />
@@ -100,7 +100,7 @@ export default function DiscountUser() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Tìm kiếm mã giảm giá..."
-              className="pl-10 p-2 border rounded-lg w-full focus:outline-none focus:border-[#b17741]"
+              className="pl-10 p-2 border rounded-lg w-full focus:outline-none focus:border-blue-600"
             />
           </div>
           <button
@@ -111,7 +111,7 @@ export default function DiscountUser() {
           </button>
           {/* Bộ lọc trạng thái */}
           <select
-            className="p-2 border rounded-lg focus:outline-none focus:border-[#b17741]"
+            className="p-2 border rounded-lg focus:outline-none focus:border-blue-600"
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
           >

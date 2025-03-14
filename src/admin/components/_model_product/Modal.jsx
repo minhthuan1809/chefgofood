@@ -178,7 +178,7 @@ const Modal = ({ isOpen, onClose, editData, fetchData }) => {
                 <input
                   type="checkbox"
                   id="lock"
-                  className="w-4 h-4 text-blue-500"
+                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-600"
                   checked={lock}
                   onChange={(e) => setLock(e.target.checked)}
                 />
@@ -215,7 +215,7 @@ const Modal = ({ isOpen, onClose, editData, fetchData }) => {
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+              className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
             >
               {buttonText}
             </button>

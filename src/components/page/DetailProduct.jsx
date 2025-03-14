@@ -104,7 +104,7 @@ const DetailProduct = () => {
                   <div className="space-y-8">
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
-                        <span className="inline-flex items-center rounded-full bg-[#b17741] px-3 py-1 text-sm font-medium text-[#b17741]">
+                        <span className="inline-flex items-center rounded-full bg-[#b17741] px-3 py-1 text-sm font-medium text-white">
                           {product.type
                             .toUpperCase()
                             .replace("FOOD", "Đồ ăn")

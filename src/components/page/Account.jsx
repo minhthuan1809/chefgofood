@@ -21,7 +21,7 @@ export default function Account() {
 
   const profileLinks = [
     {
-      icon: <FaUser className="text-[#b17741]" />,
+      icon: <FaUser className="text-blue" />,
       text: "Cập nhật tài khoản",
       path: "profile",
     },
@@ -94,7 +94,7 @@ export default function Account() {
                   key={index}
                   className={`flex items-center justify-between p-4 cursor-pointer rounded-lg transition-colors duration-200 shadow-sm mb-3 ${
                     activeTab === link.path
-                      ? "bg-[#b17741] text-[#b17741]"
+                      ? "bg-blue-100 text-[#b17741]"
                       : "bg-white text-gray-700 hover:bg-gray-100"
                   }`}
                 >

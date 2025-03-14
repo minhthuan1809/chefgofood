@@ -175,7 +175,7 @@ export default function Address() {
                   <td className="px-2 sm:px-4 py-2 border">
                     <button
                       onClick={() => handleEditClick(address.id)}
-                      className="text-[#b17741] hover:underline mr-2"
+                      className="text-blue-600 hover:underline mr-2"
                     >
                       Sửa
                     </button>

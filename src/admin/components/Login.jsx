@@ -143,7 +143,7 @@ export default function Login() {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="block w-full pl-10 px-3 py-2 border outline-none border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-transparent transition transform focus:scale-[1.01] origin-center"
+                  className="block w-full pl-10 px-3 py-2 border outline-none border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition transform focus:scale-[1.01] origin-center"
                   placeholder="Enter your email"
                 />
               </div>
@@ -169,7 +169,7 @@ export default function Login() {
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  className="block w-full outline-none pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-transparent transition transform focus:scale-[1.01] origin-center"
+                  className="block w-full outline-none pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition transform focus:scale-[1.01] origin-center"
                   placeholder="Enter your password"
                 />
                 <motion.button
@@ -193,7 +193,7 @@ export default function Login() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               type="submit"
-              className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#b17741] hover:bg-[#b17741] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#b17741] transition duration-200 ease-in-out"
+              className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600  transition duration-200 ease-in-out"
             >
               Sign in
             </motion.button>

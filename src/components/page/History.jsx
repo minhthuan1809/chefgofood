@@ -47,7 +47,7 @@ export default function History() {
         <div className="container mx-auto xl:w-[85%] px-4">
           <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
             <div className="flex items-center justify-center mb-4">
-              <FaHistory className="text-4xl text-indigo-600 mr-4" />
+              <FaHistory className="text-4xl text-[#b17741] mr-4" />
               <h1 className="text-4xl font-bold text-gray-800 relative">
                 Lịch Sử Đơn Hàng
               </h1>
@@ -66,7 +66,7 @@ export default function History() {
           ) : (
             <>
               <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-                <h2 className="text-2xl font-semibold mb-6 text-indigo-700 border-b-2 border-indigo-200 pb-2">
+                <h2 className="text-2xl font-semibold mb-6 text-[#b17741] border-b-2 border-indigo-200 pb-2">
                   Đơn Hàng Đang Đặt
                 </h2>
                 {activeOrders.length > 0 ? (
@@ -81,7 +81,7 @@ export default function History() {
               </div>
 
               <div className="bg-white rounded-lg shadow-lg p-8">
-                <h2 className="text-2xl font-semibold mb-6 text-indigo-700 border-b-2 border-indigo-200 pb-2">
+                <h2 className="text-2xl font-semibold mb-6 text-[#b17741] border-b-2 border-indigo-200 pb-2">
                   Đơn Hàng Đã Đặt
                 </h2>
                 {completedOrders.length > 0 ? (

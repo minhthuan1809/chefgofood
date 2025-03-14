@@ -71,7 +71,7 @@ export default function Review() {
             ref={searchRef}
             type="search"
             placeholder="Tìm kiếm đánh giá..."
-            className="w-full pl-10 pr-4 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-[#b17741]"
+            className="w-full pl-10 pr-4 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
             value={searchTerm}
             onChange={handleSearch}
           />
@@ -79,7 +79,7 @@ export default function Review() {
         <div className="flex items-center gap-2">
           <label className="text-gray-500">Lọc theo đánh giá:</label>
           <select
-            className="border rounded px-3 py-2 outline-none shadow-sm focus:ring-2 focus:ring-[#b17741]"
+            className="border rounded px-3 py-2 outline-none shadow-sm focus:ring-2 focus:ring-blue-600"
             value={ratingFilter}
             onChange={(e) => setRatingFilter(Number(e.target.value))}
           >
@@ -100,7 +100,7 @@ export default function Review() {
         <div className="flex items-center gap-2">
           <label className="text-gray-500">Số lượng:</label>
           <select
-            className="border rounded px-3 py-2 outline-none shadow-sm focus:ring-2 focus:ring-[#b17741]"
+            className="border rounded px-3 py-2 outline-none shadow-sm focus:ring-2 focus:ring-blue-600"
             value={limit}
             onChange={(e) => setLimit(parseInt(e.target.value))}
           >

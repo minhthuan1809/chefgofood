@@ -241,8 +241,8 @@ export default function ModelAddEditUser({
                 type="submit"
                 disabled={btnLoading}
                 className={`${
-                  btnLoading && "bg-[#b17741]"
-                } px-4 py-2 text-white bg-[#b17741] rounded hover:bg-[#b17741]`}
+                  btnLoading && "bg-blue-400"
+                } px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700`}
                 onClick={editUser ? handleEditUser : handleAddUser}
               >
                 {editUser ? "Cập nhật" : "Thêm mới"}

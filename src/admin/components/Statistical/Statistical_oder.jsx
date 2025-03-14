@@ -81,13 +81,13 @@ export default function Statistical_oder() {
             value={dayStart}
             onChange={(e) => setDayStart(e.target.value)}
             type="date"
-            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#b17741]"
+            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
           <input
             value={dayEnd}
             onChange={(e) => setDayEnd(e.target.value)}
             type="date"
-            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#b17741]"
+            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
         </div>
         <ExcelStatisticalOder data={orders} />
@@ -101,8 +101,8 @@ export default function Statistical_oder() {
               <p className="text-gray-500">Tổng đơn hàng</p>
               <p className="text-2xl font-bold">{overview.total_orders}</p>
             </div>
-            <div className="bg-[#b17741] p-3 rounded-full">
-              <MdPendingActions className="text-[#b17741] text-2xl" />
+            <div className="bg-blue-600 p-3 rounded-full">
+              <MdPendingActions className="text-blue-600 text-2xl" />
             </div>
           </div>
         </div>
@@ -176,7 +176,7 @@ export default function Statistical_oder() {
                   <tr key={order.order_id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
                     <td
-                      className="px-6 py-4 whitespace-nowrap text-[#b17741] hover:text-[#b17741] cursor-pointer hover:underline"
+                      className="px-6 py-4 whitespace-nowrap text-blue-600 hover:text-blue-600 cursor-pointer hover:underline"
                       onClick={() => handleViewDetail(order.order_id)}
                     >
                       #{order.order_id}
@@ -202,7 +202,7 @@ export default function Statistical_oder() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <button
-                        className="text-[#b17741] hover:text-[#b17741] focus:outline-none"
+                        className="text-blue-600 hover:text-blue-600 focus:outline-none"
                         title="Xem hóa đơn"
                         onClick={() => handleViewDetail(order.order_id)}
                       >

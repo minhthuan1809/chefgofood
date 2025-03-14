@@ -41,13 +41,13 @@ function Statistical() {
               placeholder="Tìm kiếm..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-10 p-2 border rounded-lg w-full focus:outline-none focus:border-[#b17741]"
+              className="pl-10 p-2 border rounded-lg w-full focus:outline-none focus:border-blue-600"
             />
           </div>
 
           {/* Bộ lọc trạng thái */}
           <select
-            className="p-2 border rounded-lg focus:outline-none focus:border-[#b17741]"
+            className="p-2 border rounded-lg focus:outline-none focus:border-blue-600"
             value={type}
             onChange={(e) => setType(e.target.value)}
           >

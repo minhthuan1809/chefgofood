@@ -13,7 +13,7 @@ export default function LeftSeting() {
   return (
     <div className="bg-white rounded-xl shadow-lg p-6">
       <h3 className="text-xl font-semibold mb-6 text-gray-800 flex items-center gap-2">
-        <IoPersonOutline className="text-[#b17741]" />
+        <IoPersonOutline className="text-blue-600" />
         Thông tin cá nhân
       </h3>
 

@@ -124,7 +124,7 @@ const Decentralization = () => {
       <h1 className="text-xl md:text-2xl font-bold">Quản lý Phân quyền</h1>
       <button
         onClick={() => handleModalOpen()}
-        className="bg-[#b17741] hover:bg-[#b17741] text-white px-6 py-2 rounded-lg flex items-center gap-2"
+        className="bg-blue-600 hover:bg-blue-600 text-white px-6 py-2 rounded-lg flex items-center gap-2"
       >
         <HiPlus className="text-xl" />
         Thêm tài khoản
@@ -139,7 +139,7 @@ const Decentralization = () => {
         <input
           type="text"
           placeholder="Tìm tài khoản..."
-          className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-[#b17741]"
+          className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-blue-600"
           value={searchTerm}
           onChange={handleSearchChange}
         />
@@ -181,7 +181,7 @@ const Decentralization = () => {
         <div className="flex gap-2">
           <button
             onClick={() => handleModalOpen(admin)}
-            className="text-[#b17741] hover:text-[#b17741]"
+            className="text-blue-600 hover:text-blue-600"
           >
             <HiPencilAlt className="h-5 w-5" />
           </button>
