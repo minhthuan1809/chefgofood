@@ -107,7 +107,7 @@ export default function ModalForgot({ onClose, isLoginModalOpen }) {
             <div
               className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${
                 step >= 1
-                  ? "bg-blue-500 border-blue-500 text-white"
+                  ? "bg-[#b17741] border-[#b17741] text-white"
                   : "border-gray-300 text-gray-500"
               }`}
             >
@@ -116,7 +116,7 @@ export default function ModalForgot({ onClose, isLoginModalOpen }) {
             <div
               className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${
                 step >= 2
-                  ? "bg-blue-500 border-blue-500 text-white"
+                  ? "bg-[#b17741] border-[#b17741] text-white"
                   : "border-gray-300 text-gray-500"
               }`}
             >
@@ -125,7 +125,7 @@ export default function ModalForgot({ onClose, isLoginModalOpen }) {
             <div
               className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${
                 step >= 3
-                  ? "bg-blue-500 border-blue-500 text-white"
+                  ? "bg-[#b17741] border-[#b17741] text-white"
                   : "border-gray-300 text-gray-500"
               }`}
             >
@@ -148,7 +148,7 @@ export default function ModalForgot({ onClose, isLoginModalOpen }) {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-transparent text-base"
                       placeholder="Nhập email của bạn"
                       required
                     />
@@ -157,7 +157,7 @@ export default function ModalForgot({ onClose, isLoginModalOpen }) {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-blue-500 text-white font-medium py-3 rounded-lg transition-colors disabled:opacity-50 flex items-center justify-center gap-2 text-base"
+                  className="w-full bg-[#b17741] text-white font-medium py-3 rounded-lg transition-colors disabled:opacity-50 flex items-center justify-center gap-2 text-base"
                 >
                   {isLoading ? (
                     <>
@@ -169,7 +169,7 @@ export default function ModalForgot({ onClose, isLoginModalOpen }) {
                   )}
                 </button>
                 <div className="flex items-start gap-2 mt-3">
-                  <MdInfo className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                  <MdInfo className="w-5 h-5 text-[#b17741] flex-shrink-0 mt-0.5" />
                   <p className="text-sm text-gray-500">
                     Mã xác nhận sẽ được gửi đến email của bạn
                   </p>
@@ -190,7 +190,7 @@ export default function ModalForgot({ onClose, isLoginModalOpen }) {
                       type="text"
                       value={code}
                       onChange={(e) => setCode(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-transparent text-base"
                       placeholder="Nhập mã từ email"
                       required
                     />
@@ -198,7 +198,7 @@ export default function ModalForgot({ onClose, isLoginModalOpen }) {
                   <div className="text-center mt-3">
                     <button
                       type="button"
-                      className="text-sm text-blue-600 hover:underline disabled:opacity-50 disabled:no-underline"
+                      className="text-sm text-[#b17741] hover:underline disabled:opacity-50 disabled:no-underline"
                       onClick={handleSubmitEmail}
                       disabled={countDown > 0}
                     >
@@ -209,7 +209,7 @@ export default function ModalForgot({ onClose, isLoginModalOpen }) {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-blue-500 text-white font-medium py-3 rounded-lg transition-colors disabled:opacity-50 flex items-center justify-center gap-2 text-base"
+                  className="w-full bg-[#b17741] text-white font-medium py-3 rounded-lg transition-colors disabled:opacity-50 flex items-center justify-center gap-2 text-base"
                 >
                   {isLoading ? (
                     <>
@@ -221,7 +221,7 @@ export default function ModalForgot({ onClose, isLoginModalOpen }) {
                   )}
                 </button>
                 <div className="flex items-start gap-2">
-                  <MdInfo className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                  <MdInfo className="w-5 h-5 text-[#b17741] flex-shrink-0 mt-0.5" />
                   <p className="text-sm text-gray-500">
                     Vui lòng kiểm tra email để lấy mã xác nhận
                   </p>
@@ -242,7 +242,7 @@ export default function ModalForgot({ onClose, isLoginModalOpen }) {
                       type="password"
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-transparent text-base"
                       placeholder="Nhập mật khẩu mới"
                       required
                     />
@@ -258,7 +258,7 @@ export default function ModalForgot({ onClose, isLoginModalOpen }) {
                       type="password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-transparent text-base"
                       placeholder="Nhập lại mật khẩu mới"
                       required
                     />
@@ -267,7 +267,7 @@ export default function ModalForgot({ onClose, isLoginModalOpen }) {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-blue-500 text-white font-medium py-3 rounded-lg transition-colors disabled:opacity-50 flex items-center justify-center gap-2 text-base"
+                  className="w-full bg-[#b17741] text-white font-medium py-3 rounded-lg transition-colors disabled:opacity-50 flex items-center justify-center gap-2 text-base"
                 >
                   {isLoading ? (
                     <>
@@ -279,7 +279,7 @@ export default function ModalForgot({ onClose, isLoginModalOpen }) {
                   )}
                 </button>
                 <div className="flex items-start gap-2">
-                  <MdInfo className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                  <MdInfo className="w-5 h-5 text-[#b17741] flex-shrink-0 mt-0.5" />
                   <p className="text-sm text-gray-500">
                     Mật khẩu mới phải có ít nhất 8 ký tự
                   </p>

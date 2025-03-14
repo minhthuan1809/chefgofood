@@ -4,7 +4,7 @@ import { BsQrCode } from "react-icons/bs";
 export default function PaymentMethodSelector({ selectedMethod, onSelect }) {
   const PAYMENT_METHODS = [
     { id: "cash", name: "Tiền mặt", icon: FaMoneyBillWave },
-    { id: "credit", name: "Chuyển khoản", icon: BsQrCode  },
+    { id: "credit", name: "Chuyển khoản", icon: BsQrCode },
   ];
   return (
     <div>
@@ -18,7 +18,7 @@ export default function PaymentMethodSelector({ selectedMethod, onSelect }) {
               className={`flex flex-col items-center gap-2 p-3 rounded-lg border
           ${
             selectedMethod === method.id
-              ? "border-blue-500 bg-blue-50"
+              ? "border-[#b17741] bg-[#b17741]"
               : "border-gray-300 hover:bg-gray-50"
           }`}
             >

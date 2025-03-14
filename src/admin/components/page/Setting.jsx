@@ -86,7 +86,7 @@ export default function Setting() {
         {/* Đổi mật khẩu */}
         <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6">
           <h3 className="text-lg sm:text-xl font-semibold mb-4 text-gray-800 flex items-center gap-2">
-            <IoLockClosedOutline className="text-blue-500" />
+            <IoLockClosedOutline className="text-[#b17741]" />
             Đổi mật khẩu
           </h3>
 
@@ -109,7 +109,7 @@ export default function Setting() {
                   onChange={(e) => setOldPassword(e.target.value)}
                   className={`w-full outline-none pl-10 pr-12 py-2 border ${
                     errorOldPassword ? "border-red-500" : "border-gray-300"
-                  } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+                  } rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-[#b17741] transition-all`}
                   placeholder="Nhập mật khẩu hiện tại"
                 />
                 {errorOldPassword && (
@@ -151,7 +151,7 @@ export default function Setting() {
                   onChange={(e) => setNewPassword(e.target.value)}
                   className={`w-full pl-10 outline-none pr-12 py-2 border ${
                     errorNewPassword ? "border-red-500" : "border-gray-300"
-                  } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+                  } rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-[#b17741] transition-all`}
                   placeholder="Nhập mật khẩu mới"
                 />
                 {errorNewPassword && (
@@ -194,7 +194,7 @@ export default function Setting() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className={`w-full pl-10 outline-none pr-12 py-2 border ${
                     errorConfirmPassword ? "border-red-500" : "border-gray-300"
-                  } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+                  } rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-[#b17741] transition-all`}
                   placeholder="Xác nhận mật khẩu mới"
                 />
                 {errorConfirmPassword && (
@@ -220,7 +220,7 @@ export default function Setting() {
 
             <button
               type="submit"
-              className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:ring-4 focus:ring-blue-200 transition-all font-medium mt-6"
+              className="w-full bg-[#b17741] text-white py-2 px-4 rounded-lg hover:bg-[#b17741] focus:ring-4 focus:ring-[#b17741] transition-all font-medium mt-6"
             >
               Đổi mật khẩu
             </button>

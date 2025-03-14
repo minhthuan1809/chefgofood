@@ -226,14 +226,14 @@ const PaySePay = () => {
 
         {/* Main Content */}
         <div className="p-6">
-          <h1 className="text-3xl font-bold text-center mb-6 text-blue-800">
+          <h1 className="text-3xl font-bold text-center mb-6 text-[#b17741]">
             Thanh Toán Điện Tử
           </h1>
 
           <div className="grid md:grid-cols-2 gap-6 items-start">
             {/* QR Code Section */}
             <div className="bg-gray-50 p-6 rounded-lg shadow-md">
-              <h2 className="text-xl font-semibold mb-4 text-center text-blue-700">
+              <h2 className="text-xl font-semibold mb-4 text-center text-[#b17741]">
                 Cách 1: Quét Mã QR
               </h2>
               <div className="flex justify-center">
@@ -249,7 +249,7 @@ const PaySePay = () => {
 
             {/* Manual Transfer Section */}
             <div className="bg-gray-50 p-6 rounded-lg shadow-md">
-              <h2 className="text-xl font-semibold mb-4 text-center text-blue-700">
+              <h2 className="text-xl font-semibold mb-4 text-center text-[#b17741]">
                 Cách 2: Chuyển Khoản Thủ Công
               </h2>
               <table className="w-full mb-4">
@@ -271,7 +271,7 @@ const PaySePay = () => {
                               label.toLowerCase()
                             )
                           }
-                          className="ml-2 text-blue-500 hover:text-blue-700 transition"
+                          className="ml-2 text-[#b17741] hover:text-[#b17741] transition"
                           aria-label={`Sao chép ${label}`}
                         >
                           <FaCopy />
@@ -320,7 +320,7 @@ const PaySePay = () => {
                 {paymentStatus.status === "success" && (
                   <Link
                     to="/history"
-                    className="text-blue-500 hover:text-blue-700 transition underline mt-2"
+                    className="text-[#b17741] hover:text-[#b17741] transition underline mt-2"
                   >
                     Theo dõi đơn hàng
                   </Link>

@@ -175,7 +175,7 @@ export default function Address() {
                   <td className="px-2 sm:px-4 py-2 border">
                     <button
                       onClick={() => handleEditClick(address.id)}
-                      className="text-blue-500 hover:underline mr-2"
+                      className="text-[#b17741] hover:underline mr-2"
                     >
                       Sửa
                     </button>
@@ -197,14 +197,14 @@ export default function Address() {
         {addresses.length < 3 && (
           <button
             onClick={handleAddClick}
-            className="px-4 sm:px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200"
+            className="px-4 sm:px-6 py-2 bg-[#b17741] text-white rounded-lg hover:bg-[#b17741] transition-colors duration-200"
           >
             Thêm
           </button>
         )}
       </div>
 
-      <EditModal  
+      <EditModal
         isOpen={isEditing || isAdding}
         onClose={handleClose}
         editInfo={editInfo}

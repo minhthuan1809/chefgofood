@@ -51,7 +51,7 @@ export default function Favorite() {
 
         {loading ? (
           <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#b17741]"></div>
           </div>
         ) : favorites.data.favorites.length < 1 ? (
           <div className="text-center py-12 absolute top-[40%] left-[50%] transform -translate-x-1/2 -translate-y-1/2">
@@ -61,7 +61,7 @@ export default function Favorite() {
             </p>
             <Link
               to="/food"
-              className="mt-4 inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="mt-4 inline-block px-6 py-2 bg-[#b17741] text-white rounded-lg hover:bg-[#b17741] transition-colors"
             >
               Khám phá sản phẩm
             </Link>
@@ -120,7 +120,7 @@ export default function Favorite() {
                   </p>
 
                   <div className="flex justify-between items-center">
-                    <span className="text-blue-600 font-bold">
+                    <span className="text-[#b17741] font-bold">
                       {parseInt(item.product.price).toLocaleString("vi-VN")}₫
                     </span>
                   </div>

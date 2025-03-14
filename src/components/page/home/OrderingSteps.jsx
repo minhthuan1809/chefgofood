@@ -37,30 +37,30 @@ const OrderingSteps = () => {
             <div key={step.id} className="relative group">
               {/* Connecting lines - visible only on medium and larger screens */}
               {index % 2 === 0 && index !== steps.length - 1 && (
-                <div className="hidden md:block absolute top-1/2 -right-10 lg:-right-20 w-10 lg:w-20 h-0.5 bg-blue-200" />
+                <div className="hidden md:block absolute top-1/2 -right-10 lg:-right-20 w-10 lg:w-20 h-0.5 bg-[#b17741]" />
               )}
 
               {index < steps.length - 2 && (
-                <div className="hidden md:block absolute left-1/2 top-full w-0.5 h-12 bg-blue-200" />
+                <div className="hidden md:block absolute left-1/2 top-full w-0.5 h-12 bg-[#b17741]" />
               )}
 
               {/* Mobile connecting line */}
               {index !== steps.length - 1 && (
-                <div className="md:hidden absolute left-1/2 top-full w-0.5 h-8 bg-blue-200" />
+                <div className="md:hidden absolute left-1/2 top-full w-0.5 h-8 bg-[#b17741]" />
               )}
 
-              <div className="bg-white p-4 md:p-6 rounded-lg border-2 border-blue-200 hover:border-blue-400 transition-all duration-300 h-full shadow-sm hover:shadow-md">
+              <div className="bg-white p-4 md:p-6 rounded-lg border-2 border-[#b17741] hover:border-[#b17741] transition-all duration-300 h-full shadow-sm hover:shadow-md">
                 <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4">
                   {/* Icon container */}
                   <div className="relative flex-shrink-0">
-                    <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white">
+                    <div className="w-12 h-12 bg-[#b17741] rounded-full flex items-center justify-center text-white">
                       <DynamicIcon
                         iconName={step.icon}
                         size={24}
                         className="text-white"
                       />
                     </div>
-                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-white rounded-full flex items-center justify-center text-sm font-bold text-blue-600 border-2 border-blue-200 group-hover:border-blue-400">
+                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-white rounded-full flex items-center justify-center text-sm font-bold text-[#b17741] border-2 border-[#b17741] group-hover:border-[#b17741]">
                       {step.step_number}
                     </div>
                   </div>

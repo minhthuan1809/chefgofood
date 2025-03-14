@@ -97,7 +97,7 @@ export default function Home() {
                   type="search"
                   placeholder={header.websiteInfo?.search_placeholder}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full sm:w-96 p-3 sm:p-4 rounded-full text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full sm:w-96 p-3 sm:p-4 rounded-full text-black focus:outline-none focus:ring-2 focus:ring-[#b17741]"
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       handleSearch();
@@ -106,7 +106,7 @@ export default function Home() {
                 />
                 <button
                   onClick={handleSearch}
-                  className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 flex items-center justify-center"
+                  className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-[#b17741] text-white rounded-full hover:bg-[#b17741] transition duration-300 flex items-center justify-center"
                 >
                   <FaSearch className="mr-2" />
                   Tìm kiếm

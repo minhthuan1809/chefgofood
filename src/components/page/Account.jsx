@@ -21,7 +21,7 @@ export default function Account() {
 
   const profileLinks = [
     {
-      icon: <FaUser className="text-blue-500" />,
+      icon: <FaUser className="text-[#b17741]" />,
       text: "Cập nhật tài khoản",
       path: "profile",
     },
@@ -94,7 +94,7 @@ export default function Account() {
                   key={index}
                   className={`flex items-center justify-between p-4 cursor-pointer rounded-lg transition-colors duration-200 shadow-sm mb-3 ${
                     activeTab === link.path
-                      ? "bg-blue-100 text-blue-600"
+                      ? "bg-[#b17741] text-[#b17741]"
                       : "bg-white text-gray-700 hover:bg-gray-100"
                   }`}
                 >
@@ -102,7 +102,7 @@ export default function Account() {
                     <div
                       className={`text-lg ${
                         activeTab === link.path
-                          ? "text-blue-600"
+                          ? "text-[#b17741]"
                           : "text-gray-700"
                       }`}
                     >
@@ -111,7 +111,7 @@ export default function Account() {
                     <p
                       className={`font-medium ${
                         activeTab === link.path
-                          ? "text-blue-600"
+                          ? "text-[#b17741]"
                           : "text-gray-700"
                       }`}
                     >
@@ -121,7 +121,7 @@ export default function Account() {
                   <MdKeyboardArrowRight
                     className={`text-lg ${
                       activeTab === link.path
-                        ? "text-blue-600"
+                        ? "text-[#b17741]"
                         : "text-gray-400"
                     }`}
                   />

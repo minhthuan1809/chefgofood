@@ -75,7 +75,7 @@ const CartItem = ({
             </p>
           </div>
         )}
-        <p className="font-semibold text-blue-600 mt-1">
+        <p className="font-semibold text-[#b17741] mt-1">
           Thành tiền: {itemPrice.toLocaleString("vi-VN")}₫
         </p>
       </div>
@@ -262,7 +262,7 @@ export default function Cart() {
                 alt="img-cart-empty"
               />
               <Link to="/food">
-                <span className="text-blue-500 mt-6 block hover:underline ">
+                <span className="text-[#b17741] mt-6 block hover:underline ">
                   Tiếp tục mua sắm
                 </span>
               </Link>

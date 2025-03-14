@@ -207,7 +207,7 @@ export default function FixFooter() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Nhập tên công ty"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent  outline-none"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-transparent  outline-none"
                 required
               />
             </div>
@@ -222,7 +222,7 @@ export default function FixFooter() {
                 onChange={(e) => setDescription(e.target.value)}
                 rows={4}
                 placeholder="Nhập mô tả"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent  outline-none"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-transparent  outline-none"
                 required
               />
             </div>
@@ -237,14 +237,14 @@ export default function FixFooter() {
                 value={copyright_text}
                 onChange={(e) => setCopyrightText(e.target.value)}
                 placeholder="Nhập bản quyền"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent  outline-none"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-transparent  outline-none"
                 required
               />
             </div>
 
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-200"
+              className="w-full bg-[#b17741] text-white py-3 rounded-lg font-semibold hover:bg-[#b17741] transition duration-200"
             >
               Cập nhật thông tin
             </button>
@@ -258,7 +258,7 @@ export default function FixFooter() {
 
           <Link
             to="https://react-icons.github.io/react-icons/"
-            className="text-blue-600 hover:text-blue-800 block mb-4"
+            className="text-[#b17741] hover:text-[#b17741] block mb-4"
             target="_blank"
           >
             Xem danh sách icon tại đây
@@ -271,7 +271,7 @@ export default function FixFooter() {
                 placeholder="Nhập tên icon..."
                 value={icon}
                 onChange={(e) => setIcon(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent  outline-none"
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-transparent  outline-none"
                 required
               />
               <input
@@ -280,12 +280,12 @@ export default function FixFooter() {
                 value={link}
                 placeholder="Nhập đường dẫn..."
                 onChange={(e) => setLink(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent  outline-none"
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-transparent  outline-none"
               />
               <button
                 onClick={handleAddSocial}
                 type="button"
-                className="bg-blue-600 text-white py-2 px-6 rounded-lg font-semibold hover:bg-green-700 transition duration-200 outline-none "
+                className="bg-[#b17741] text-white py-2 px-6 rounded-lg font-semibold hover:bg-green-700 transition duration-200 outline-none "
               >
                 Thêm mới
               </button>
@@ -322,7 +322,7 @@ export default function FixFooter() {
                             type="text"
                             value={editSocialIcon}
                             onChange={(e) => setEditSocialIcon(e.target.value)}
-                            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-transparent outline-none"
                           />
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
@@ -331,7 +331,7 @@ export default function FixFooter() {
                             type="text"
                             value={editSocialLink}
                             onChange={(e) => setEditSocialLink(e.target.value)}
-                            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-transparent outline-none"
                           />
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
@@ -344,7 +344,7 @@ export default function FixFooter() {
                             </button>
                             <button
                               onClick={() => handleEditSocial(item.id)}
-                              className="p-2 text-blue-600 hover:bg-blue-100 rounded-full transition duration-200"
+                              className="p-2 text-[#b17741] hover:bg-[#b17741] rounded-full transition duration-200"
                             >
                               {btnEditSocial ? "..." : <MdSave size={24} />}
                             </button>
@@ -363,7 +363,7 @@ export default function FixFooter() {
                           <Link
                             to={item.url}
                             target="_blank"
-                            className="text-blue-600 hover:text-blue-800"
+                            className="text-[#b17741] hover:text-[#b17741]"
                           >
                             {item.url}
                           </Link>
@@ -377,7 +377,7 @@ export default function FixFooter() {
                               <MdDeleteForever size={24} />
                             </button>
                             <button
-                              className="p-2 text-blue-600 hover:bg-blue-100 rounded-full transition duration-200"
+                              className="p-2 text-[#b17741] hover:bg-[#b17741] rounded-full transition duration-200"
                               onClick={() => {
                                 setEditSocialId(item.id);
                                 setEditSocialIcon(item.icon);
@@ -404,7 +404,7 @@ export default function FixFooter() {
 
           <Link
             to="https://react-icons.github.io/react-icons/"
-            className="text-blue-600 hover:text-blue-800 block mb-4"
+            className="text-[#b17741] hover:text-[#b17741] block mb-4"
             target="_blank"
           >
             Xem danh sách icon tại đây
@@ -418,7 +418,7 @@ export default function FixFooter() {
                 placeholder="Nhập tên icon..."
                 value={iconContact}
                 onChange={(e) => setIconContact(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent  outline-none"
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-transparent  outline-none"
               />
               <input
                 required
@@ -427,12 +427,12 @@ export default function FixFooter() {
                 placeholder="Nhập đường dẫn..."
                 value={contentContact}
                 onChange={(e) => setContentContact(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent  outline-none"
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-transparent  outline-none"
               />
               <button
                 onClick={handleAddContact}
                 type="button"
-                className="bg-blue-600 text-white py-2 px-6 rounded-lg font-semibold hover:bg-blue-700 transition duration-200 outline-none "
+                className="bg-[#b17741] text-white py-2 px-6 rounded-lg font-semibold hover:bg-[#b17741] transition duration-200 outline-none "
               >
                 Thêm mới
               </button>
@@ -472,7 +472,7 @@ export default function FixFooter() {
                               onChange={(e) =>
                                 setEditContactIcon(e.target.value)
                               }
-                              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-transparent outline-none"
                             />
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
@@ -483,7 +483,7 @@ export default function FixFooter() {
                               onChange={(e) =>
                                 setEditContactContent(e.target.value)
                               }
-                              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-transparent outline-none"
                             />
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
@@ -496,7 +496,7 @@ export default function FixFooter() {
                               </button>
                               <button
                                 onClick={() => handleEditContact(item.id)}
-                                className="p-2 text-blue-600 hover:bg-blue-100 rounded-full transition duration-200"
+                                className="p-2 text-[#b17741] hover:bg-[#b17741] rounded-full transition duration-200"
                               >
                                 {btnEditContact ? "..." : <MdSave size={24} />}
                               </button>
@@ -523,7 +523,7 @@ export default function FixFooter() {
                                 <MdDeleteForever size={24} />
                               </button>
                               <button
-                                className="p-2 text-blue-600 hover:bg-blue-100 rounded-full transition duration-200"
+                                className="p-2 text-[#b17741] hover:bg-[#b17741] rounded-full transition duration-200"
                                 onClick={() => {
                                   setEditContactId(item.id);
                                   setEditContactIcon(item.icon);

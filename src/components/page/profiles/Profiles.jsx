@@ -98,7 +98,7 @@ export default function Profile() {
               value={newUrl}
               onChange={(e) => setNewUrl(e.target.value)}
               type="text"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#b17741] shadow-sm"
               placeholder="Nhập url hình ảnh..."
             />
           </div>
@@ -114,7 +114,7 @@ export default function Profile() {
           value={newName}
           type="text"
           onChange={(e) => setNewName(e.target.value)}
-          className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+          className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#b17741] shadow-sm"
           placeholder="Nhập tên mới"
         />
         <p className="text-gray-600 mb-4">
@@ -124,7 +124,7 @@ export default function Profile() {
           </span>
         </p>
         <button
-          className="w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 shadow-md"
+          className="w-full px-4 py-3 bg-[#b17741] text-white rounded-lg hover:bg-[#b17741] transition duration-200 shadow-md"
           onClick={handleOnChange}
         >
           Lưu thay đổi

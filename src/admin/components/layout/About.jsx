@@ -162,7 +162,7 @@ export default function About() {
   return (
     <div className="space-y-6 p-4 md:p-8 bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="bg-white/80 backdrop-blur-lg p-6 md:p-10 rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-300 space-y-4">
-        <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-6">
+        <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-[#b17741] to-purple-600 bg-clip-text text-transparent mb-6">
           Giao diện đầu tiên
         </h3>
         <div className="space-y-2">
@@ -186,14 +186,14 @@ export default function About() {
         </div>
         <button
           disabled={btnFirst}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+          className="bg-[#b17741] text-white px-4 py-2 rounded-lg"
           onClick={handleFixFirstUiAbout}
         >
           {btnFirst ? "Đang cập nhật..." : "Lưu thay đổi"}
         </button>
       </div>
       <div className="bg-white/80 backdrop-blur-lg p-6 md:p-10 rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-300 space-y-4">
-        <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-6">
+        <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-[#b17741] to-purple-600 bg-clip-text text-transparent mb-6">
           Giao diện thứ hai
         </h3>
         <div className="space-y-2">
@@ -218,7 +218,7 @@ export default function About() {
         </div>
         <button
           disabled={btnSecond}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+          className="bg-[#b17741] text-white px-4 py-2 rounded-lg"
           onClick={handleFixSecondUiAbout}
         >
           {btnSecond ? "Đang cập nhật..." : "Lưu thay đổi"}
@@ -232,10 +232,10 @@ export default function About() {
                 <DynamicIcon
                   iconName={feature.icon}
                   size={50}
-                  className="text-blue-600 mb-2 sm:mb-4"
+                  className="text-[#b17741] mb-2 sm:mb-4"
                 />
                 <button
-                  className="text-blue-600 hover:text-blue-800 transition-all duration-300 "
+                  className="text-[#b17741] hover:text-[#b17741] transition-all duration-300 "
                   onClick={() => {
                     setModalEdit(true);
                     setDataEdit(feature);
@@ -256,7 +256,7 @@ export default function About() {
       </div>
       <div className="bg-white/80 backdrop-blur-lg p-6 md:p-10 rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-300 space-y-4">
         <section className="space-y-4">
-          <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-6">
+          <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-[#b17741] to-purple-600 bg-clip-text text-transparent mb-6">
             Đa dạng món ăn
           </h1>
           <div className="flex items-center gap-4">
@@ -269,7 +269,7 @@ export default function About() {
               value={addInput}
             />
             <button
-              className="bg-blue-600 text-white  p-2 px-4 rounded-lg"
+              className="bg-[#b17741] text-white  p-2 px-4 rounded-lg"
               onClick={handleAddData}
             >
               Thêm
@@ -319,7 +319,7 @@ export default function About() {
                     ) : (
                       <>
                         <button
-                          className="text-blue-600 px-4 py-2 rounded-lg"
+                          className="text-[#b17741] px-4 py-2 rounded-lg"
                           onClick={() => {
                             setInputEdit(standard.id);
                             setInputEditData(standard.name);

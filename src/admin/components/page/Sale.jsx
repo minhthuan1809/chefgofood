@@ -66,11 +66,11 @@ export default function Sale() {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold flex items-center gap-2">
-          <MdDiscount className="text-blue-600" />
+          <MdDiscount className="text-[#b17741]" />
           Quản lý mã giảm giá
         </h1>
         <button
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700"
+          className="bg-[#b17741] text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-[#b17741]"
           onClick={() => {
             setIsOpen(true);
             setDiscount(null);
@@ -90,7 +90,7 @@ export default function Sale() {
               type="text"
               value={searchTerm}
               placeholder="Tìm kiếm mã giảm giá..."
-              className="pl-10 p-2 border rounded-lg w-full focus:outline-none focus:border-blue-500"
+              className="pl-10 p-2 border rounded-lg w-full focus:outline-none focus:border-[#b17741]"
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
@@ -104,7 +104,7 @@ export default function Sale() {
           <div className="flex items-center gap-2">
             <label className="text-gray-500">Số lượng:</label>
             <select
-              className="border rounded px-3 py-2 outline-none shadow-sm focus:ring-2 focus:ring-blue-500"
+              className="border rounded px-3 py-2 outline-none shadow-sm focus:ring-2 focus:ring-[#b17741]"
               onChange={(e) => setLimit(parseInt(e.target.value))}
               value={limit}
             >
@@ -158,7 +158,7 @@ export default function Sale() {
               <tr key={coupon.id}>
                 <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
                 <td
-                  className="px-6 py-4 whitespace-nowrap cursor-pointer hover:text-blue-600"
+                  className="px-6 py-4 whitespace-nowrap cursor-pointer hover:text-[#b17741]"
                   onClick={() => {
                     toast.dismiss();
                     navigator.clipboard
@@ -212,7 +212,7 @@ export default function Sale() {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex gap-3">
                     <button
-                      className="text-blue-600 hover:text-blue-800"
+                      className="text-[#b17741] hover:text-[#b17741]"
                       onClick={() => {
                         setIsOpen(true);
                         setDiscount(coupon);

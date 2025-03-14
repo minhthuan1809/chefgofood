@@ -96,7 +96,7 @@ const Products = () => {
                       onClick={() => setSelectedCategory(value)}
                       className={`px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base rounded-full transition-colors duration-300 ${
                         value === selectedCategory
-                          ? "bg-blue-600 text-white"
+                          ? "bg-[#b17741] text-white"
                           : "bg-white text-gray-700 hover:bg-gray-200"
                       }`}
                     >

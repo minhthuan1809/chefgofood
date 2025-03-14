@@ -74,7 +74,7 @@ export function EditModal({
         </div>
         <div className="flex justify-end space-x-2">
           <button
-            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+            className="px-4 py-2 bg-[#b17741] text-white rounded-lg hover:bg-[#b17741]"
             onClick={isEditing ? onClickSave : onClickCreate}
           >
             {isEditing ? "Lưu" : "Thêm"}

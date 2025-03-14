@@ -78,11 +78,11 @@ export default function DiscountUser() {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold flex items-center gap-2">
-          <MdDiscount className="text-blue-600" />
+          <MdDiscount className="text-[#b17741]" />
           Quản lý mã giảm giá
         </h1>
         <button
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700"
+          className="bg-[#b17741] text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-[#b17741]"
           onClick={() => setIsOpen(true)}
         >
           <FaPlus />
@@ -100,7 +100,7 @@ export default function DiscountUser() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Tìm kiếm mã giảm giá..."
-              className="pl-10 p-2 border rounded-lg w-full focus:outline-none focus:border-blue-500"
+              className="pl-10 p-2 border rounded-lg w-full focus:outline-none focus:border-[#b17741]"
             />
           </div>
           <button
@@ -111,7 +111,7 @@ export default function DiscountUser() {
           </button>
           {/* Bộ lọc trạng thái */}
           <select
-            className="p-2 border rounded-lg focus:outline-none focus:border-blue-500"
+            className="p-2 border rounded-lg focus:outline-none focus:border-[#b17741]"
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
           >
@@ -181,7 +181,7 @@ export default function DiscountUser() {
             {coupons.map((coupon, index) => (
               <tr key={coupon.id}>
                 <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
-                <td className="px-6 py-4 whitespace-nowrap cursor-pointer hover:text-blue-600">
+                <td className="px-6 py-4 whitespace-nowrap cursor-pointer hover:text-[#b17741]">
                   <span
                     onClick={() => {
                       toast.dismiss();
@@ -238,7 +238,7 @@ export default function DiscountUser() {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex gap-3">
                     <button
-                      className="text-blue-600 hover:text-blue-800"
+                      className="text-[#b17741] hover:text-[#b17741]"
                       onClick={() => {
                         setEditData(coupon);
                         setIsOpen(true);

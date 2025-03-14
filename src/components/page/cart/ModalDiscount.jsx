@@ -29,7 +29,7 @@ const DiscountButton = ({ code, subtotal, onApply }) => {
     <button
       key={code.id}
       onClick={handleClick}
-      className="w-full text-left p-3 hover:bg-blue-50 rounded-lg transition-colors"
+      className="w-full text-left p-3 hover:bg-[#b17741] rounded-lg transition-colors"
     >
       <div className="flex justify-between items-center">
         <div>
@@ -45,12 +45,12 @@ const DiscountButton = ({ code, subtotal, onApply }) => {
             <p className="text-xs text-red-500">{code.message}</p>
           )}
           {code.isUserSpecific && (
-            <p className="text-xs p-1 text-blue-400">
+            <p className="text-xs p-1 text-[#b17741]">
               Giảm giá dành cho riêng bạn
             </p>
           )}
         </div>
-        <span className="text-blue-600">Giảm {code.discount_percent}%</span>
+        <span className="text-[#b17741]">Giảm {code.discount_percent}%</span>
       </div>
     </button>
   );

@@ -123,7 +123,7 @@ const DiscountModalSystem = ({ isOpen, onClose, discount, fetchData }) => {
                   id="code"
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#b17741] focus:border-[#b17741] sm:text-sm"
                   required
                 />
               </div>
@@ -140,7 +140,7 @@ const DiscountModalSystem = ({ isOpen, onClose, discount, fetchData }) => {
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#b17741] focus:border-[#b17741] sm:text-sm"
                 required
               />
             </div>
@@ -156,7 +156,7 @@ const DiscountModalSystem = ({ isOpen, onClose, discount, fetchData }) => {
                 id="discount-percent"
                 value={discountPercent}
                 onChange={(e) => setDiscountPercent(Number(e.target.value))}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#b17741] focus:border-[#b17741] sm:text-sm"
                 required
               />
             </div>
@@ -172,7 +172,7 @@ const DiscountModalSystem = ({ isOpen, onClose, discount, fetchData }) => {
                 id="minimum-price"
                 value={minimumPrice}
                 onChange={(e) => setMinimumPrice(Number(e.target.value))}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#b17741] focus:border-[#b17741] sm:text-sm"
                 required
               />
             </div>
@@ -188,7 +188,7 @@ const DiscountModalSystem = ({ isOpen, onClose, discount, fetchData }) => {
                 id="quantity"
                 value={quantity}
                 onChange={(e) => setQuantity(Number(e.target.value))}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#b17741] focus:border-[#b17741] sm:text-sm"
                 required
               />
             </div>
@@ -204,7 +204,7 @@ const DiscountModalSystem = ({ isOpen, onClose, discount, fetchData }) => {
                 id="valid-from"
                 value={validFrom}
                 onChange={(e) => setValidFrom(e.target.value)}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#b17741] focus:border-[#b17741] sm:text-sm"
                 required
               />
             </div>
@@ -220,7 +220,7 @@ const DiscountModalSystem = ({ isOpen, onClose, discount, fetchData }) => {
                 id="valid-to"
                 value={validTo}
                 onChange={(e) => setValidTo(e.target.value)}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#b17741] focus:border-[#b17741] sm:text-sm"
                 required
               />
             </div>
@@ -239,8 +239,8 @@ const DiscountModalSystem = ({ isOpen, onClose, discount, fetchData }) => {
               type="submit"
               disabled={btnLoading}
               className={`${
-                btnLoading ? "bg-blue-400" : ""
-              } w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm`}
+                btnLoading ? "bg-[#b17741]" : ""
+              } w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-[#b17741] text-base font-medium text-white hover:bg-[#b17741] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#b17741] sm:ml-3 sm:w-auto sm:text-sm`}
               onClick={discount ? handleUpdate : handleCreate}
             >
               {btnLoading ? (

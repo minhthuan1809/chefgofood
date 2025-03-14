@@ -57,7 +57,7 @@ const HistorySePay = () => {
       <div className="bg-white rounded-lg shadow-lg p-6">
         <div className="space-y-4 mb-6">
           <div className="flex items-center space-x-2">
-            <FaMoneyBill className="h-6 w-6 text-blue-500" />
+            <FaMoneyBill className="h-6 w-6 text-[#b17741]" />
             <h1 className="text-2xl font-bold text-gray-800">
               Lịch Sử Giao Dịch SePay
             </h1>
@@ -69,7 +69,7 @@ const HistorySePay = () => {
               placeholder="Tìm kiếm giao dịch..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 w-full max-w-md border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="pl-10 w-full max-w-md border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#b17741] focus:border-[#b17741]"
             />
           </div>
         </div>

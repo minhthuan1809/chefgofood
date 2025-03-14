@@ -11,7 +11,7 @@ const FeatureCard = ({ iconName, title, description }) => (
     <DynamicIcon
       iconName={iconName}
       size={50}
-      className="text-blue-600 mb-2 sm:mb-4"
+      className="text-[#b17741] mb-2 sm:mb-4"
     />
     <h3 className="text-lg sm:text-xl font-semibold mb-2">{title}</h3>
     <p className="text-sm sm:text-base text-gray-600">{description}</p>
@@ -75,7 +75,7 @@ export default function About() {
         <SupportChat />
       </header>
       <div className="pt-[6rem] bg-gray-100 min-h-screen">
-        <header className="bg-blue-600 text-white py-8 sm:py-16">
+        <header className="bg-[#b17741] text-white py-8 sm:py-16">
           <div className="container mx-auto text-center px-4">
             <h1 className="text-3xl sm:text-4xl font-bold mb-2 sm:mb-4">
               {headerInfo.name}

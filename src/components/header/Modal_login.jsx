@@ -129,7 +129,7 @@ export default function Modal_login({
               name="email"
               value={formData.email}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-[#b17741]"
               placeholder="Email của bạn"
               required
             />
@@ -148,7 +148,7 @@ export default function Modal_login({
               name="password"
               value={formData.password}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-[#b17741]"
               placeholder="Mật khẩu"
               required
             />
@@ -160,7 +160,7 @@ export default function Modal_login({
                 name="rememberMe"
                 checked={formData.rememberMe}
                 onChange={handleInputChange}
-                className="form-checkbox h-4 w-4 text-blue-500"
+                className="form-checkbox h-4 w-4 text-[#b17741]"
               />
               <span className="ml-2 text-sm text-gray-600">
                 Ghi nhớ đăng nhập
@@ -172,14 +172,14 @@ export default function Modal_login({
                 onClose();
                 isForgotModalOpen(true);
               }}
-              className="text-sm text-blue-500 hover:text-blue-600"
+              className="text-sm text-[#b17741] hover:text-[#b17741]"
             >
               Quên mật khẩu?
             </button>
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
+            className="w-full bg-[#b17741] text-white py-2 px-4 rounded-lg hover:bg-[#b17741] transition duration-300"
           >
             Đăng nhập
           </button>
@@ -188,7 +188,7 @@ export default function Modal_login({
           <p className="text-sm text-gray-600 ">
             Chưa có tài khoản?
             <button
-              className="text-blue-500 ml-2 hover:text-blue-600 ml-1"
+              className="text-[#b17741] ml-2 hover:text-[#b17741] ml-1"
               onClick={() => setisLoginOrRegister(false)}
             >
               Đăng ký ngay

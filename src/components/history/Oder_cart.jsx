@@ -137,7 +137,7 @@ export default function OrderCard({ order }) {
               <div className="mt-4 flex gap-4">
                 <button
                   onClick={() => hanleAddcart(order.products)}
-                  className="bg-blue-500 mt-12 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300 ease-in-out flex items-center"
+                  className="bg-[#b17741] mt-12 text-white px-4 py-2 rounded-full hover:bg-[#b17741] transition duration-300 ease-in-out flex items-center"
                   disabled={isLoading}
                 >
                   {isLoading ? (

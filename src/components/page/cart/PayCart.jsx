@@ -110,7 +110,7 @@ const PayCart = ({ items }) => {
   };
 
   const handleCheckout = async () => {
-    Cookies.remove('timeSePay');
+    Cookies.remove("timeSePay");
     const { selectedAddress, selectedPaymentMethod, deliveryNote } =
       deliveryDetails;
 
@@ -139,13 +139,11 @@ const PayCart = ({ items }) => {
         discount_code: checkout.discountCode,
       };
 
-
-      if(deliveryDetails.selectedPaymentMethod === 'credit'){
+      if (deliveryDetails.selectedPaymentMethod === "credit") {
         navigate(`/paysepay/ThanhToanDienTu?total=${total}`);
-      dispatch({type: "add/sepay/data", payload: paymentData});
+        dispatch({ type: "add/sepay/data", payload: paymentData });
         return;
       }
-
 
       const result = await addCartPay(paymentData);
 
@@ -195,7 +193,7 @@ const PayCart = ({ items }) => {
             onChange={(e) =>
               updateDeliveryDetails("deliveryNote", e.target.value)
             }
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#b17741]"
             rows="3"
             placeholder="Nhập ghi chú cho người giao hàng..."
           />
@@ -203,7 +201,7 @@ const PayCart = ({ items }) => {
 
         <button
           onClick={() => toggleModal("discount", true)}
-          className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+          className="text-[#b17741] hover:text-[#b17741] text-sm font-medium"
         >
           {checkout.discountCode
             ? `Mã đang dùng: ${checkout.discountCode}`
@@ -225,7 +223,7 @@ const PayCart = ({ items }) => {
 
         <button
           onClick={handleCheckout}
-          className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400"
+          className="w-full py-3 bg-[#b17741] text-white font-semibold rounded-lg hover:bg-[#b17741] transition-colors disabled:bg-gray-400"
           disabled={
             !deliveryDetails.selectedPaymentMethod ||
             !deliveryDetails.selectedAddress

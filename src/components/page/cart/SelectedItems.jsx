@@ -38,7 +38,7 @@ export default function SelectedItems({ items }) {
                           Giảm giá: {discountAmount.toLocaleString("vi-VN")}₫
                         </span>
                       </div>
-                      <span className="font-semibold text-blue-600">
+                      <span className="font-semibold text-[#b17741]">
                         {totalPrice.toLocaleString("vi-VN")}₫
                       </span>
                     </div>

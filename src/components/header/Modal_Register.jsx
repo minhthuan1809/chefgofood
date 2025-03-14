@@ -106,7 +106,7 @@ export default function Modal_Register({
               maxLength={40}
               value={formData.username}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-[#b17741]"
               placeholder="Tên người dùng của bạn"
             />
             {errors.username && (
@@ -127,7 +127,7 @@ export default function Modal_Register({
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-[#b17741]"
               placeholder="Email của bạn"
             />
             {errors.email && (
@@ -148,7 +148,7 @@ export default function Modal_Register({
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-[#b17741]"
               placeholder="Mật khẩu"
             />
             {errors.password && (
@@ -169,7 +169,7 @@ export default function Modal_Register({
               name="confirm"
               value={formData.confirm}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#b17741] focus:border-[#b17741]"
               placeholder="Xác nhận mật khẩu"
             />
             {errors.confirm && (
@@ -182,7 +182,7 @@ export default function Modal_Register({
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
+            className="w-full bg-[#b17741] text-white py-2 px-4 rounded-lg hover:bg-[#b17741] transition duration-300"
           >
             Đăng ký
           </button>
@@ -191,7 +191,7 @@ export default function Modal_Register({
           <p className="text-sm text-gray-600">
             Đã có tài khoản?
             <button
-              className="text-blue-500 pl-2 hover:text-blue-600"
+              className="text-[#b17741] pl-2 hover:text-[#b17741]"
               onClick={() => {
                 isLoginModalOpen(true);
                 setisLoginOrRegister(true);

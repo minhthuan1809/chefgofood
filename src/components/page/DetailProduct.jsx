@@ -104,7 +104,7 @@ const DetailProduct = () => {
                   <div className="space-y-8">
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
-                        <span className="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700">
+                        <span className="inline-flex items-center rounded-full bg-[#b17741] px-3 py-1 text-sm font-medium text-[#b17741]">
                           {product.type
                             .toUpperCase()
                             .replace("FOOD", "Đồ ăn")
@@ -172,7 +172,7 @@ const DetailProduct = () => {
                     </p>
 
                     <div className="space-y-2">
-                      <div className="text-3xl font-bold text-blue-600">
+                      <div className="text-3xl font-bold text-[#b17741]">
                         {(
                           parseInt(product.price) *
                           (1 - product.discount / 100)
@@ -213,7 +213,7 @@ const DetailProduct = () => {
                         <button
                           className={`w-full flex items-center justify-center py-3 rounded-lg transition ${
                             product.status
-                              ? "bg-blue-600 hover:bg-blue-700 text-white"
+                              ? "bg-[#b17741] hover:bg-[#b17741] text-white"
                               : "bg-gray-300 cursor-not-allowed text-gray-500"
                           }`}
                           disabled={!product.status}

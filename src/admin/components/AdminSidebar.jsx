@@ -213,9 +213,9 @@ const AdminSidebar = () => {
           return (
             <div key={item.id} className="menu-item">
               <div
-                className={`flex items-center justify-between p-3 rounded-lg hover:bg-blue-50 transition-all duration-300 cursor-pointer ${
+                className={`flex items-center justify-between p-3 rounded-lg hover:bg-[#b17741] transition-all duration-300 cursor-pointer ${
                   currentPath === item.id.toLowerCase()
-                    ? "bg-blue-100 text-blue-600"
+                    ? "bg-[#b17741] text-[#b17741]"
                     : "text-gray-700"
                 }`}
                 onClick={() =>
@@ -254,9 +254,9 @@ const AdminSidebar = () => {
                     {item.submenu.map((subItem) => (
                       <div
                         key={subItem.id}
-                        className={`flex items-center space-x-3 p-2 py-2 rounded-lg hover:bg-blue-50 transition-all duration-300 cursor-pointer transform hover:translate-x-2 ${
+                        className={`flex items-center space-x-3 p-2 py-2 rounded-lg hover:bg-[#b17741] transition-all duration-300 cursor-pointer transform hover:translate-x-2 ${
                           currentPath === subItem.id.toLowerCase()
-                            ? "bg-blue-100 text-blue-600"
+                            ? "bg-[#b17741] text-[#b17741]"
                             : "text-gray-700"
                         }`}
                         onClick={() =>
@@ -275,7 +275,7 @@ const AdminSidebar = () => {
         })}
       </div>
       <button
-        className="flex w-full items-center space-x-3 p-3 rounded-lg hover:bg-blue-50 transition-all duration-300 cursor-pointer hover:translate-x-2"
+        className="flex w-full items-center space-x-3 p-3 rounded-lg hover:bg-[#b17741] transition-all duration-300 cursor-pointer hover:translate-x-2"
         onClick={handleLogout}
       >
         <CiLogout size={20} /> <span>Đăng xuất</span>

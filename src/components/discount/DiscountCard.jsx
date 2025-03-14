@@ -25,7 +25,7 @@ export default function DiscountCard({
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
         <div className="p-4">
           <h3 className="text-lg font-semibold text-gray-800">{name}</h3>
-          <p className="text-2xl font-bold text-blue-600 mb-2">
+          <p className="text-2xl font-bold text-[#b17741] mb-2">
             {discount_percent}% OFF
           </p>
           <div className="flex items-center text-gray-600 text-sm mb-1">
@@ -62,7 +62,7 @@ export default function DiscountCard({
           </div>
         </div>
         <button
-          className="w-full py-3 bg-blue-600 text-white font-medium hover:bg-blue-700 transition duration-300 flex items-center justify-center"
+          className="w-full py-3 bg-[#b17741] text-white font-medium hover:bg-[#b17741] transition duration-300 flex items-center justify-center"
           onClick={handleUse}
         >
           Dùng ngay

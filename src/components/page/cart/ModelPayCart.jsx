@@ -116,10 +116,8 @@ const ModelPayCart = ({ isOpen, onClose, items }) => {
   };
   // thanh toán
   const handleCheckout = async () => {
-    Cookies.remove('timeSePay');
-      const { paymentMethod
-      } =
-      checkout;
+    Cookies.remove("timeSePay");
+    const { paymentMethod } = checkout;
     console.log(checkout);
     if (!addresses.selected.id) {
       toast.error("Vui lòng chọn địa chỉ giao hàng");
@@ -152,11 +150,15 @@ const ModelPayCart = ({ isOpen, onClose, items }) => {
         discount_code: checkout.discountCode,
       };
 
-      if(checkout.paymentMethod === 'credit'){
-        navigate(`/paysepay/ThanhToanDienTu?total=${calculatedValues.totalPrice -
-          calculatedValues.totalPrice * checkout.appliedDiscount * 100 +
-          SHIPPING_COST}`);
-      dispatch({type: "add/sepay/data", payload: paymentData});
+      if (checkout.paymentMethod === "credit") {
+        navigate(
+          `/paysepay/ThanhToanDienTu?total=${
+            calculatedValues.totalPrice -
+            calculatedValues.totalPrice * checkout.appliedDiscount * 100 +
+            SHIPPING_COST
+          }`
+        );
+        dispatch({ type: "add/sepay/data", payload: paymentData });
         return;
       }
       const result = await addCartPay(paymentData);
@@ -262,7 +264,7 @@ const ModelPayCart = ({ isOpen, onClose, items }) => {
                 className="border border-gray-200 rounded-lg p-2 w-full focus:outline-none"
               />
             </div>
-            <button className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 mt-4">
+            <button className="w-full py-3 bg-[#b17741] text-white font-semibold rounded-lg hover:bg-[#b17741] transition-colors disabled:bg-gray-400 mt-4">
               Thêm địa chỉ
             </button>
           </form>
@@ -301,7 +303,7 @@ const ModelPayCart = ({ isOpen, onClose, items }) => {
                   Địa chỉ giao hàng
                 </p>
                 <button
-                  className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                  className="text-[#b17741] hover:text-[#b17741] text-sm font-medium"
                   onClick={() => setIsAddAddress(true)}
                 >
                   {newAddress ? "Thay đổi" : "Thêm địa chỉ"}
@@ -370,7 +372,7 @@ const ModelPayCart = ({ isOpen, onClose, items }) => {
                       <div className="text-sm text-gray-600 line-through">
                         {calculatedValues.subtotal.toLocaleString("vi-VN")}₫
                       </div>
-                      <div className="text-blue-600 font-bold">
+                      <div className="text-[#b17741] font-bold">
                         {calculatedValues.totalPrice.toLocaleString("vi-VN")}₫
                       </div>
                     </div>
@@ -392,7 +394,7 @@ const ModelPayCart = ({ isOpen, onClose, items }) => {
                   deliveryNote: e.target.value,
                 }))
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#b17741]"
               rows="3"
               placeholder="Nhập ghi chú cho người giao hàng..."
             />
@@ -401,7 +403,7 @@ const ModelPayCart = ({ isOpen, onClose, items }) => {
           {/* Discount Button */}
           <button
             onClick={() => setModals((prev) => ({ ...prev, discount: true }))}
-            className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+            className="text-[#b17741] hover:text-[#b17741] text-sm font-medium"
           >
             {checkout.discountCode
               ? `Mã đang dùng: ${checkout.discountCode}`
@@ -428,7 +430,7 @@ const ModelPayCart = ({ isOpen, onClose, items }) => {
           {/* Checkout Button */}
           <button
             onClick={handleCheckout}
-            className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400"
+            className="w-full py-3 bg-[#b17741] text-white font-semibold rounded-lg hover:bg-[#b17741] transition-colors disabled:bg-gray-400"
             disabled={
               !checkout.paymentMethod || (!addresses.selected && !newAddress)
             }

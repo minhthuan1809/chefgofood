@@ -109,7 +109,7 @@ export default function Password() {
           {/* Header */}
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <RiLockPasswordLine className="w-6 h-6 text-blue-600" />
+              <RiLockPasswordLine className="w-6 h-6 text-[#b17741]" />
               <h2 className="text-2xl font-bold">Thay đổi mật khẩu</h2>
             </div>
             <div className="flex items-center gap-2 text-gray-500">
@@ -135,7 +135,7 @@ export default function Password() {
                   maxLength={15}
                   type={showCurrentPassword ? "text" : "password"}
                   placeholder="Nhập mật khẩu hiện tại"
-                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#b17741] pr-10"
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
                 />
@@ -164,7 +164,7 @@ export default function Password() {
                   maxLength={15}
                   type={showNewPassword ? "text" : "password"}
                   placeholder="Nhập mật khẩu mới"
-                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#b17741] pr-10"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                 />
@@ -195,7 +195,7 @@ export default function Password() {
                   maxLength={15}
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="Xác nhận mật khẩu mới"
-                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#b17741] pr-10"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
@@ -219,7 +219,7 @@ export default function Password() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 
+              className="w-full bg-[#b17741] text-white py-2 px-4 rounded-md hover:bg-[#b17741] 
                        flex items-center justify-center gap-2 transition-colors"
             >
               <RiLockPasswordLine className="w-5 h-5" />

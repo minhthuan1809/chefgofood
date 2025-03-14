@@ -6,7 +6,7 @@ export default function Layout_left(data, setSelectedUser, selectedUser) {
     <div
       onClick={() => setSelectedUser(user)}
       className={`flex items-center p-4 cursor-pointer hover:bg-gray-50 ${
-        selectedUser?.id === user.id ? "bg-blue-50" : ""
+        selectedUser?.id === user.id ? "bg-[#b17741]" : ""
       }`}
     >
       <img
@@ -18,7 +18,7 @@ export default function Layout_left(data, setSelectedUser, selectedUser) {
         <div className="flex items-center justify-between">
           <span className="font-medium">{user.username}</span>
           {user.unread_count > 0 && (
-            <span className="bg-blue-500 text-white rounded-full px-2 py-1 text-xs">
+            <span className="bg-[#b17741] text-white rounded-full px-2 py-1 text-xs">
               {user.unread_count}
             </span>
           )}

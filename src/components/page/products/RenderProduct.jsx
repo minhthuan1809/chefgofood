@@ -63,7 +63,7 @@ const RenderProduct = ({ product, idProduct, data, isOpen }) => {
   // Shared button styles
   const buttonStyles = {
     disabled: "bg-gray-300 cursor-not-allowed",
-    cart: "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700",
+    cart: "bg-gradient-to-r from-[#b17741] to-[#b17741] hover:from-[#b17741] hover:to-[#b17741]",
     buy: "bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700",
   };
 

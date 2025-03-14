@@ -55,7 +55,7 @@ export default function ModalEditStep({
                   type="text"
                   name="step_number"
                   defaultValue={editingStep?.step_number}
-                  className="border-2 p-2 border-gray-300 mt-1 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="border-2 p-2 border-gray-300 mt-1 block w-full rounded-md shadow-sm focus:border-[#b17741] focus:ring-[#b17741]"
                 />
               </div>
 
@@ -67,7 +67,7 @@ export default function ModalEditStep({
                   type="text"
                   name="title"
                   defaultValue={editingStep?.title}
-                  className="border-2 p-2 border-gray-300 mt-1 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="border-2 p-2 border-gray-300 mt-1 block w-full rounded-md shadow-sm focus:border-[#b17741] focus:ring-[#b17741]"
                 />
               </div>
 
@@ -79,7 +79,7 @@ export default function ModalEditStep({
                   name="description"
                   defaultValue={editingStep?.description}
                   rows="3"
-                  className="border-2 p-2 mt-1 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="border-2 p-2 mt-1 block w-full rounded-md shadow-sm focus:border-[#b17741] focus:ring-[#b17741]"
                 />
               </div>
 
@@ -102,7 +102,7 @@ export default function ModalEditStep({
                   type="text"
                   name="icon"
                   defaultValue={editingStep?.icon}
-                  className="border-2 p-2 mt-1 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="border-2 p-2 mt-1 block w-full rounded-md shadow-sm focus:border-[#b17741] focus:ring-[#b17741]"
                 />
               </div>
 
@@ -114,7 +114,7 @@ export default function ModalEditStep({
                   type="number"
                   name="order_number"
                   defaultValue={editingStep?.order_number}
-                  className="border-2 p-2 mt-1 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="border-2 p-2 mt-1 block w-full rounded-md shadow-sm focus:border-[#b17741] focus:ring-[#b17741]"
                 />
               </div>
 
@@ -128,7 +128,7 @@ export default function ModalEditStep({
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                  className="px-4 py-2 bg-[#b17741] text-white rounded-md hover:bg-[#b17741]"
                 >
                   Lưu thay đổi
                 </button>

@@ -151,9 +151,9 @@ export default function TopProducts() {
                       </div>
                       <button
                         onClick={() => addProductToCart(product.id)}
-                        className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition-colors duration-300 relative group"
+                        className="bg-[#b17741] text-white p-2 rounded-full hover:bg-[#b17741] transition-colors duration-300 relative group"
                       >
-                        <span className="absolute right-[3rem] bottom-1 w-max opacity-0 group-hover:opacity-100 bg-blue-500 text-white text-xs p-2 rounded transition-opacity duration-300">
+                        <span className="absolute right-[3rem] bottom-1 w-max opacity-0 group-hover:opacity-100 bg-[#b17741] text-white text-xs p-2 rounded transition-opacity duration-300">
                           Thêm vào giỏ hàng
                         </span>
                         <FaCartPlus size={20} />

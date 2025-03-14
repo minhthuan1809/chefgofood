@@ -83,11 +83,11 @@ const Discount = () => {
                         type="text"
                         onChange={(e) => console.log(e.target.value)}
                         placeholder="Nhập mã giảm giá"
-                        className="flex-grow px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 border-gray-300"
+                        className="flex-grow px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#b17741] border-gray-300"
                       />
                       <button
                         type="submit"
-                        className="bg-blue-600 text-white px-6 py-3 font-medium hover:bg-blue-700 transition duration-300 mt-2 sm:mt-0"
+                        className="bg-[#b17741] text-white px-6 py-3 font-medium hover:bg-[#b17741] transition duration-300 mt-2 sm:mt-0"
                       >
                         Áp dụng
                       </button>
@@ -107,7 +107,7 @@ const Discount = () => {
                 </div>
               ) : (
                 <div>
-                  <p className="text-center text-blue-600 pb-5">
+                  <p className="text-center text-[#b17741] pb-5">
                     Bạn Chưa đăng nhập bạn cần đăng nhập
                   </p>
                 </div>
