@@ -229,7 +229,7 @@ const PayCart = ({ items }) => {
             !deliveryDetails.selectedAddress
           }
         >
-          Thanh toán
+          Xác Nhận
         </button>
       </div>
 

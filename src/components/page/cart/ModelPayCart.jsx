@@ -435,7 +435,7 @@ const ModelPayCart = ({ isOpen, onClose, items }) => {
               !checkout.paymentMethod || (!addresses.selected && !newAddress)
             }
           >
-            Thanh toán
+            Xác nhận
           </button>
         </div>
 
