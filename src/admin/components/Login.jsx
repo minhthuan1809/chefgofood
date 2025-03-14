@@ -81,7 +81,7 @@ export default function Login() {
         transition={{ duration: 1 }}
         className="absolute inset-0 bg-cover"
         style={{
-          backgroundImage: `url('https://media.gettyimages.com/id/578145940/photo/ingredients-for-cooking-healthy-dinner-raw-uncooked-seabass-fish-with-vegetables-grains-herbs.jpg?s=612x612&w=0&k=20&c=RDF1SZsYybQYVLXwNrMpjX_ychXF425yGRd74cRQaQ0=')`,
+          backgroundImage: `url('https://res.cloudinary.com/dsm2g8fub/image/upload/v1741957329/adbbdbce-7602-418a-b7bb-cbf9b73e91bd.png')`,
         }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-30"></div>
@@ -102,7 +102,7 @@ export default function Login() {
           >
             <img
               className="w-full h-full object-cover rounded-full"
-              src="https://scontent.xx.fbcdn.net/v/t1.15752-9/462539889_931378882183049_7725659276197368150_n.jpg?stp=dst-jpg_p480x480_tt7&_nc_cat=111&cb=99be929b-defccdb7&ccb=1-7&_nc_sid=0024fc&_nc_eui2=AeF2iaKHRixY8rdwn3rbNw0FtH0fiIOWRm-0fR-Ig5ZGbwu5aN45dCZsZCvJMJXoZpsGQomIC8Jqj0stzqljrkQN&_nc_ohc=Sgths8smDRgQ7kNvgGI4IHr&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent.xx&_nc_gid=A_smGsFuc3G5iZW7CpaQHX8&oh=03_Q7cD1QHPdnV0g_InCw3JWmxNaSbta-bs6tLZbVhMYpE7njN_yQ&oe=674F6EFA"
+              src="https://res.cloudinary.com/dsm2g8fub/image/upload/v1741947116/482223428_632237039661846_9140837627383345726_n_py2gjv.jpg"
               alt=""
             />
           </motion.div>
@@ -110,10 +110,10 @@ export default function Login() {
             variants={itemVariants}
             className="text-3xl font-bold text-white mb-2"
           >
-            Admin Fastfood
+            Admin
           </motion.h2>
           <motion.p variants={itemVariants} className="text-gray-200">
-            Sign in to manage your application
+            Đăng nhập quản lý hệ thống
           </motion.p>
         </motion.div>
 
@@ -195,7 +195,7 @@ export default function Login() {
               type="submit"
               className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600  transition duration-200 ease-in-out"
             >
-              Sign in
+              Đăng nhập
             </motion.button>
           </form>
         </motion.div>
