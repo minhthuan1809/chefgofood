@@ -1,7 +1,7 @@
 export const getProfile = (apikey) => {
   return async (dispatch) => {
     try {
-      const url = `${import.meta.env.VITE_FASTFOOD_SERVER_API}/profile`;
+      const url = `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/profile`;
 
       const response = await fetch(url, {
         method: "POST",

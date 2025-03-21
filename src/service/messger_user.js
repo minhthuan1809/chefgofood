@@ -1,7 +1,7 @@
 //render
 export const getSupportChat = async (apiKey) => {
   const response = await fetch(
-    `${import.meta.env.VITE_FASTFOOD_SERVER_API}/message`,
+    `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/message`,
     {
       method: "GET",
       headers: {
@@ -17,7 +17,7 @@ export const getSupportChat = async (apiKey) => {
 // create message
 export const getSupportChatCreates = async (apiKey, message) => {
   const response = await fetch(
-    `${import.meta.env.VITE_FASTFOOD_SERVER_API}/message_user`,
+    `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/message_user`,
     {
       method: "POST",
       headers: {

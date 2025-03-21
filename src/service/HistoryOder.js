@@ -1,7 +1,7 @@
 export const getHistory = async (apikey) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_SERVER_API}/history_order`,
+      `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/history_order`,
       {
         method: "GET",
         headers: {

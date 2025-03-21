@@ -5,7 +5,7 @@ export const getDetailProduct = (idUser, page) => {
     try {
       const response = await fetch(
         `${
-          import.meta.env.VITE_FASTFOOD_SERVER_API
+          import.meta.env.VITE_CHEFGOFOOD_SERVER_API
         }/detail/${idUser}?limit=4&page=${page}`
       );
       const result = await response.json();

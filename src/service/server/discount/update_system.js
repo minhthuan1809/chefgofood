@@ -1,7 +1,7 @@
 export const getUpdateDiscountSystem = async (data, id) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_SERVER_API}/discount/${id}`,
+      `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/discount/${id}`,
       {
         method: "PUT",
         headers: {

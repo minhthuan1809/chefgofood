@@ -1,7 +1,7 @@
 export const createReview = async (apikey, data) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_SERVER_API}/review`,
+      `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/review`,
       {
         method: "PUT",
         headers: {

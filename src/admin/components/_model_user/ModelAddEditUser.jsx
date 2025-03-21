@@ -74,7 +74,6 @@ export default function ModelAddEditUser({
     toast.dismiss();
     try {
       if (!validateForm()) return;
-      console.log(formData);
       toast.dismiss();
       const data = await updateUser(editUser.id, formData);
       fetchData();

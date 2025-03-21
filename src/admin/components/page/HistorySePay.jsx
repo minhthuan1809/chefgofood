@@ -17,7 +17,6 @@ const HistorySePay = () => {
     const fetchData = async () => {
       const response = await fetch(import.meta.env.VITE_SEPAY_API);
       const data = await response.json();
-      console.log(data);
       setDataSePay(data);
       setFilteredData(data);
     };

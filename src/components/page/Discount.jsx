@@ -63,7 +63,6 @@ const Discount = () => {
   const handleApplyCoupon = (e) => {
     e.preventDefault();
     // Apply coupon logic here
-    console.log("Applying coupon:", couponCode);
   };
 
   return (

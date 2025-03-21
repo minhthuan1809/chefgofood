@@ -53,7 +53,6 @@ export default function FixFooter() {
         description,
         copyright_text,
       });
-      console.log(response);
       if (response.ok) {
         toast.success("Cập nhật thông tin chân trang thành công");
       } else {

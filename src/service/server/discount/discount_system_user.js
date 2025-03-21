@@ -2,7 +2,7 @@ export const getDiscountUser = async (page, limit, searchTerm) => {
   try {
     const response = await fetch(
       `${
-        import.meta.env.VITE_FASTFOOD_SERVER_API
+        import.meta.env.VITE_CHEFGOFOOD_SERVER_API
       }/discount_user/all?q=${searchTerm}&page=${page}&limit=${limit}`
     );
 

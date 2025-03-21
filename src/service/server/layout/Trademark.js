@@ -2,7 +2,7 @@
 
 export const setTrademark = async (data) => {
   const response = await fetch(
-    `${import.meta.env.VITE_FASTFOOD_RENDER_API}/trademark`,
+    `${import.meta.env.VITE_CHEFGOFOOD_RENDER_API}/trademark`,
     {
       method: "PUT",
       headers: {
@@ -19,7 +19,7 @@ export const setTrademark = async (data) => {
 
 export const setHomeHeader = async (data) => {
   const response = await fetch(
-    `${import.meta.env.VITE_FASTFOOD_RENDER_API}/home/header`,
+    `${import.meta.env.VITE_CHEFGOFOOD_RENDER_API}/home/header`,
     {
       method: "PUT",
       headers: {
@@ -36,7 +36,7 @@ export const setHomeHeader = async (data) => {
 
 export const setHomeStep = async (data, id) => {
   const response = await fetch(
-    `${import.meta.env.VITE_FASTFOOD_RENDER_API}/home/body/${id}`,
+    `${import.meta.env.VITE_CHEFGOFOOD_RENDER_API}/home/body/${id}`,
     {
       method: "PUT",
       headers: {

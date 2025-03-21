@@ -57,7 +57,6 @@ export default function Statistical_oder() {
       setOrders(fetchedData.orders);
       setOverview(fetchedData.overview);
       setTotalPage(fetchedData.pagination.total_pages);
-      console.log(fetchedData);
     };
 
     fetchData();

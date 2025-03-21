@@ -1,7 +1,7 @@
 export const getUiAbout = async () => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_RENDER_API}/abouts`
+      `${import.meta.env.VITE_CHEFGOFOOD_RENDER_API}/abouts`
     );
     const result = await response.json();
     return result;

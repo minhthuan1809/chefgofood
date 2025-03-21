@@ -1,7 +1,6 @@
 import React from "react";
 
 export default function Layout_left(data, setSelectedUser, selectedUser) {
-  console.log(data);
   return (
     <div
       onClick={() => setSelectedUser(user)}

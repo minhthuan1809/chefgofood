@@ -1,7 +1,7 @@
 export const getUiStep = async () => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_RENDER_API}/homepage/body`
+      `${import.meta.env.VITE_CHEFGOFOOD_RENDER_API}/homepage/body`
     );
     const result = await response.json();
 

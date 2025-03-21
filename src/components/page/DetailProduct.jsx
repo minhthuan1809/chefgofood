@@ -52,7 +52,6 @@ const DetailProduct = () => {
 
   const handleAddFavorite = async () => {
     const data = await addFavorite(profile?.id, { product_id: product.id });
-    console.log(data);
     if (data.ok) {
       toast.success(data.message);
     } else {

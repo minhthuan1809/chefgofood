@@ -3,7 +3,7 @@ import { DecentralizationAction } from "../../action/admin/decentralization";
 export const getDecentralization = (apikey) => {
   return async (dispatch) => {
     try {
-      const url = `${import.meta.env.VITE_FASTFOOD_ADMIN_API}/admin/role`;
+      const url = `${import.meta.env.VITE_CHEFGOFOOD_ADMIN_API}/admin/role`;
       const response = await fetch(url, {
         method: "GET",
         headers: {

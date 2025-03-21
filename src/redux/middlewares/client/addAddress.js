@@ -1,7 +1,7 @@
 export const getProfileAddress = (id) => {
   return async (dispatch) => {
     try {
-      const url = `${import.meta.env.VITE_FASTFOOD_SERVER_API}/address/${id}`;
+      const url = `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/address/${id}`;
 
       const response = await fetch(url, {
         method: "GET",

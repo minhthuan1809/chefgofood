@@ -1,7 +1,7 @@
 export const getUiFooter = async () => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_RENDER_API}/homepage`
+      `${import.meta.env.VITE_CHEFGOFOOD_RENDER_API}/homepage`
     );
     const result = await response.json();
     return result;

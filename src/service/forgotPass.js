@@ -1,7 +1,7 @@
 export const forgotPassword = async (data) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_SERVER_API}/forgotpassword`,
+      `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/forgotpassword`,
       {
         method: "POST",
         headers: {
@@ -21,7 +21,7 @@ export const forgotPassword = async (data) => {
 export const forgotNewPassword = async (newPassword, email) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_SERVER_API}/resetpassword`,
+      `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/resetpassword`,
       {
         method: "POST",
         headers: {
@@ -35,7 +35,6 @@ export const forgotNewPassword = async (newPassword, email) => {
     );
 
     const result = await response.json();
-    console.log(result);
 
     return result;
   } catch (error) {

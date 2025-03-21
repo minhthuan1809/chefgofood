@@ -1,7 +1,7 @@
 export const productUpdateAdmin = async (id, data) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_SERVER_API}/product/${id}`,
+      `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/product/${id}`,
       {
         method: "PUT",
         headers: {

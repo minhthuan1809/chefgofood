@@ -1,7 +1,7 @@
 export const getDashboard = async () => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_SERVER_API}/dashboard`
+      `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/dashboard`
     );
 
     if (!response.ok) {
@@ -20,7 +20,7 @@ export const getDashboard = async () => {
 export const getOrdersChart = async () => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_SERVER_API}/weekly_orders`
+      `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/weekly_orders`
     );
     return response.json();
   } catch (error) {
@@ -32,7 +32,7 @@ export const getOrdersChart = async () => {
 export const getRevenueChart = async () => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_SERVER_API}/weekly_revenue`
+      `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/weekly_revenue`
     );
     return response.json();
   } catch (error) {
@@ -44,7 +44,7 @@ export const getRevenueChart = async () => {
 export const getTopSellingProducts = async () => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_SERVER_API}/top_selling_products`
+      `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/top_selling_products`
     );
     return response.json();
   } catch (error) {

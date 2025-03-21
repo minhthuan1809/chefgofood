@@ -3,7 +3,7 @@ export const getLogin = (data) => {
   return async (dispatch) => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_FASTFOOD_SERVER_API}/apikey`,
+        `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/apikey`,
         {
           method: "POST",
           headers: {

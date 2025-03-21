@@ -118,7 +118,6 @@ const ModelPayCart = ({ isOpen, onClose, items }) => {
   const handleCheckout = async () => {
     Cookies.remove("timeSePay");
     const { paymentMethod } = checkout;
-    console.log(checkout);
     if (!addresses.selected.id) {
       toast.error("Vui lòng chọn địa chỉ giao hàng");
       return;

@@ -1,7 +1,7 @@
 export const getRenderReview = async (searchTerm, limit, page) => {
   try {
     const url = `${
-      import.meta.env.VITE_FASTFOOD_SERVER_API
+      import.meta.env.VITE_CHEFGOFOOD_SERVER_API
     }/review?q=${searchTerm}&page=${page}&limit=${limit}`;
 
     const response = await fetch(url);

@@ -1,7 +1,7 @@
 export const getUpdateProfile = async (data, id) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_SERVER_API}/profile/${id}`,
+      `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/profile/${id}`,
       {
         method: "PUT",
         headers: {
@@ -22,7 +22,7 @@ export const getUpdateProfile = async (data, id) => {
 export const getDelete = async (apikey) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_SERVER_API}/delete`,
+      `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/delete`,
       {
         method: "POST",
         headers: {
@@ -37,7 +37,6 @@ export const getDelete = async (apikey) => {
     }
 
     const result = await response.json();
-    console.log(result);
 
     return result;
   } catch (error) {

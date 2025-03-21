@@ -72,7 +72,6 @@ export default function ModalForgot({ onClose, isLoginModalOpen }) {
         return;
       } else {
         const data = await forgotNewPassword(newPassword, email);
-        console.log(data);
 
         if (data.ok) {
           onClose(false);

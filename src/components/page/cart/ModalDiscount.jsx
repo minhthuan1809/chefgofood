@@ -92,7 +92,6 @@ const ModalDiscount = ({
       toast.error(`Đơn hàng tối thiểu ${code.minimum_price.toLocaleString()}₫`);
       return;
     }
-    console.log(code);
     if (code.quantity <= 0) {
       toast.error("Mã giảm giá đã hết lượt sử dụng!");
       return;

@@ -8,7 +8,7 @@ export const getStatisticalProduct = async (
 ) => {
   try {
     const url = `${
-      import.meta.env.VITE_FASTFOOD_SERVER_API
+      import.meta.env.VITE_CHEFGOFOOD_SERVER_API
     }/product_statistics?start_date=${start_date}&end_date=${end_date}&page=${page}&limit=${limit}&q=${search}`;
 
     const response = await fetch(url);
@@ -32,7 +32,7 @@ export const getStatisticalOrder = async (
 ) => {
   try {
     const url = `${
-      import.meta.env.VITE_FASTFOOD_SERVER_API
+      import.meta.env.VITE_CHEFGOFOOD_SERVER_API
     }/order_statistics?start_date=${start_date}&end_date=${end_date}&page=${page}&limit=${limit}&q=${search}`;
 
     const response = await fetch(url);
@@ -55,7 +55,7 @@ export const getStatisticalUser = async (
 ) => {
   try {
     const url = `${
-      import.meta.env.VITE_FASTFOOD_SERVER_API
+      import.meta.env.VITE_CHEFGOFOOD_SERVER_API
     }/user_statistics?start_date=${start_date}&end_date=${end_date}&page=${page}&limit=${limit}&q=${search}`;
 
     const response = await fetch(url);

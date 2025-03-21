@@ -1,7 +1,7 @@
 // cập nhật thông tin công ty
 export const updateCompanyInfo = async (data) => {
   const response = await fetch(
-    `${import.meta.env.VITE_FASTFOOD_RENDER_API}/footer/company`,
+    `${import.meta.env.VITE_CHEFGOFOOD_RENDER_API}/footer/company`,
     {
       method: "PUT",
       headers: {
@@ -17,7 +17,7 @@ export const updateCompanyInfo = async (data) => {
 // thêm mạng xã hội
 export const addSocialMedia = async (data) => {
   const response = await fetch(
-    `${import.meta.env.VITE_FASTFOOD_RENDER_API}/footer/social/4`,
+    `${import.meta.env.VITE_CHEFGOFOOD_RENDER_API}/footer/social/4`,
     {
       method: "POST",
       headers: {
@@ -32,7 +32,7 @@ export const addSocialMedia = async (data) => {
 // xóa mạng xã hội
 export const deleteSocialMedia = async (id) => {
   const response = await fetch(
-    `${import.meta.env.VITE_FASTFOOD_RENDER_API}/footer/social/${id}`,
+    `${import.meta.env.VITE_CHEFGOFOOD_RENDER_API}/footer/social/${id}`,
     {
       method: "DELETE",
       headers: {
@@ -47,7 +47,7 @@ export const deleteSocialMedia = async (id) => {
 // thêm liên hệ
 export const addContact = async (data) => {
   const response = await fetch(
-    `${import.meta.env.VITE_FASTFOOD_RENDER_API}/footer/contact/1`,
+    `${import.meta.env.VITE_CHEFGOFOOD_RENDER_API}/footer/contact/1`,
     {
       method: "POST",
       headers: {
@@ -62,7 +62,7 @@ export const addContact = async (data) => {
 // sửa liên hệ
 export const editContact = async (id, data) => {
   const response = await fetch(
-    `${import.meta.env.VITE_FASTFOOD_RENDER_API}/footer/contact/${id}`,
+    `${import.meta.env.VITE_CHEFGOFOOD_RENDER_API}/footer/contact/${id}`,
     {
       method: "PUT",
       headers: {
@@ -77,7 +77,7 @@ export const editContact = async (id, data) => {
 // xóa liên hệ
 export const deleteContact = async (id) => {
   const response = await fetch(
-    `${import.meta.env.VITE_FASTFOOD_RENDER_API}/footer/contact/${id}`,
+    `${import.meta.env.VITE_CHEFGOFOOD_RENDER_API}/footer/contact/${id}`,
     {
       method: "DELETE",
       headers: {
@@ -92,7 +92,7 @@ export const deleteContact = async (id) => {
 // sửa mạng xã hội
 export const editSocialMedia = async (id, data) => {
   const response = await fetch(
-    `${import.meta.env.VITE_FASTFOOD_RENDER_API}/footer/social/${id}`,
+    `${import.meta.env.VITE_CHEFGOFOOD_RENDER_API}/footer/social/${id}`,
     {
       method: "PUT",
       headers: {

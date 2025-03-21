@@ -1,7 +1,7 @@
 export const getCreateDiscountSystem = async (data) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_SERVER_API}/discount`,
+      `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/discount`,
       {
         method: "POST",
         headers: {

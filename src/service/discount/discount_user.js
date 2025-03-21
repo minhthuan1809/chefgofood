@@ -1,7 +1,7 @@
 export const getUiDiscountUser = async (IdUser) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_SERVER_API}/discount/user/${IdUser}`
+      `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/discount/user/${IdUser}`
     );
     const result = await response.json();
 

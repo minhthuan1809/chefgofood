@@ -6,7 +6,7 @@ export const getLoginAdmin = (value) => {
   return async (dispatch) => {
     try {
       toast.dismiss();
-      const url = `${import.meta.env.VITE_FASTFOOD_ADMIN_API}/admin/login`;
+      const url = `${import.meta.env.VITE_CHEFGOFOOD_ADMIN_API}/admin/login`;
 
       const response = await fetch(url, {
         method: "POST",

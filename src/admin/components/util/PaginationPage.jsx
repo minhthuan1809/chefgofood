@@ -4,7 +4,6 @@ import { useParams, useNavigate } from "react-router-dom";
 export default function PaginationPage({ count, setPage }) {
   const params = useParams();
   const navigate = useNavigate();
-  // console.log(params);
   const handelPage = (_, value) => {
     setPage(value);
     navigate(`/admin/${params.url}/${value}`);

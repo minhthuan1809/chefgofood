@@ -2,7 +2,7 @@ export const getRegister = async (data) => {
   try {
     //thuan
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_SERVER_API}/register`,
+      `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/register`,
       {
         method: "POST",
         headers: {

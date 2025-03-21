@@ -1,7 +1,7 @@
 export const getUiNavbar = async () => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_RENDER_API}/homepage/navbad`
+      `${import.meta.env.VITE_CHEFGOFOOD_RENDER_API}/homepage/navbad`
     );
     const result = await response.json();
     return result;

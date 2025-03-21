@@ -283,7 +283,7 @@ const Nav = () => {
                 <img
                   className="h-full w-full object-cover"
                   src={Logo.image || "https://example.com/default-logo.png"}
-                  alt={Logo.title || "FastFood Logo"}
+                  alt={Logo.title || "CHEFGOFOOD Logo"}
                 />
               </div>
               <span className="text-2xl font-bold text-gray-800">

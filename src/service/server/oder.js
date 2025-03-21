@@ -2,7 +2,7 @@
 export const ConfirmOrder = async (page, limit, searchTerm) => {
   const response = await fetch(
     `${
-      import.meta.env.VITE_FASTFOOD_SERVER_API
+      import.meta.env.VITE_CHEFGOFOOD_SERVER_API
     }/order?page=${page}&limit=${limit}&q=${searchTerm}`
   );
   return response.json();
@@ -11,11 +11,10 @@ export const ConfirmOrder = async (page, limit, searchTerm) => {
 // Lấy chi tiết đơn hàng
 export const detailOrder = async (id) => {
   const response = await fetch(
-    `${import.meta.env.VITE_FASTFOOD_SERVER_API}/order_detail/${id}`
+    `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/order_detail/${id}`
   );
 
   const data = await response.json();
-  console.log("response", data);
   return data;
 };
 
@@ -24,7 +23,7 @@ export const getHistoryRender = async (page, limit, searchTerm) => {
   try {
     const response = await fetch(
       `${
-        import.meta.env.VITE_FASTFOOD_SERVER_API
+        import.meta.env.VITE_CHEFGOFOOD_SERVER_API
       }/history_order_admin?page=${page}&limit=${limit}&q=${searchTerm}`
     );
 
@@ -38,7 +37,7 @@ export const getHistoryRender = async (page, limit, searchTerm) => {
 //cập nhật trạng thái đơn hàng
 export const updateStatusOrder = async (order_id, status) => {
   const response = await fetch(
-    `${import.meta.env.VITE_FASTFOOD_SERVER_API}/order/fix/${order_id}`,
+    `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/order/fix/${order_id}`,
     {
       method: "PUT",
       headers: {

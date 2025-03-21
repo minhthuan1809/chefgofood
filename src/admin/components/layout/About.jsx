@@ -148,7 +148,6 @@ export default function About() {
       icon: "TiTick",
     };
     const response = await editStandards(data, inputEdit);
-    console.log(response);
 
     if (response.ok) {
       toast.success("Cập nhật thành công");

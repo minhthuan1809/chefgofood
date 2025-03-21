@@ -1,6 +1,6 @@
 export const addUser = async (value) => {
   try {
-    const url = `${import.meta.env.VITE_FASTFOOD_SERVER_API}/register`;
+    const url = `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/register`;
 
     const response = await fetch(url, {
       method: "POST",
@@ -15,7 +15,6 @@ export const addUser = async (value) => {
     });
 
     const data = await response.json();
-    console.log(data);
 
     return data;
   } catch (error) {

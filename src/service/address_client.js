@@ -1,7 +1,7 @@
 export const createAddress = async (user_id, data) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_SERVER_API}/address/create/${user_id}`,
+      `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/address/create/${user_id}`,
       {
         method: "POST",
         headers: {
@@ -28,7 +28,7 @@ export const createAddress = async (user_id, data) => {
 export const deleteAddress = async (id) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_SERVER_API}/address/delete/${id}`,
+      `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/address/delete/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -53,7 +53,7 @@ export const deleteAddress = async (id) => {
 export const updateAddress = async (id, data) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_SERVER_API}/address/update/${id}`,
+      `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/address/update/${id}`,
       {
         method: "PUT",
         headers: {
@@ -68,7 +68,6 @@ export const updateAddress = async (id, data) => {
     );
 
     const result = await response.json();
-    console.log(result);
 
     return result;
   } catch (error) {

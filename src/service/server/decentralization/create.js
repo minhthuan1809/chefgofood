@@ -1,8 +1,7 @@
 export const decentralizationCreate = async (data) => {
-  console.log(data);
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_ADMIN_API}/Decentralization/create`,
+      `${import.meta.env.VITE_CHEFGOFOOD_ADMIN_API}/Decentralization/create`,
       {
         method: "POST",
         headers: {
@@ -27,7 +26,6 @@ export const decentralizationCreate = async (data) => {
     );
 
     const result = await response.json();
-    console.log(result);
     return result;
   } catch (error) {
     console.error("Registration error:", error);

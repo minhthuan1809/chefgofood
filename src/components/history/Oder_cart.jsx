@@ -101,17 +101,17 @@ export default function OrderCard({ order }) {
             <div className="text-gray-600 mb-4">
               {order.status.toLocaleLowerCase() !== "cancel" ? (
                 <p>
-                  Cảm ơn quý khách đã tin tưởng và sử dụng dịch vụ của FastFood.
-                  Chúng tôi rất vinh dự được phục vụ quý khách và cam kết mang
-                  đến những trải nghiệm ẩm thực tuyệt vời nhất.
+                  Cảm ơn quý khách đã tin tưởng và sử dụng dịch vụ của
+                  CHEFGOFOOD. Chúng tôi rất vinh dự được phục vụ quý khách và
+                  cam kết mang đến những trải nghiệm ẩm thực tuyệt vời nhất.
                 </p>
               ) : (
                 <p className="text-gray-600">
-                  Chúng tôi thành thật xin lỗi vì sự bất tiện này. FastFood rất
-                  tiếc phải thông báo đơn hàng của quý khách đã bị hủy. Chúng
-                  tôi luôn cố gắng cải thiện dịch vụ và mong rằng quý khách sẽ
-                  tiếp tục ủng hộ FastFood trong những lần tiếp theo. Xin chân
-                  thành cảm ơn sự thông cảm của quý khách.
+                  Chúng tôi thành thật xin lỗi vì sự bất tiện này. CHEFGOFOOD
+                  rất tiếc phải thông báo đơn hàng của quý khách đã bị hủy.
+                  Chúng tôi luôn cố gắng cải thiện dịch vụ và mong rằng quý
+                  khách sẽ tiếp tục ủng hộ CHEFGOFOOD trong những lần tiếp theo.
+                  Xin chân thành cảm ơn sự thông cảm của quý khách.
                 </p>
               )}
             </div>

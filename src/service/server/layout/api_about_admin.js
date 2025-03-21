@@ -1,6 +1,6 @@
 export const fixFirstUiAbout = async (data, id) => {
   const response = await fetch(
-    `${import.meta.env.VITE_FASTFOOD_RENDER_API}/about/head/${id}`,
+    `${import.meta.env.VITE_CHEFGOFOOD_RENDER_API}/about/head/${id}`,
     {
       method: "PUT",
       headers: {
@@ -13,7 +13,7 @@ export const fixFirstUiAbout = async (data, id) => {
 };
 export const fixBodyUiAbout = async (data, id) => {
   const response = await fetch(
-    `${import.meta.env.VITE_FASTFOOD_RENDER_API}/about/body_main/${id}`,
+    `${import.meta.env.VITE_CHEFGOFOOD_RENDER_API}/about/body_main/${id}`,
     {
       method: "PUT",
       headers: {
@@ -27,7 +27,7 @@ export const fixBodyUiAbout = async (data, id) => {
 
 export const addBodyUiAbout = async (data) => {
   const response = await fetch(
-    `${import.meta.env.VITE_FASTFOOD_RENDER_API}/about/body/extra/1`,
+    `${import.meta.env.VITE_CHEFGOFOOD_RENDER_API}/about/body/extra/1`,
     {
       method: "POST",
       headers: {
@@ -41,7 +41,7 @@ export const addBodyUiAbout = async (data) => {
 // xóa
 export const DeleBodyUiAbout = async (id) => {
   const response = await fetch(
-    `${import.meta.env.VITE_FASTFOOD_RENDER_API}/about/body/extra/${id}`,
+    `${import.meta.env.VITE_CHEFGOFOOD_RENDER_API}/about/body/extra/${id}`,
     {
       method: "DELETE",
     }
@@ -52,7 +52,7 @@ export const DeleBodyUiAbout = async (id) => {
 //edit
 export const editStandards = async (data, id) => {
   const response = await fetch(
-    `${import.meta.env.VITE_FASTFOOD_RENDER_API}/about/body/extra/${id}`,
+    `${import.meta.env.VITE_CHEFGOFOOD_RENDER_API}/about/body/extra/${id}`,
     {
       method: "PUT",
       headers: {

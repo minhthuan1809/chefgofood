@@ -4,7 +4,7 @@ export const getCartRender = (apiKey) => {
   return async (dispatch) => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_FASTFOOD_SERVER_API}/cart`,
+        `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/cart`,
         {
           headers: {
             "X-Api-Key": apiKey,

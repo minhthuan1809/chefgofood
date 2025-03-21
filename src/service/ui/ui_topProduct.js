@@ -6,7 +6,7 @@ const errorConfig = {
 export const getUiTopProduct = async () => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_FASTFOOD_SERVER_API}/products/top?limit=20`
+      `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/products/top?limit=20`
     );
     const result = await response.json();
 
