@@ -1,7 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { BiRefresh } from "react-icons/bi";
-import { FaPlus, FaEdit, FaTrash, FaSearch } from "react-icons/fa";
+import {
+  FaPlus,
+  FaEdit,
+  FaTrash,
+  FaSearch,
+  FaFileExcel,
+  FaFilter,
+  FaExclamationTriangle,
+} from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { getRenderProduct } from "../../../redux/middlewares/admin/product/render_product";
 import PaginationPage from "../util/PaginationPage";
@@ -12,7 +20,7 @@ import Loading from "../util/Loading";
 import ExportToExcel from "../_model_product/ExcelProduct";
 
 const ProductManagement = () => {
-  // State quản lý form thêm/sửa sản phẩm
+  // State management
   const [showModal, setShowModal] = useState(false);
   const [editData, setEditData] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -21,8 +29,9 @@ const ProductManagement = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [showFilters, setShowFilters] = useState(false);
 
-  // Sử dụng Redux
+  // Redux
   const dispatch = useDispatch();
   const products = useSelector((state) => state.productsAdmin.products);
 
@@ -37,12 +46,11 @@ const ProductManagement = () => {
     };
   };
 
-  // Lấy dữ liệu sản phẩm khi component mount hoặc các dependency thay đổi
+  // Fetch product data
   const fetchData = async () => {
     setIsLoading(true);
     const res = await dispatch(getRenderProduct(searchTerm, limit, page, type));
     setTotalPages(res.data.pagination.total_pages);
-
     setIsLoading(false);
   };
 
@@ -55,7 +63,7 @@ const ProductManagement = () => {
     debouncedSearch();
   }, [dispatch, limit, page, searchTerm, type]);
 
-  // Xử lý xóa sản phẩm
+  // Delete product
   const handleDeleteProduct = async (id) => {
     if (!confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")) return;
     try {
@@ -73,19 +81,19 @@ const ProductManagement = () => {
     }
   };
 
-  // Xử lý mở modal thêm sản phẩm mới
+  // Add new product
   const handleAddProduct = () => {
     setEditData(null);
     setShowModal(true);
   };
 
-  // Xử lý mở modal sửa sản phẩm
+  // Edit product
   const handleEditProduct = (product) => {
     setEditData(product);
     setShowModal(true);
   };
 
-  // Xử lý đóng modal
+  // Close modal
   const handleCloseModal = () => {
     setShowModal(false);
     setEditData(null);
@@ -96,46 +104,71 @@ const ProductManagement = () => {
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="p-4 w-full mx-auto">
-          <div className="bg-white rounded-lg shadow">
-            <div className="p-4 flex items-center justify-between border-b">
-              <h2 className="text-xl font-bold text-gray-500">
-                Quản lý sản phẩm
-              </h2>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={handleAddProduct}
-                  className="flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-600"
-                >
-                  <FaPlus className="mr-2" />
-                  Thêm
-                </button>
-                <ExportToExcel data={products} fileName="DanhSachSanPham" />
+        <div className="p-6 w-full mx-auto bg-gray-50 min-h-screen">
+          <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+            {/* Header */}
+            <div className=" p-6">
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold  flex items-center">
+                  Quản lý sản phẩm
+                  <span className="ml-2 bg-white bg-opacity-20 text-white text-sm py-1 px-3 rounded-full">
+                    {products?.length || 0} sản phẩm
+                  </span>
+                </h2>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={handleAddProduct}
+                    className="flex items-center px-4 py-2 bg-white text-blue-700 rounded-lg hover:bg-blue-50 transition-all shadow-sm font-medium"
+                  >
+                    <FaPlus className="mr-2" />
+                    Thêm sản phẩm
+                  </button>
+                  <ExportToExcel
+                    data={products}
+                    fileName="DanhSachSanPham"
+                    className="flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-all shadow-sm font-medium"
+                  >
+                    <FaFileExcel className="mr-2" />
+                    Xuất Excel
+                  </ExportToExcel>
+                </div>
               </div>
-            </div>
 
-            <div className="p-4">
-              <div className="mb-4 flex gap-2">
+              {/* Search bar */}
+              <div className="mt-6 flex">
                 <div className="relative flex-1">
-                  <FaSearch className="absolute left-3 top-3 text-gray-400" />
+                  <FaSearch className="absolute left-4 top-3.5 text-gray-400" />
                   <input
                     type="text"
-                    placeholder="Tìm kiếm sản phẩm..."
-                    className="w-full pl-10 pr-4 py-2 border rounded"
+                    placeholder="Tìm kiếm theo tên sản phẩm..."
+                    className="w-full pl-12 pr-4 py-3 rounded-l-lg border border-gray-200 outline-none"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
                 </div>
                 <button
                   onClick={fetchData}
-                  className="px-4 py-2 border rounded hover:bg-gray-100"
+                  className="px-5 py-3 bg-white hover:bg-gray-100 transition-colors border-l border-gray-200"
                 >
                   <BiRefresh className="text-xl text-gray-500" />
                 </button>
-                <div className="flex items-center gap-2">
-                  <label className="text-gray-500">Loại:</label>
+                <button
+                  onClick={() => setShowFilters(!showFilters)}
+                  className="px-5 py-3 bg-white hover:bg-gray-100 transition-colors rounded-r-lg flex items-center gap-2 font-medium"
+                >
+                  <FaFilter className="text-gray-500" />
+                  <span className="text-gray-700">Bộ lọc</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Filters */}
+            {showFilters && (
+              <div className="p-4 bg-gray-50 border-b border-gray-200 flex flex-wrap gap-4 items-center">
+                <div className="flex items-center gap-2 bg-white p-2 rounded-lg shadow-sm">
+                  <label className="text-gray-700 font-medium">Loại:</label>
                   <select
-                    className="border rounded px-3 py-2 outline-none"
+                    className="border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-300 bg-white text-gray-700"
                     value={type}
                     onChange={(e) => setType(e.target.value)}
                   >
@@ -151,38 +184,56 @@ const ProductManagement = () => {
                     ))}
                   </select>
                 </div>
-                <div className="flex items-center gap-2">
-                  <label className="text-gray-500">Số lượng:</label>
+                <div className="flex items-center gap-2 bg-white p-2 rounded-lg shadow-sm">
+                  <label className="text-gray-700 font-medium">Hiển thị:</label>
                   <select
-                    className="border rounded px-3 py-2 outline-none"
+                    className="border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-300 bg-white text-gray-700"
                     value={limit}
                     onChange={(e) => setLimit(parseInt(e.target.value))}
                   >
-                    {Array.from({ length: 100 }, (_, index) => (
-                      <option key={index} value={index + 1}>
-                        {index + 1}
+                    {[10, 25, 50, 75, 100].map((num) => (
+                      <option key={num} value={num}>
+                        {num} sản phẩm
                       </option>
                     ))}
                   </select>
                 </div>
               </div>
+            )}
 
-              <div className="overflow-x-auto">
-                <table className="w-full border-collapse">
+            <div className="p-6">
+              <div className="overflow-x-auto rounded-lg shadow-sm border border-gray-200">
+                <table className="w-full border-collapse bg-white">
                   <thead>
-                    <tr className="bg-gray-100">
-                      <th className="p-2 text-left text-gray-500">STT</th>
-                      <th className="p-2 text-left text-gray-500">Hình ảnh</th>
-                      <th className="p-2 text-left text-gray-500">Tên</th>
-                      <th className="p-2 text-left text-gray-500">Mô tả</th>
-                      <th className="p-2 text-left text-gray-500">Giảm giá</th>
-                      <th className="p-2 text-right text-gray-500">Giá</th>
-                      <th className="p-2 text-right text-gray-500">Số lượng</th>
-                      <th className="p-2 text-center text-gray-500">Loại</th>
-                      <th className="p-2 text-center text-gray-500">
+                    <tr className="bg-gray-50 border-b border-gray-200">
+                      <th className="p-4 text-left text-gray-700 font-semibold">
+                        STT
+                      </th>
+                      <th className="p-4 text-left text-gray-700 font-semibold">
+                        Hình ảnh
+                      </th>
+                      <th className="p-4 text-left text-gray-700 font-semibold">
+                        Tên
+                      </th>
+                      <th className="p-4 text-left text-gray-700 font-semibold">
+                        Mô tả
+                      </th>
+                      <th className="p-4 text-left text-gray-700 font-semibold">
+                        Giảm giá
+                      </th>
+                      <th className="p-4 text-right text-gray-700 font-semibold">
+                        Giá
+                      </th>
+                      <th className="p-4 text-right text-gray-700 font-semibold">
+                        Số lượng
+                      </th>
+                      <th className="p-4 text-center text-gray-700 font-semibold">
+                        Loại
+                      </th>
+                      <th className="p-4 text-center text-gray-700 font-semibold">
                         Trạng thái
                       </th>
-                      <th className="p-2 text-center text-gray-500">
+                      <th className="p-4 text-center text-gray-700 font-semibold">
                         Hành động
                       </th>
                     </tr>
@@ -192,43 +243,77 @@ const ProductManagement = () => {
                       products.map((product, index) => (
                         <tr
                           key={product.id}
-                          className="border-t hover:bg-gray-50"
+                          className="border-b border-gray-200 hover:bg-blue-50 transition-colors"
                         >
-                          <td className="p-2">{index + 1}</td>
-                          <td className="p-2 relative">
-                            <img
-                              src={product.image_url}
-                              alt={product.name}
-                              className="w-16 h-16 object-cover rounded"
-                            />
-                            {product.discount > 0 && (
-                              <span className="absolute top-1 left-1 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">
-                                -{product.discount}%
+                          <td className="p-4 text-gray-800">{index + 1}</td>
+                          <td className="p-4 relative">
+                            <div className="relative w-20 h-20 rounded-lg overflow-hidden border border-gray-200 shadow-sm">
+                              <img
+                                src={product.image_url}
+                                alt={product.name}
+                                className="w-full h-full object-cover"
+                              />
+                              {product.discount > 0 && (
+                                <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-2 py-1">
+                                  -{product.discount}%
+                                </span>
+                              )}
+                            </div>
+                          </td>
+                          <td className="p-4 font-medium text-gray-800">
+                            {product.name}
+                          </td>
+                          <td className="p-4 text-gray-600 max-w-xs truncate">
+                            {product.description}
+                          </td>
+                          <td className="p-4">
+                            {product.discount > 0 ? (
+                              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                {product.discount}%
                               </span>
+                            ) : (
+                              <span className="text-gray-500">-</span>
                             )}
                           </td>
-                          <td className="p-2">{product.name}</td>
-                          <td className="p-2">{product.description}</td>
-                          <td className="p-2">{product.discount}%</td>
-                          <td className="p-2 text-right">
+                          <td className="p-4 text-right font-medium text-gray-800">
                             {parseInt(product.price).toLocaleString()}đ
                           </td>
-                          <td className="p-2 text-right">{product.quantity}</td>
-                          <td className="p-2 text-center w-[4rem]">
-                            {product.type
-                              .toLowerCase()
-                              .replace("cake", "Bánh")
-                              .replace("water", "Nước")
-                              .replace("food", "Đồ ăn")}
-                          </td>
-                          <td className="p-2 text-center text-sm w-[7rem]">
+                          <td className="p-4 text-right">
                             <span
-                              className={`px-2 py-1 rounded text-sm ${
+                              className={`font-medium ${
+                                product.quantity < 10
+                                  ? "text-orange-600"
+                                  : "text-gray-800"
+                              }`}
+                            >
+                              {product.quantity}
+                            </span>
+                          </td>
+                          <td className="p-4 text-center">
+                            <span
+                              className={`px-3 py-1 rounded-full text-xs font-medium ${
+                                product.type === "water"
+                                  ? "bg-blue-100 text-blue-800"
+                                  : product.type === "cake"
+                                  ? "bg-yellow-100 text-yellow-800"
+                                  : "bg-green-100 text-green-800"
+                              }`}
+                            >
+                              {product.type
+                                .toLowerCase()
+                                .replace("cake", "Bánh")
+                                .replace("water", "Nước")
+                                .replace("food", "Đồ ăn")}
+                            </span>
+                          </td>
+                          <td className="p-4 text-center">
+                            <span
+                              className={`px-3 py-1 rounded-full text-xs font-medium ${
                                 product.lock
-                                  ? "bg-yellow-200 text-yellow-800"
+                                  ? "bg-yellow-100 text-yellow-800"
                                   : product.status
-                                  ? "bg-green-200 text-green-800"
-                                  : "bg-red-200 text-red-800"
+                                  ? "bg-green-100 text-green-800"
+                                  : "bg-red-100 text-red-800"
                               }`}
                             >
                               {product.lock
@@ -238,17 +323,19 @@ const ProductManagement = () => {
                                 : "Hết hàng"}
                             </span>
                           </td>
-                          <td className="p-2 text-center">
+                          <td className="p-4 text-center">
                             <div className="flex justify-center gap-2">
                               <button
-                                className="p-2 text-blue-600 hover:bg-blue-600 rounded"
+                                className="p-2 text-blue-600 hover:bg-blue-100 rounded-full transition-colors"
                                 onClick={() => handleEditProduct(product)}
+                                title="Chỉnh sửa"
                               >
                                 <FaEdit />
                               </button>
                               <button
-                                className="p-2 text-red-500 hover:bg-red-100 rounded"
+                                className="p-2 text-red-500 hover:bg-red-100 rounded-full transition-colors"
                                 onClick={() => handleDeleteProduct(product.id)}
+                                title="Xóa"
                               >
                                 <FaTrash />
                               </button>
@@ -259,10 +346,16 @@ const ProductManagement = () => {
                     ) : (
                       <tr>
                         <td
-                          colSpan="8"
-                          className="p-4 text-center text-gray-500"
+                          colSpan="10"
+                          className="p-8 text-center text-gray-500"
                         >
-                          Không có sản phẩm nào
+                          <div className="flex flex-col items-center">
+                            <FaExclamationTriangle className="text-yellow-500 text-4xl mb-2" />
+                            <p className="text-lg">Không có sản phẩm nào</p>
+                            <p className="text-sm text-gray-400 mt-1">
+                              Thêm sản phẩm mới hoặc thay đổi bộ lọc
+                            </p>
+                          </div>
                         </td>
                       </tr>
                     )}
@@ -271,17 +364,19 @@ const ProductManagement = () => {
               </div>
             </div>
           </div>
+
           <Modal
             isOpen={showModal}
             onClose={handleCloseModal}
             editData={editData}
             fetchData={fetchData}
           />
-          <div className="mt-4">
-            {totalPages === 1 ? null : (
+
+          {totalPages > 1 && (
+            <div className="mt-6 flex justify-center">
               <PaginationPage count={totalPages} setPage={setPage} />
-            )}
-          </div>
+            </div>
+          )}
         </div>
       )}
     </>

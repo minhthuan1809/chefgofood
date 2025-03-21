@@ -48,6 +48,7 @@ const PayCart = ({ items }) => {
     addresses: null,
     discountSystem: null,
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   // Calculated Values
   const subtotal = useMemo(
@@ -63,6 +64,7 @@ const PayCart = ({ items }) => {
   // Data Fetching
   useEffect(() => {
     const fetchInitialData = async () => {
+      setIsLoading(true);
       try {
         const [discountResponse, profileResponse] = await Promise.all([
           getUiDiscountSystem(),
@@ -94,6 +96,8 @@ const PayCart = ({ items }) => {
         }
       } catch (error) {
         toast.error("Lỗi khi tải dữ liệu");
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -107,6 +111,7 @@ const PayCart = ({ items }) => {
       appliedDiscount: discountData.discountPercent,
       minimumOrderValue: discountData.minOrderValue,
     });
+    toast.success(`Đã áp dụng mã giảm giá: ${discountData.code}`);
   };
 
   const handleCheckout = async () => {
@@ -124,6 +129,7 @@ const PayCart = ({ items }) => {
       return;
     }
 
+    setIsLoading(true);
     try {
       const paymentData = {
         user_id: profile.id,
@@ -155,6 +161,8 @@ const PayCart = ({ items }) => {
       }
     } catch (error) {
       toast.error("Lỗi khi xử lý thanh toán");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -175,72 +183,197 @@ const PayCart = ({ items }) => {
   };
 
   return (
-    <div className="w-full mx-auto bg-white rounded-lg shadow-md p-6">
-      <h3 className="text-2xl font-bold text-center mb-6">Thanh toán</h3>
+    <div>
+      <div className="w-full mx-auto bg-white rounded-md shadow-md p-4 my-4">
+        <h2 className="text-xl font-bold text-center mb-4 text-[#8a5d2f]">
+          Thanh Toán Đơn Hàng
+        </h2>
 
-      <div className="space-y-6">
-        <ShippingAddress
-          address={deliveryDetails.selectedAddress}
-          onChangeClick={() => toggleModal("address", true)}
-        />
+        {isLoading ? (
+          <div className="flex justify-center py-4">
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#b17741]"></div>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {/* Progress Indicator */}
+            <div className="flex justify-between mb-3">
+              <div className="flex flex-col items-center">
+                <div className="w-6 h-6 bg-[#b17741] rounded-full flex items-center justify-center text-white text-xs font-bold">
+                  1
+                </div>
+                <span className="text-xs mt-1">Giỏ hàng</span>
+              </div>
+              <div className="flex-1 flex items-center">
+                <div className="h-px w-full bg-[#b17741]"></div>
+              </div>
+              <div className="flex flex-col items-center">
+                <div className="w-6 h-6 bg-[#b17741] rounded-full flex items-center justify-center text-white text-xs font-bold">
+                  2
+                </div>
+                <span className="text-xs mt-1">Thanh toán</span>
+              </div>
+              <div className="flex-1 flex items-center">
+                <div className="h-px w-full bg-gray-300"></div>
+              </div>
+              <div className="flex flex-col items-center">
+                <div className="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 text-xs font-bold">
+                  3
+                </div>
+                <span className="text-xs mt-1 text-gray-500">Hoàn tất</span>
+              </div>
+            </div>
 
-        <SelectedItems items={items} />
+            {/* Shipping Address Section */}
+            <div className="bg-gray-50 rounded-mdborder border-gray-200">
+              <div className="flex justify-between items-center ">
+                <h3 className="text-base font-semibold text-gray-800">
+                  <span className="text-[#b17741] mr-1">1.</span>Địa Chỉ Giao
+                  Hàng
+                </h3>
+              </div>
+              <ShippingAddress
+                address={deliveryDetails.selectedAddress}
+                onChangeClick={() => toggleModal("address", true)}
+              />
+            </div>
 
-        <div className="space-y-4">
-          <h4 className="font-medium">Ghi chú giao hàng</h4>
-          <textarea
-            value={deliveryDetails.deliveryNote}
-            onChange={(e) =>
-              updateDeliveryDetails("deliveryNote", e.target.value)
-            }
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#b17741]"
-            rows="3"
-            placeholder="Nhập ghi chú cho người giao hàng..."
-          />
-        </div>
+            {/* Selected Items Section */}
+            <div className="bg-gray-50 rounded-md p-3 border border-gray-200">
+              <h3 className="text-base font-semibold text-gray-800 mb-2">
+                <span className="text-[#b17741] mr-1">2.</span>Sản Phẩm
+              </h3>
+              <SelectedItems items={items} />
+            </div>
 
-        <button
-          onClick={() => toggleModal("discount", true)}
-          className="text-[#b17741] hover:text-[#b17741] text-sm font-medium"
-        >
-          {checkout.discountCode
-            ? `Mã đang dùng: ${checkout.discountCode}`
-            : "Chọn mã giảm giá"}
-        </button>
+            {/* Additional Info and Payment Method Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="bg-gray-50 rounded-md p-3 border border-gray-200">
+                <h3 className="text-base font-semibold text-gray-800 mb-2">
+                  <span className="text-[#b17741] mr-1">3.</span>Ghi Chú
+                </h3>
+                <textarea
+                  value={deliveryDetails.deliveryNote}
+                  onChange={(e) =>
+                    updateDeliveryDetails("deliveryNote", e.target.value)
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring-1 focus:ring-[#b17741] transition-all"
+                  rows="2"
+                  placeholder="Nhập ghi chú cho người giao hàng..."
+                />
+              </div>
 
-        <PaymentMethodSelector
-          selectedMethod={deliveryDetails.selectedPaymentMethod}
-          onSelect={(method) =>
-            updateDeliveryDetails("selectedPaymentMethod", method)
-          }
-        />
+              <div className="bg-gray-50 rounded-md p-3 border border-gray-200">
+                <h3 className="text-base font-semibold text-gray-800 mb-2">
+                  <span className="text-[#b17741] mr-1">4.</span>Phương Thức
+                  Thanh Toán
+                </h3>
+                <PaymentMethodSelector
+                  selectedMethod={deliveryDetails.selectedPaymentMethod}
+                  onSelect={(method) =>
+                    updateDeliveryDetails("selectedPaymentMethod", method)
+                  }
+                />
+              </div>
+            </div>
 
-        <PriceSummary
+            {/* Discount Section */}
+            <div className="bg-gray-50 rounded-md p-3 border border-gray-200">
+              <h3 className="text-base font-semibold text-gray-800 mb-2">
+                <span className="text-[#b17741] mr-1">5.</span>Mã Giảm Giá
+              </h3>
+              <div className="flex items-center">
+                <div className="flex-1 bg-white rounded-md border border-gray-300 px-3 py-2 text-sm">
+                  {checkout.discountCode ? (
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium text-[#b17741]">
+                        {checkout.discountCode} (-
+                        {(checkout.appliedDiscount * 100).toFixed(0)}%)
+                      </span>
+                      <button
+                        onClick={() =>
+                          setCheckout({
+                            discountCode: "",
+                            appliedDiscount: 0,
+                            minimumOrderValue: 0,
+                          })
+                        }
+                        className="text-gray-500 hover:text-red-500"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  ) : (
+                    <span className="text-gray-500 text-sm">
+                      Chưa có mã giảm giá
+                    </span>
+                  )}
+                </div>
+                <button
+                  onClick={() => toggleModal("discount", true)}
+                  className="ml-2 px-3 py-2 bg-[#b17741] text-white text-sm font-medium rounded-md hover:bg-[#a06835] transition-colors"
+                >
+                  Chọn Mã
+                </button>
+              </div>
+            </div>
+
+            {/* Price Summary Section */}
+            <div className="bg-gray-50 rounded-md p-3 border border-gray-200">
+              <h3 className="text-base font-semibold text-gray-800 mb-2">
+                <span className="text-[#b17741] mr-1">6.</span>Tổng Thanh Toán
+              </h3>
+              <PriceSummary
+                subtotal={subtotal}
+                discountAmount={subtotal * checkout.appliedDiscount}
+                shippingCost={SHIPPING_COST}
+              />
+
+              <div className="mt-3 border-t border-gray-200 pt-3">
+                <div className="flex justify-between items-center mb-3">
+                  <span className="text-base font-bold">Tổng cộng:</span>
+                  <span className="text-lg font-bold text-[#b17741]">
+                    {total.toLocaleString()}đ
+                  </span>
+                </div>
+
+                <button
+                  onClick={handleCheckout}
+                  className="w-full py-2 bg-[#b17741] text-white text-base font-semibold rounded-md hover:bg-[#a06835] transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center"
+                  disabled={
+                    !deliveryDetails.selectedPaymentMethod ||
+                    !deliveryDetails.selectedAddress ||
+                    isLoading
+                  }
+                >
+                  {isLoading ? (
+                    <span className="mr-2 animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white"></span>
+                  ) : null}
+                  Xác Nhận Đặt Hàng
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <ModalDiscount
+          isOpen={modalStates.discount}
+          onClose={() => toggleModal("discount", false)}
+          discountSystem={systemData.discountSystem}
           subtotal={subtotal}
-          discountAmount={subtotal * checkout.appliedDiscount}
-          shippingCost={SHIPPING_COST}
+          onApplyDiscount={handleApplyDiscount}
         />
-
-        <button
-          onClick={handleCheckout}
-          className="w-full py-3 bg-[#b17741] text-white font-semibold rounded-lg hover:bg-[#b17741] transition-colors disabled:bg-gray-400"
-          disabled={
-            !deliveryDetails.selectedPaymentMethod ||
-            !deliveryDetails.selectedAddress
-          }
-        >
-          Xác Nhận
-        </button>
       </div>
-
-      <ModalDiscount
-        isOpen={modalStates.discount}
-        onClose={() => toggleModal("discount", false)}
-        discountSystem={systemData.discountSystem}
-        subtotal={subtotal}
-        onApplyDiscount={handleApplyDiscount}
-      />
-
       <AddressModal
         isOpen={modalStates.address}
         onClose={() => toggleModal("address", false)}

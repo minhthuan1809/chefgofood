@@ -19,53 +19,61 @@ const Dashboard = () => {
     getDashboardData();
   }, []);
   return (
-    <div>
-      <main>
-        <div className="max-w-7xl mx-auto ">
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold">Tổng quan hệ thống</h1>
-            <div className="flex items-center space-x-4">
-              <Link
-                to="/"
-                target="_blank"
-                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-600"
-              >
-                Web client <FaEye />
-              </Link>
+    <div className="min-h-screen bg-gray-50">
+      <main className="p-6">
+        <div className="w-[80%] mx-auto">
+          <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <div className="flex justify-between items-center">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-800">
+                  Tổng quan hệ thống
+                </h1>
+                <p className="text-gray-500 mt-1">
+                  Xem thống kê và phân tích dữ liệu
+                </p>
+              </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
             <StatCard
-              icon={<FiDollarSign />}
+              icon={<FiDollarSign className="text-2xl" />}
               label="Tổng Doanh Thu"
               value={`${dashboardData?.total_revenue.toLocaleString("vi-VN")}${
                 dashboardData?.currency
               }`}
-              color="bg-blue-600"
+              color="bg-gradient-to-r from-blue-500 to-blue-600"
               trend={dashboardData?.growth_rate_revenue}
             />
             <StatCard
-              icon={<FiShoppingBag />}
+              icon={<FiShoppingBag className="text-2xl" />}
               label="Tổng Đơn Hàng"
               value={dashboardData?.total_orders}
-              color="bg-green-500"
+              color="bg-gradient-to-r from-green-400 to-green-500"
               trend={dashboardData?.growth_rate_orders}
             />
             <StatCard
-              icon={<FiUsers />}
+              icon={<FiUsers className="text-2xl" />}
               label="Người Dùng Mới Trên Ngày"
               value={dashboardData?.new_users}
-              color="bg-purple-500"
+              color="bg-gradient-to-r from-purple-400 to-purple-500"
               trend={dashboardData?.growth_rate_users}
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-            <RevenueChart />
-            <OrdersChart />
-            <WeatherChart />
-            <TopProducts />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition duration-200">
+              <RevenueChart />
+            </div>
+            <div className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition duration-200">
+              <OrdersChart />
+            </div>
+            <div className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition duration-200">
+              <WeatherChart />
+            </div>
+            <div className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition duration-200">
+              <TopProducts />
+            </div>
           </div>
         </div>
       </main>

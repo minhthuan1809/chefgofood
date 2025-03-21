@@ -75,11 +75,11 @@ const ChatMessages = () => {
     );
   }
   return (
-    <div className="flex h-full bg-gray-100">
+    <div className="flex  bg-gray-100 min-h-[calc(100vh-100px)]">
       {/* User list */}
       <div className="w-1/4 bg-white border-r">
         <div className="p-4 border-b">
-          <h2 className="text-lg font-semibold">Support Messages</h2>
+          <h2 className="text-lg font-semibold">Tin nhắn hỗ trợ</h2>
         </div>
         <div className="overflow-y-auto h-[calc(100%-60px)]">
           {users.map((user) => (

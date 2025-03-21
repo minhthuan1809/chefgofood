@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BiSolidLayout } from "react-icons/bi";
 import { CiLogout } from "react-icons/ci";
 import {
@@ -24,7 +24,7 @@ import { DecentralizationAction } from "../../redux/action/admin/decentralizatio
 import { FaHistory, FaHome, FaInfoCircle } from "react-icons/fa";
 import { FaList, FaTrademark } from "react-icons/fa6";
 
-const AdminSidebar = () => {
+const AdminSidebar = ({ isCollapsed, setIsCollapsed }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname.split("/").pop();
@@ -34,6 +34,30 @@ const AdminSidebar = () => {
     (state) => state.decentralization.DecentralizationReducer_dashboard
   );
   const dispatch = useDispatch();
+
+  // Auto expand menu based on current path
+  useEffect(() => {
+    const findParentMenu = () => {
+      for (const item of menuItems) {
+        if (item.hasSubmenu && item.submenu) {
+          for (const subItem of item.submenu) {
+            if (subItem.id.toLowerCase() === currentPath) {
+              return item.id;
+            }
+          }
+        }
+      }
+      return null;
+    };
+
+    const parentMenu = findParentMenu();
+    if (parentMenu) {
+      setOpenMenus((prev) => ({
+        ...prev,
+        [parentMenu]: true,
+      }));
+    }
+  }, [currentPath]);
 
   const menuItems = [
     {
@@ -47,9 +71,7 @@ const AdminSidebar = () => {
       icon: <HiQueueList size={20} />,
       label: "Đơn Hàng",
       id: "orders",
-
       hasSubmenu: true,
-
       dataDecentralization: dataDecentralization?.order,
       submenu: [
         {
@@ -64,7 +86,6 @@ const AdminSidebar = () => {
           id: "orders-sepay",
           path: "/orders-sepay",
         },
-
         {
           icon: <FaHistory size={20} />,
           label: "Lịch sử mua hàng",
@@ -147,7 +168,6 @@ const AdminSidebar = () => {
           label: "Thương hiệu",
           id: "title",
           path: "/title",
-          hasSubmenu: true,
         },
         {
           icon: <FaHome size={20} />,
@@ -204,37 +224,87 @@ const AdminSidebar = () => {
     navigate("/admin/dashboard/login");
   };
 
+  const toggleSidebar = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
   return (
-    <div className="relative h-full flex flex-col">
-      <div className="flex-1">
+    <div className="relative h-full flex flex-col bg-white">
+      <div className="flex justify-between items-center p-4 border-b border-gray-100">
+        <div className="flex items-center space-x-3">
+          {!isCollapsed && (
+            <>
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                A
+              </div>
+              <h2 className="font-bold text-xl text-gray-800">Admin</h2>
+            </>
+          )}
+        </div>
+        <button
+          onClick={toggleSidebar}
+          className="p-2 rounded-lg hover:bg-gray-100 text-gray-600 transition-colors"
+        >
+          {isCollapsed ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 transform rotate-180"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                clipRule="evenodd"
+              />
+            </svg>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                clipRule="evenodd"
+              />
+            </svg>
+          )}
+        </button>
+      </div>
+
+      <div className="flex-1 overflow-y-auto py-4 px-3">
         {menuItems.map((item) => {
           if (!item.dataDecentralization) return null;
 
           return (
-            <div key={item.id} className="menu-item">
+            <div key={item.id} className="mb-2">
               <div
-                className={` flex gap-5 items-center justify-between p-3 rounded-lg hover:bg-blue-100 transition-all duration-300 cursor-pointer ${
-                  currentPath === item.id.toLowerCase()
-                    ? "bg-blue-100 text-black"
-                    : "text-gray-700"
-                }`}
+                className={`flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-200 cursor-pointer
+                  ${
+                    currentPath === item.id.toLowerCase()
+                      ? "bg-blue-100 text-blue-700"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }`}
                 onClick={() =>
                   handleMenuItemClick(item.id, item.path, item.hasSubmenu)
                 }
               >
-                <div className="flex items-center space-x-5">
-                  <span
-                    className={`text-xl transition-transform duration-300 ${
-                      openMenus[item.id] ? "transform rotate-12" : ""
-                    }`}
-                  >
+                <div className="flex items-center space-x-3">
+                  <span className={`text-xl ${isCollapsed ? "mx-auto" : ""}`}>
                     {item.icon}
                   </span>
-                  <span>{item.label}</span>
+                  {!isCollapsed && (
+                    <span className="font-medium whitespace-nowrap">
+                      {item.label}
+                    </span>
+                  )}
                 </div>
-                {item.hasSubmenu && (
+                {!isCollapsed && item.hasSubmenu && (
                   <span
-                    className={`text-gray-500 transition-transform duration-300 ${
+                    className={`transition-transform duration-200 ${
                       openMenus[item.id] ? "transform rotate-180" : ""
                     }`}
                   >
@@ -242,44 +312,44 @@ const AdminSidebar = () => {
                   </span>
                 )}
               </div>
-              {item.hasSubmenu && (
-                <div
-                  className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                    openMenus[item.id]
-                      ? "max-h-40 opacity-100"
-                      : "max-h-0 opacity-0"
-                  }`}
-                >
-                  <div className="ml-6 mt-1  transform">
-                    {item.submenu.map((subItem) => (
-                      <div
-                        key={subItem.id}
-                        className={`flex items-center space-x-3 p-2 py-2 rounded-lg hover:bg-blue-100 transition-all duration-300 cursor-pointer transform hover:translate-x-2 ${
+
+              {item.hasSubmenu && openMenus[item.id] && !isCollapsed && (
+                <div className="ml-4 mt-2 space-y-1">
+                  {item.submenu.map((subItem) => (
+                    <div
+                      key={subItem.id}
+                      className={`flex items-center space-x-3 px-4 py-2.5 rounded-lg transition-colors cursor-pointer
+                        ${
                           currentPath === subItem.id.toLowerCase()
-                            ? "bg-blue-100 text-black"
-                            : "text-gray-700"
+                            ? "bg-blue-100 text-blue-700"
+                            : "text-gray-600 hover:bg-gray-50"
                         }`}
-                        onClick={() =>
-                          handleMenuItemClick(subItem.id, subItem.path)
-                        }
-                      >
-                        {subItem.icon}
-                        <span>{subItem.label}</span>
-                      </div>
-                    ))}
-                  </div>
+                      onClick={() =>
+                        handleMenuItemClick(subItem.id, subItem.path)
+                      }
+                    >
+                      <span className="text-lg">{subItem.icon}</span>
+                      <span className="text-sm whitespace-nowrap">
+                        {subItem.label}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
           );
         })}
       </div>
-      <button
-        className="flex w-full items-center space-x-3 p-3 rounded-lg hover:bg-red-600 hover:text-white text-red-600 text-center border-2 border-red-600 transition-all duration-300 cursor-pointer hover:translate-x-2"
-        onClick={handleLogout}
-      >
-        <CiLogout size={20} /> <span>Đăng xuất</span>
-      </button>
+
+      <div className="p-4 border-t border-gray-100">
+        <button
+          className="flex w-full items-center justify-center space-x-2 px-4 py-3 rounded-lg text-white bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 transition-all duration-200 font-medium shadow-sm"
+          onClick={handleLogout}
+        >
+          <CiLogout size={20} className={isCollapsed ? "mx-auto" : ""} />
+          {!isCollapsed && <span>Đăng xuất</span>}
+        </button>
+      </div>
     </div>
   );
 };

@@ -9,131 +9,145 @@ import {
 import { toast } from "react-toastify";
 import { EditModal } from "./model/AddressModel";
 
+const PHONE_PATTERN = /^[0-9]{10,15}$/;
+const MAX_ADDRESSES = 3;
+
 export default function Address() {
-  const profile = useSelector((state) => state.profile.profile);
   const dispatch = useDispatch();
+  const profile = useSelector((state) => state.profile.profile);
   const dataset = useSelector((state) => state.profileAddress.address);
+
   const [addresses, setAddresses] = useState([]);
-  const [isEditing, setIsEditing] = useState(false);
-  const [isAdding, setIsAdding] = useState(false);
+  const [modalState, setModalState] = useState({
+    isOpen: false,
+    isEditing: false,
+    isAdding: false,
+  });
   const [editInfo, setEditInfo] = useState({});
-  const [errors, setErrors] = useState({}); // Trạng thái cho lỗi
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await dispatch(getProfileAddress(profile?.id));
-        if (dataset) {
-          setAddresses(dataset);
-        }
-      } catch (error) {
-        console.error("Error fetching profile address:", error);
-      }
-    };
+    fetchAddresses();
+  }, [dispatch, dataset]);
 
-    fetchData();
-  }, [dispatch, dataset]); //dispatch, profile?.id, dataset
+  const fetchAddresses = async () => {
+    try {
+      await dispatch(getProfileAddress(profile?.id));
+      if (dataset) {
+        setAddresses(dataset);
+      }
+    } catch (error) {
+      console.error("Error fetching profile address:", error);
+    }
+  };
 
   const validateFields = () => {
     const newErrors = {};
+
     if (!editInfo.note) newErrors.note = "Tên gợi nhớ không được để trống";
     if (!editInfo.address) newErrors.address = "Địa chỉ không được để trống";
-    const phonePattern = /^[0-9]{10,15}$/; // Điều kiện số điện thoại
+
     if (!editInfo.phone) {
       newErrors.phone = "Số điện thoại không được để trống";
-    } else if (!phonePattern.test(editInfo.phone)) {
+    } else if (!PHONE_PATTERN.test(editInfo.phone)) {
       newErrors.phone = "Số điện thoại không đúng định dạng";
     }
+
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Trả về true nếu không có lỗi
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleCreate = async () => {
-    if (!validateFields()) return; // Kiểm tra lỗi trước khi tiếp tục
-    // Thêm địa chỉ mới
-    const data = await createAddress(profile.id, editInfo);
-    toast.dismiss();
-    console.log(data);
+    if (!validateFields()) return;
 
-    if (data) {
-      if (data.ok) {
-        toast.success("Địa chỉ được thêm !");
-        setIsAdding(false);
-        setEditInfo("");
-        setErrors({}); // Đặt lại lỗi sau khi thành công
+    try {
+      toast.dismiss();
+      const data = await createAddress(profile.id, editInfo);
+
+      if (data?.ok) {
+        toast.success("Địa chỉ được thêm thành công!");
+        closeModal();
       } else {
-        // Xử lý các thông báo lỗi khi ok là false
-        if (data.message === "URL not found") {
-          toast.error("Đã lỗi xảy ra , quý khách vui lòng thử lại sau !");
-        } else if (!data.status) {
-          toast.error("Tên gợi nhớ đã tồn tại !");
-        } else if (!data.limit) {
-          toast.error("bạn chỉ có thể tạo được 3 địa chỉ !");
-        } else {
-          toast.error("Thêm thất bại !");
-        }
+        handleCreateError(data);
       }
-    } else {
-      toast.error("Đã xảy ra lỗi không xác định, vui lòng thử lại sau !");
+    } catch (error) {
+      toast.error("Đã xảy ra lỗi không xác định, vui lòng thử lại sau!");
+      console.error(error);
     }
   };
 
-  //xóa
+  const handleCreateError = (data) => {
+    if (!data) {
+      toast.error("Đã xảy ra lỗi không xác định, vui lòng thử lại sau!");
+      return;
+    }
+
+    if (data.message === "URL not found") {
+      toast.error("Đã có lỗi xảy ra, quý khách vui lòng thử lại sau!");
+    } else if (!data.status) {
+      toast.error("Tên gợi nhớ đã tồn tại!");
+    } else if (!data.limit) {
+      toast.error(`Bạn chỉ có thể tạo được ${MAX_ADDRESSES} địa chỉ!`);
+    } else {
+      toast.error("Thêm địa chỉ thất bại!");
+    }
+  };
 
   const handleDelete = async (id) => {
-    if (confirm("bạn muốn xóa địa chỉ này ?")) {
-      try {
-        const response = await deleteAddress(id);
-        console.log(response);
+    if (!confirm("Bạn muốn xóa địa chỉ này?")) return;
 
-        if (response.ok) {
-          toast.success("Địa chỉ có thể xoá !");
-        } else {
-          toast.error("Xóa thể thất bại !");
-        }
-      } catch (error) {
-        toast.error("Đã có lỗi xảy ra!");
-        console.log(error);
+    try {
+      const response = await deleteAddress(id);
+
+      if (response?.ok) {
+        toast.success("Xóa địa chỉ thành công!");
+      } else {
+        toast.error("Xóa địa chỉ thất bại!");
       }
+    } catch (error) {
+      toast.error("Đã có lỗi xảy ra!");
+      console.error(error);
     }
   };
-  // sửa
+
   const handleSave = async () => {
     if (!validateFields()) return;
-    toast.dismiss();
-    console.log(editInfo.id);
 
-    const data = await updateAddress(editInfo.id, editInfo);
-    if (data) {
-      if (data.ok) {
-        toast.success("Địa chỉ đã thay đổi !");
-        setIsEditing(false);
-        setEditInfo("");
-        setErrors({});
-      } else if (!data.status) {
-        toast.error("Tên gợi nhớ đã tồn tại !");
+    try {
+      toast.dismiss();
+      const data = await updateAddress(editInfo.id, editInfo);
+
+      if (data?.ok) {
+        toast.success("Địa chỉ đã thay đổi thành công!");
+        closeModal();
+      } else if (data && !data.status) {
+        toast.error("Tên gợi nhớ đã tồn tại!");
       } else {
-        toast.error("Sửa thể thất bị !");
+        toast.error("Cập nhật địa chỉ thất bại!");
       }
-    } else {
-      toast.error("Đã xảy ra lỗi xảy ra !");
+    } catch (error) {
+      toast.error("Đã xảy ra lỗi không xác định!");
+      console.error(error);
     }
-    console.log("data", data);
-
-    setErrors({}); // Đặt lại lỗi sau khi thành công
   };
 
   const handleEditClick = (id) => {
     const addressToEdit = addresses.find((address) => address.id === id);
     setEditInfo({ ...addressToEdit });
-    setIsEditing(true);
-    setIsAdding(false);
+    setModalState({
+      isOpen: true,
+      isEditing: true,
+      isAdding: false,
+    });
   };
 
   const handleAddClick = () => {
     setEditInfo({});
-    setIsEditing(false);
-    setIsAdding(true);
+    setModalState({
+      isOpen: true,
+      isEditing: false,
+      isAdding: true,
+    });
   };
 
   const handleChange = (e) => {
@@ -141,10 +155,14 @@ export default function Address() {
     setEditInfo((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleClose = () => {
-    setIsEditing(false);
-    setIsAdding(false);
-    setErrors({}); // Đặt lại lỗi khi đóng modal
+  const closeModal = () => {
+    setModalState({
+      isOpen: false,
+      isEditing: false,
+      isAdding: false,
+    });
+    setEditInfo({});
+    setErrors({});
   };
 
   return (
@@ -194,10 +212,10 @@ export default function Address() {
       )}
 
       <div className="flex justify-end">
-        {addresses.length < 3 && (
+        {addresses.length < MAX_ADDRESSES && (
           <button
             onClick={handleAddClick}
-            className="px-4 sm:px-6 py-2 bg-[#b17741] text-white rounded-lg hover:bg-[#b17741] transition-colors duration-200"
+            className="px-4 sm:px-6 py-2 bg-[#b17741] text-white rounded-lg hover:bg-[#b17741]/90 transition-colors duration-200"
           >
             Thêm
           </button>
@@ -205,11 +223,11 @@ export default function Address() {
       </div>
 
       <EditModal
-        isOpen={isEditing || isAdding}
-        onClose={handleClose}
+        isOpen={modalState.isOpen}
+        onClose={closeModal}
         editInfo={editInfo}
         handleChange={handleChange}
-        isEditing={isEditing}
+        isEditing={modalState.isEditing}
         onClickCreate={handleCreate}
         onClickSave={handleSave}
         errors={errors}

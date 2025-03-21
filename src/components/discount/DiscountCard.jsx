@@ -11,6 +11,7 @@ export default function DiscountCard({
 }) {
   const navigator = useNavigate();
   const apiKey = useSelector((state) => state.login.apikey);
+
   const handleUse = () => {
     toast.dismiss();
     if (!apiKey && apiKey !== Array) {
@@ -19,19 +20,31 @@ export default function DiscountCard({
       navigator("/food");
     }
   };
+
   if (days_remaining <= 0) return null;
+
+  // Giới hạn độ dài tên nếu quá dài
+  const truncatedName = name.length > 25 ? name.substring(0, 25) + "..." : name;
+
   return (
     <div>
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300">
         <div className="p-4">
-          <h3 className="text-lg font-semibold text-gray-800">{name}</h3>
-          <p className="text-2xl font-bold text-[#b17741] mb-2">
-            {discount_percent}% OFF
-          </p>
-          <div className="flex items-center text-gray-600 text-sm mb-1">
+          <div className="flex items-center justify-between mb-2">
+            <h3
+              className="text-lg font-semibold text-gray-800 line-clamp-1"
+              title={name}
+            >
+              {truncatedName}
+            </h3>
+            <span className="bg-red-100 text-red-600 px-2 py-1 rounded-full text-xs font-medium">
+              -{discount_percent}%
+            </span>
+          </div>
+          <div className="flex items-center text-gray-600 text-sm mb-2 bg-gray-50 p-2 rounded">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 mr-2"
+              className="h-4 w-4 mr-2 text-[#b17741]"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -45,10 +58,10 @@ export default function DiscountCard({
               Đơn tối thiểu {parseInt(minimum_price).toLocaleString()}₫
             </span>
           </div>
-          <div className="flex items-center text-gray-600 text-sm mb-1">
+          <div className="flex items-center text-gray-600 text-sm">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 mr-2"
+              className="h-4 w-4 mr-2 text-[#b17741]"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -58,17 +71,17 @@ export default function DiscountCard({
                 clipRule="evenodd"
               />
             </svg>
-            <span>Hiệu lực: {days_remaining} ngày</span>
+            <span>Còn {days_remaining} ngày</span>
           </div>
         </div>
         <button
-          className="w-full py-3 bg-[#b17741] text-white font-medium hover:bg-[#b17741] transition duration-300 flex items-center justify-center"
+          className="w-full py-3 bg-[#b17741] text-white font-medium hover:bg-[#a06835] transition duration-300 flex items-center justify-center gap-2"
           onClick={handleUse}
         >
           Dùng ngay
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 ml-2"
+            className="h-5 w-5"
             viewBox="0 0 20 20"
             fill="currentColor"
           >

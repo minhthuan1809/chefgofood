@@ -9,7 +9,6 @@ export default function PaymentMethodSelector({ selectedMethod, onSelect }) {
   return (
     <div>
       <div>
-        <h4 className="font-medium mb-3">Phương thức thanh toán</h4>
         <div className="grid grid-cols-3 gap-2">
           {PAYMENT_METHODS.map((method) => (
             <button

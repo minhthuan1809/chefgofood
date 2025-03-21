@@ -41,7 +41,7 @@ export function EditModal({
             onChange={handleChange}
             onKeyDown={handleKeyDown} // Thêm xử lý phím cho trường này
             className="border p-2 w-full rounded"
-            placeholder="note..."
+            placeholder="Nhập tên gợi nhớ"
           />
           {errors.note && <p className="text-red-500">{errors.note}</p>}
         </div>
@@ -54,7 +54,7 @@ export function EditModal({
             onChange={handleChange}
             onKeyDown={handleKeyDown} // Thêm xử lý phím cho trường này
             className="border p-2 w-full rounded"
-            placeholder="nhà.. ngõ.. , phường..., huyện... , tỉnh... "
+            placeholder="Nhập địa chỉ"
           />
           {errors.address && <p className="text-red-500">{errors.address}</p>}
         </div>
@@ -68,7 +68,7 @@ export function EditModal({
             onChange={handleChange}
             onKeyDown={handleKeyDown} // Thêm xử lý phím cho trường này
             className="border p-2 w-full rounded"
-            placeholder="03xxxxxxx"
+            placeholder="Nhập số điện thoại"
           />
           {errors.phone && <p className="text-red-500">{errors.phone}</p>}
         </div>

@@ -36,6 +36,7 @@ const AppAdmin = () => {
   const navigate = useNavigate();
   const { url } = useParams();
   const apikey_cookies = Cookies.get("admin_apikey");
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const menuItems = [
     {
       path: "dashboard",
@@ -152,29 +153,20 @@ const AppAdmin = () => {
   }, [url, dataDecentralization]);
 
   return (
-    <div className="flex h-screen">
-      <div className="w-64 bg-white h-full shadow-lg flex flex-col">
-        <div className="p-6 border-b">
-          <div className="flex items-center space-x-4">
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5aZnsestsA7FsrvvOF-dFwvfNJx1VphgRRISfSQDYV1lzclKTTCu5wnFuUKXDpLq6FUM&usqp=CAU"
-              alt="Ảnh đại diện"
-              className="w-10 h-10 rounded-full ring-2 ring-blue-600"
-            />
-            <div>
-              <h3 className="font-medium">{dataDecentralization?.username}</h3>
-              <p className="text-sm text-gray-500">
-                {dataDecentralization?.email}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <nav className="p-4 flex-1 overflow-y-auto">
-          <AdminSidebar />
-        </nav>
+    <div className="flex h-screen bg-gray-50">
+      <nav
+        className={`transition-all duration-300 ${
+          isCollapsed ? "w-20" : "w-72"
+        } bg-white shadow-lg`}
+      >
+        <AdminSidebar
+          isCollapsed={isCollapsed}
+          setIsCollapsed={setIsCollapsed}
+        />
+      </nav>
+      <div className="flex-1 overflow-y-auto">
+        <div className="p-8">{page}</div>
       </div>
-      <div className="flex-1 p-6 overflow-y-auto min-h-screen">{page}</div>
     </div>
   );
 };
