@@ -46,7 +46,7 @@ const OrdersChart = () => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-sm">
+    <div className="bg-white p-6 rounded-xl shadow-sm w-full">
       <h3 className="text-lg font-semibold mb-4">Thống Kê Đơn Hàng</h3>
       <div className="h-80">
         <ResponsiveContainer width="100%" height="100%">

@@ -1,13 +1,12 @@
 import { FiDollarSign, FiShoppingBag, FiUsers, FiBell } from "react-icons/fi";
-import { FaEye } from "react-icons/fa";
-import { Link } from "react-router-dom";
+
 import StatCard from "../dashboard/StatCard";
 import RevenueChart from "../dashboard/RevenueChart";
-import WeatherChart from "../dashboard/WeatherChart";
 import OrdersChart from "../dashboard/OrdersChart";
 import TopProducts from "../dashboard/TopProducts";
 import { useEffect, useState } from "react";
 import { getDashboard } from "../../../service/dashboard";
+import DiscountUsed from "../dashboard/DiscountUsed";
 
 const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState(null);
@@ -69,7 +68,7 @@ const Dashboard = () => {
               <OrdersChart />
             </div>
             <div className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition duration-200">
-              <WeatherChart />
+              <DiscountUsed />
             </div>
             <div className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition duration-200">
               <TopProducts />

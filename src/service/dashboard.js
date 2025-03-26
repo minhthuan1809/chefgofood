@@ -51,3 +51,15 @@ export const getTopSellingProducts = async () => {
     console.error("Registration error:", error);
   }
 };
+
+// mã giảm giá được dùng nhiều
+export const getDiscountUsed = async () => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_CHEFGOFOOD_SERVER_API}/discountUsed`
+    );
+    return response.json();
+  } catch (error) {
+    console.error("Registration error:", error);
+  }
+};
