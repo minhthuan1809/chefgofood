@@ -173,19 +173,24 @@ export default function ModelAddEditUser({
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">
-                  Mật khẩu
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  className={`w-full p-2 border rounded ${
-                    errors.password ? "border-red-500" : ""
-                  }`}
-                  required={!editUser}
-                />
+                {!editUser && (
+                  <div>
+                    <label className="block text-sm font-medium mb-1">
+                      Mật khẩu
+                    </label>
+                    <input
+                      type="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleInputChange}
+                      className={`w-full p-2 border rounded ${
+                        errors.password ? "border-red-500" : ""
+                      }`}
+                      required={!editUser}
+                    />
+                  </div>
+                )}
+
                 {errors.password && (
                   <p className="text-red-500 text-sm mt-1">{errors.password}</p>
                 )}
