@@ -47,6 +47,7 @@ export default function DiscountUser() {
 
   const calculateDaysLeft = (validTo) => {
     const today = new Date();
+    today.setHours(0, 0, 0, 0); // Đặt thời gian về 00:00:00 để tính chính xác ngày
     const endDate = new Date(validTo);
     const diffTime = endDate - today;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -213,11 +214,33 @@ export default function DiscountUser() {
                   }).format(coupon.minimum_price)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {new Date(coupon.valid_from).toISOString().split("T")[0]} -{" "}
-                  {new Date(coupon.valid_to).toISOString().split("T")[0]}
+                  {new Date(coupon.valid_from)
+                    .toLocaleDateString("vi-VN", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                      timeZone: "Asia/Ho_Chi_Minh",
+                    })
+                    .split("/")
+                    .reverse()
+                    .join("/")}{" "}
+                  -{" "}
+                  {new Date(coupon.valid_to)
+                    .toLocaleDateString("vi-VN", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                      timeZone: "Asia/Ho_Chi_Minh",
+                    })
+                    .split("/")
+                    .reverse()
+                    .join("/")}
                   <br />
                   <span className="text-sm text-gray-500">
-                    ({calculateDaysLeft(coupon.valid_to)} ngày còn lại)
+                    (
+                    {coupon.days_remaining ||
+                      calculateDaysLeft(coupon.valid_to)}{" "}
+                    ngày còn lại)
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">

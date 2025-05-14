@@ -33,18 +33,32 @@ const Modal_user = ({ isOpen, onClose, editData, fetchData }) => {
 
   useEffect(() => {
     if (editData) {
-      // Format dates from ISO string to YYYY-MM-DD
+      // Format dates with timezone adjustment
       const fromDate = editData.valid_from
-        ? new Date(editData.valid_from).toISOString().split("T")[0]
+        ? new Date(
+            new Date(editData.valid_from).getTime() -
+              new Date().getTimezoneOffset() * 60000
+          )
+            .toISOString()
+            .split("T")[0]
         : "";
       const toDate = editData.valid_to
-        ? new Date(editData.valid_to).toISOString().split("T")[0]
+        ? new Date(
+            new Date(editData.valid_to).getTime() -
+              new Date().getTimezoneOffset() * 60000
+          )
+            .toISOString()
+            .split("T")[0]
         : "";
 
       setValidFrom(fromDate);
       setValidTo(toDate);
     }
   }, [editData]);
+
+  useEffect(() => {
+    console.log(validFrom);
+  }, [validFrom]);
 
   const resetForm = () => {
     setCode("");
@@ -74,6 +88,7 @@ const Modal_user = ({ isOpen, onClose, editData, fetchData }) => {
       valid_to: validTo,
       status,
     };
+    console.log(discountData);
     isEdit ? handleEditDiscount(discountData) : handleAddDiscount(discountData);
   };
 
