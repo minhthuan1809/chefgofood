@@ -399,6 +399,13 @@ const PaySePay = () => {
                         </Link>
                       </div>
                     </div>
+                  ) : paymentStatus.status === "failed" ? (
+                    <Link
+                      to="/"
+                      className="w-full bg-[#b17741] text-white px-4 py-3 rounded-lg hover:bg-[#9a6535] transition-colors flex items-center justify-center font-medium"
+                    >
+                      <FaArrowRight className="mr-2" /> Về Trang Chủ
+                    </Link>
                   ) : (
                     <button
                       className="w-full bg-red-500 text-white px-4 py-3 rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center font-medium"
