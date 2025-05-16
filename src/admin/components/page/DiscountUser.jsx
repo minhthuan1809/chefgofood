@@ -17,16 +17,32 @@ export default function DiscountUser() {
   const [totalPages, setTotalPages] = useState(1);
   const [coupons, setCoupons] = useState(null);
   const [editData, setEditData] = useState(null);
-  const [filterStatus, setFilterStatus] = useState("all"); // Thêm state cho bộ lọc trạng thái
+  const [filterStatus, setFilterStatus] = useState("all");
   const [loading, setLoading] = useState(false);
+
+  const getCouponStatus = (validFrom, validTo) => {
+    const now = new Date();
+    const startDate = new Date(validFrom);
+    const endDate = new Date(validTo);
+
+    if (now < startDate) {
+      return "Chờ bắt đầu";
+    } else if (now > endDate) {
+      return "Hết hạn";
+    } else {
+      return "Đang hoạt động";
+    }
+  };
 
   async function fetchData() {
     toast.dismiss();
     setLoading(true);
     const res = await getDiscountUser(page, limit, searchTerm);
-    let filteredCoupons = res.data.discounts;
+    let filteredCoupons = res.data.discounts.map((coupon) => ({
+      ...coupon,
+      message: getCouponStatus(coupon.valid_from, coupon.valid_to),
+    }));
 
-    // Lọc theo trạng thái
     if (filterStatus !== "all") {
       filteredCoupons = filteredCoupons.filter((coupon) =>
         coupon.message.toLowerCase().includes(filterStatus)
@@ -47,7 +63,7 @@ export default function DiscountUser() {
 
   const calculateDaysLeft = (validTo) => {
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Đặt thời gian về 00:00:00 để tính chính xác ngày
+    today.setHours(0, 0, 0, 0);
     const endDate = new Date(validTo);
     const diffTime = endDate - today;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -110,7 +126,6 @@ export default function DiscountUser() {
           >
             <BiRefresh className="text-xl text-gray-500" />
           </button>
-          {/* Bộ lọc trạng thái */}
           <select
             className="p-2 border rounded-lg focus:outline-none focus:border-blue-600"
             value={filterStatus}
@@ -123,7 +138,6 @@ export default function DiscountUser() {
             <option value="đang hoạt động">Đang hoạt động</option>
           </select>
 
-          {/* Số lượng */}
           <div className="flex items-center gap-2">
             <label className="text-gray-500">Số lượng:</label>
             <select

@@ -133,9 +133,9 @@ export default function HistoryDiscount() {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Email
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Phần trăm giảm
-              </th>
+              </th> */}
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Thời gian sử dụng
               </th>
@@ -168,9 +168,9 @@ export default function HistoryDiscount() {
                   </button>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">{item.email}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                {/* <td className="px-6 py-4 whitespace-nowrap">
                   {item.discount_percent}%
-                </td>
+                </td> */}
                 <td className="px-6 py-4 whitespace-nowrap">{item.datetime}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
