@@ -18,12 +18,10 @@ import PageFooter from "../footer/PageFooter";
 export default function History() {
   const [orders, setOrders] = useState([]);
   const [activeTab, setActiveTab] = useState("active");
-  const [isLoading, setIsLoading] = useState(true);
   const apiKey = useSelector((state) => state.login.apikey);
 
   useEffect(() => {
     const fetchOrders = async () => {
-      setIsLoading(true);
       try {
         const result = await getHistory(apiKey);
         if (result.success) {
@@ -31,13 +29,15 @@ export default function History() {
         }
       } catch (error) {
         console.error("Error fetching orders:", error);
-      } finally {
-        setIsLoading(false);
       }
     };
 
-    fetchOrders();
-  }, []); // Thêm dependency array trống để tránh loop vô hạn
+    const interval = setInterval(fetchOrders, 500); // Call API every 0.5 seconds
+
+    fetchOrders(); // Initial call
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, [apiKey]); // Add apiKey as dependency
 
   const activeOrders = orders.filter((order) =>
     ["pending", "preparing", "delivery"].includes(order.status.toLowerCase())
@@ -60,18 +60,6 @@ export default function History() {
         return <FaCheckCircle className="text-gray-500" />;
     }
   };
-
-  const OrderSkeleton = () => (
-    <div className="animate-pulse bg-white rounded-lg p-4 mb-4">
-      <div className="h-6 bg-gray-200 rounded w-1/4 mb-3"></div>
-      <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-      <div className="h-4 bg-gray-200 rounded w-1/2 mb-4"></div>
-      <div className="flex justify-between">
-        <div className="h-8 bg-gray-200 rounded w-1/4"></div>
-        <div className="h-8 bg-gray-200 rounded w-1/6"></div>
-      </div>
-    </div>
-  );
 
   return (
     <div className=" flex flex-col bg-gray-50">
@@ -121,14 +109,7 @@ export default function History() {
             </div>
           </div>
 
-          {/* Content section */}
-          {isLoading ? (
-            <div className="space-y-4">
-              {[1, 2, 3].map((i) => (
-                <OrderSkeleton key={i} />
-              ))}
-            </div>
-          ) : orders.length === 0 ? (
+          {orders.length === 0 ? (
             <div className="bg-white rounded-xl shadow-sm p-8 text-center">
               <div className="inline-flex items-center justify-center p-4 bg-gray-100 rounded-full mb-4">
                 <FaBoxOpen className="text-3xl text-gray-400" />
