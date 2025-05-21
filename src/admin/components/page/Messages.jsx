@@ -23,11 +23,15 @@ const ChatMessages = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       const { data } = await getChatAdminRender();
-
       setUsers(data.users);
     };
+
     fetchUsers();
-  });
+
+    const interval = setInterval(fetchUsers, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     if (selectedUser) {
@@ -41,7 +45,7 @@ const ChatMessages = () => {
       intervalRef.current = setInterval(async () => {
         const { data } = await getChatAdminDetail(selectedUser.id);
         setMessages(data.messages);
-      }, 2000);
+      }, 1000);
 
       return () => clearInterval(intervalRef.current);
     }
