@@ -47,7 +47,7 @@ const PaySePay = () => {
     status: "pending",
     message: "Đang chờ thanh toán",
   });
-  const [sePaysData, setSePaysData] = useState(null);
+  const [sePaysData, setSePaysData] = useState([]);
   const [remainingTime, setRemainingTime] = useState(
     Cookies.get("timeSePay") || "15:00"
   );
@@ -61,62 +61,67 @@ const PaySePay = () => {
     toast.success(`Đã sao chép ${label}`);
   }, []);
 
-  // Check payment status against received transactions
-  const checkPaymentStatus = useCallback(async () => {
-    toast.dismiss();
-    if (!sePaysData || !paymentData || isOrderCreated) return false;
+  // Process a successful payment
+  const processSuccessfulPayment = useCallback(async (referenceCode) => {
+    try {
+      // Mark transaction as being processed
+      processedTransactions.add(referenceCode);
 
-    const matchingPayment = sePaysData.find(
-      (payment) =>
-        payment.transferAmount === paymentData.SO_TIEN &&
-        payment.transferType.includes(paymentData.NOI_DUNG) &&
-        !processedTransactions.has(payment.referenceCode)
-    );
+      // Check if order has already been created
+      if (!isOrderCreated) {
+        const result = await addCartPay(dataPay);
+        if (result.ok) {
+          setPaymentStatus({
+            status: "success",
+            message: "Thanh toán thành công",
+          });
+          toast.success("Thanh toán thành công");
+          setIsOrderCreated(true);
+          setIsTimerActive(false);
 
-    if (matchingPayment) {
-      try {
-        // Đánh dấu giao dịch đang được xử lý
-        processedTransactions.add(matchingPayment.referenceCode);
+          // Save payment status to sessionStorage
+          sessionStorage.setItem("paymentCompleted", "true");
+          sessionStorage.setItem("processedTransaction", referenceCode);
 
-        // Kiểm tra xem đơn hàng đã được tạo chưa
-        if (!isOrderCreated) {
-          const result = await addCartPay(dataPay);
-          if (result.ok) {
-            setPaymentStatus({
-              status: "success",
-              message: "Thanh toán thành công",
-            });
-            toast.success("Thanh toán thành công");
-            setIsOrderCreated(true);
-            setIsTimerActive(false);
-
-            // Lưu trạng thái thanh toán vào sessionStorage
-            sessionStorage.setItem("paymentCompleted", "true");
-            sessionStorage.setItem(
-              "processedTransaction",
-              matchingPayment.referenceCode
-            );
-
-            return true;
-          } else {
-            // Xóa khỏi danh sách đã xử lý nếu thất bại
-            processedTransactions.delete(matchingPayment.referenceCode);
-            toast.error("Đã có lỗi xảy ra, liên hệ ngay với chúng tôi");
-            return false;
-          }
+          return true;
+        } else {
+          // Remove from processed list if failed
+          processedTransactions.delete(referenceCode);
+          toast.error("Đã có lỗi xảy ra, liên hệ ngay với chúng tôi");
+          return false;
         }
-      } catch (error) {
-        // Xóa khỏi danh sách đã xử lý nếu có lỗi
-        processedTransactions.delete(matchingPayment.referenceCode);
-        console.error("Error creating order:", error);
-        toast.error("Đã có lỗi xảy ra, liên hệ ngay với chúng tôi");
-        return false;
+      }
+      return true;
+    } catch (error) {
+      // Remove from processed list if error occurs
+      processedTransactions.delete(referenceCode);
+      console.error("Error creating order:", error);
+      toast.error("Đã có lỗi xảy ra, liên hệ ngay với chúng tôi");
+      return false;
+    }
+  }, [dataPay, isOrderCreated, processedTransactions]);
+
+  // Check payment status against received transactions
+  const checkPaymentStatus = useCallback((data) => {
+    if (!data || !data.length || isOrderCreated) return false;
+    
+    // Immediately check the data for matching transactions
+    for (const item of data) {
+      // Check if this transaction matches our payment and hasn't been processed yet
+      if (
+        item.transferAmount === paymentData.SO_TIEN &&
+        item.transferType.includes(paymentData.NOI_DUNG) &&
+        !processedTransactions.has(item.referenceCode)
+      ) {
+        processSuccessfulPayment(item.referenceCode);
+        return true;
       }
     }
+    
     return false;
-  }, [sePaysData, paymentData, isOrderCreated, dataPay, processedTransactions]);
+  }, [paymentData, processedTransactions, isOrderCreated, processSuccessfulPayment]);
 
-  // Thêm useEffect để kiểm tra trạng thái thanh toán khi component mount
+  // Add useEffect to check payment status when component mounts
   useEffect(() => {
     const paymentCompleted = sessionStorage.getItem("paymentCompleted");
     const processedTransaction = sessionStorage.getItem("processedTransaction");
@@ -130,16 +135,18 @@ const PaySePay = () => {
       setIsTimerActive(false);
       processedTransactions.add(processedTransaction);
     }
-  }, []);
+  }, [processedTransactions]);
 
-  // Sửa lại fetchSePaysData để thêm xử lý lỗi tốt hơn
+  // Improved fetchSePaysData with immediate payment check
   const fetchSePaysData = useCallback(async () => {
-    if (isOrderCreated) return; // Không fetch nếu đã tạo đơn hàng
+    if (isOrderCreated) return; // Don't fetch if order is already created
 
     try {
       const data = await SePay();
+      // Set the state and immediately check if there's a matching payment
       setSePaysData(data);
-      await checkPaymentStatus();
+      // Check payment immediately when data arrives
+      checkPaymentStatus(data);
     } catch (error) {
       console.error("Error fetching SePay data:", error);
       setPaymentStatus({
@@ -151,8 +158,11 @@ const PaySePay = () => {
 
   // Timer and periodic checks
   useEffect(() => {
-    // Nếu timer không còn active thì không chạy
+    // Don't run if timer is not active
     if (!isTimerActive) return;
+
+    // Initial fetch when component mounts or changes depend on
+    fetchSePaysData();
 
     const interval = setInterval(() => {
       setRemainingTime((prevTime) => {
@@ -180,6 +190,7 @@ const PaySePay = () => {
         return newTime;
       });
 
+      // Fetch payment data every second
       fetchSePaysData();
     }, 1000);
 
@@ -216,7 +227,7 @@ const PaySePay = () => {
     );
   };
 
-  // Sửa lại cleanup khi component unmount
+  // Cleanup when component unmounts
   useEffect(() => {
     return () => {
       if (paymentStatus.status !== "success") {
