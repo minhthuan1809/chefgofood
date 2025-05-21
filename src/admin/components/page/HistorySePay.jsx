@@ -12,13 +12,20 @@ const HistorySePay = () => {
   const [dataSePay, setDataSePay] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(import.meta.env.VITE_SEPAY_API);
-      const data = await response.json();
-      setDataSePay(data);
-      setFilteredData(data);
+      try {
+        const response = await fetch(import.meta.env.VITE_SEPAY_API);
+        const data = await response.json();
+        setDataSePay(data);
+        setFilteredData(data.reverse()); // Đảo ngược dữ liệu ban đầu
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchData();
   }, []);
@@ -31,7 +38,7 @@ const HistorySePay = () => {
           value.toString().toLowerCase().includes(searchTerm.toLowerCase())
       )
     );
-    setFilteredData(results);
+    setFilteredData(results.reverse()); // Đảo ngược kết quả tìm kiếm
   }, [searchTerm, dataSePay]);
 
   const formatCurrency = (amount) => {
@@ -73,7 +80,11 @@ const HistorySePay = () => {
           </div>
         </div>
 
-        {filteredData.length > 0 ? (
+        {loading ? (
+          <div className="flex justify-center items-center py-10">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
+          </div>
+        ) : filteredData.length > 0 ? (
           <div className="overflow-x-auto rounded-lg border border-gray-200">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
