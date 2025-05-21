@@ -59,7 +59,16 @@ export default function Order() {
   };
 
   useEffect(() => {
+    // Call API immediately on mount and when dependencies change
     fetchOrders();
+
+    // Set up interval to call API every 2 seconds
+    const interval = setInterval(() => {
+      fetchOrders();
+    }, 2000);
+
+    // Clean up interval on unmount
+    return () => clearInterval(interval);
   }, [page, limit, selectedStatus, searchTerm]);
 
   const handleViewDetail = async (order) => {
